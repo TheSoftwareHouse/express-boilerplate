@@ -1,4 +1,4 @@
-const {lstatSync, readdirSync} = require('fs');
+const {lstatSync, readdirSync, mkdirSync} = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
@@ -7,11 +7,12 @@ const getDirectories = source =>
   readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
 
 const routesLocation = path.join(__dirname, 'src/app/routes');
+const containerLocation = path.join(__dirname, 'src/container.ts');
 const directories = getDirectories(routesLocation);
 
 const isNotEmptyFor = name => {
   return value => {
-    if (!(value.snakeCased.trim())) return name + ' is required';
+    if (!(value.kebabCased.trim())) return name + ' is required';
     return true
   }
 };
@@ -23,24 +24,91 @@ const SNAKE_REGEX = /\-(.)/g;
 
 const createAction = {
   type: 'add',
-  path: '{{module}}/actions/{{name.snakeCased}}.action.ts',
+  path: '{{module}}/actions/{{name.kebabCased}}.action.ts',
   templateFile: 'plop-templates/action.ts',
 };
 
 const createCommand = {
   type: 'add',
-  path: '{{module}}/commands/{{name.snakeCased}}.command.ts',
+  path: '{{module}}/commands/{{name.kebabCased}}.command.ts',
   templateFile: 'plop-templates/command.ts',
 };
 
 const createHandler = {
   type: 'add',
-  path: '{{module}}/handlers/{{name.snakeCased}}.handler.ts',
+  path: '{{module}}/handlers/{{name.kebabCased}}.handler.ts',
   templateFile: 'plop-templates/handler.ts',
 };
 
+const createRouting = {
+  type: 'add',
+  path: `${routesLocation}/{{name.kebabCased}}/{{name.kebabCased}}.routing.ts`,
+  templateFile: 'plop-templates/routing.ts',
+};
+
+const updateRootRouter = [{
+  type: 'modify',
+  path: `${routesLocation}/index.ts`,
+  pattern: /(\/\/ ROUTES_CONFIG)/,
+  template: 'router.use({{name.camelCased}});\n$1',
+}, {
+  type: 'modify',
+  path: `${routesLocation}/index.ts`,
+  pattern: /(\/\/ ROUTES_DEPENDENCIES)/,
+  template: '{{name.camelCased}},\n$1',
+}, {
+  type: 'modify',
+  path: `${routesLocation}/index.ts`,
+  pattern: /(\/\/ ROUTES_INTERFACE)/,
+  template: '{{name.camelCased}}: Router;\n$1',
+}];
+
+const updateContainer = [{
+  type: 'modify',
+  path: containerLocation,
+  pattern: /(\/\/ ROUTING_IMPORTS)/,
+  template: 'import { {{name.camelCased}}Routing } from "./app/routes/{{name.kebabCased}}/{{name.kebabCased}}.routing";\n$1',
+}, {
+  type: 'modify',
+  path: containerLocation,
+  pattern: /(\/\/ ROUTING_SETUP)/,
+  template: '{{name.camelCased}}Routing: awilix.asFunction({{name.camelCased}}Routing),\n$1',
+}];
+
+
+const updateModuleRouter = [{
+  type: 'modify',
+  path: '{{module}}/{{getName module}}.routing.ts',
+  pattern: /(\/\/ COMMAND_IMPORTS)/,
+  template: 'import { {{name.camelCased}}Action } from "./actions/{{name.kebabCased}}.action";\n$1',
+}, {
+  type: 'modify',
+  path: '{{module}}/{{getName module}}.routing.ts',
+  pattern: /(\/\/ COMMANDS_SETUP)/,
+  template: 'router.{{method}}(\'/{{name.kebabCased}}\', {{name.camelCased}}Action({commandBus}));\n$1',
+}];
+
+const setupModuleStructure = [
+  {
+    type: 'makeDir',
+    configProp: '',
+  },
+  {
+    type: 'makeDir',
+    configProp: 'handlers',
+  },
+  {
+    type: 'makeDir',
+    configProp: 'commands',
+  },
+  {
+    type: 'makeDir',
+    configProp: 'actions',
+  },
+];
+
 // PROMPTS
-const namePrompt = {
+const moduleListPrompt = {
   type: 'list',
   name: 'module',
   message: 'What is your module name?',
@@ -48,21 +116,40 @@ const namePrompt = {
   choices: directories.map(name => ({name: NAME_REGEX.exec(name)[0], value: name})),
 };
 
-const modulePrompt = {
+const textPrompt = (name) => ({
   type: 'input',
   name: 'name',
-  message: 'What is your action name?',
+  message: `What is your ${name} name?`,
   validate: isNotEmptyFor('name'),
   filter: text => ({
     camelCased: (text || "").replace(SNAKE_REGEX, ((_, match) => match.toUpperCase())),
-    pascalKebab: (text || "").replace(SNAKE_REGEX, ((_, match) => `_${match.toUpperCase()}`)).toUpperCase(),
-    snakeCased: text,
+    capitalSnake: (text || "").replace(SNAKE_REGEX, ((_, match) => `_${match.toUpperCase()}`)).toUpperCase(),
+    kebabCased: text,
   }),
+});
+
+const mothodPrompt = {
+  type: 'list',
+  name: 'method',
+  message: 'What is your action type?',
+  default: 'get',
+  choices: [
+    { name: 'get', value: 'get'},
+    { name: 'post', value: 'post'},
+    { name: 'delete', value: 'delete'},
+    { name: 'patch', value: 'patch'},
+    { name: 'put', value: 'put'},
+  ],
 };
 
-console.log(chalk.red.bold("PLEASE USE SNAKE CASE!"));
+console.log(chalk.red.bold("PLEASE USE KEBAB CASE!"));
 
 module.exports = plop => {
+  plop.setActionType('makeDir', function (answers, {configProp}) {
+    const absolutePath = path.join(routesLocation, answers.name.kebabCased, configProp);
+    return mkdirSync(absolutePath);
+  });
+
   plop.setHelper('capitalize', function (text) {
     return typeof text === 'string' ? text.charAt(0).toUpperCase() + text.slice(1) : text;
   });
@@ -80,20 +167,48 @@ module.exports = plop => {
     return !!name[0] ? name[0] : text;
   });
 
-  plop.setGenerator('action', {
+  plop.setGenerator('set', {
     prompts: [
-      namePrompt,
-      modulePrompt,
+      moduleListPrompt,
+      textPrompt("set"),
+      mothodPrompt,
     ],
     actions: [
       createAction,
+      ...updateModuleRouter,
+      createCommand,
+      createHandler,
+    ]
+  });
+
+  plop.setGenerator('route', {
+    prompts: [
+      textPrompt("route"),
+    ],
+    actions: [
+      ...setupModuleStructure,
+      createRouting,
+      ...updateRootRouter,
+      ...updateContainer,
+    ]
+  });
+
+  plop.setGenerator('action', {
+    prompts: [
+      moduleListPrompt,
+      textPrompt("action"),
+      mothodPrompt,
+    ],
+    actions: [
+      createAction,
+      ...updateModuleRouter,
     ]
   });
 
   plop.setGenerator('command', {
     prompts: [
-      namePrompt,
-      modulePrompt,
+      moduleListPrompt,
+      textPrompt("command"),
     ],
     actions: [
       createCommand,
@@ -102,8 +217,8 @@ module.exports = plop => {
 
   plop.setGenerator('handler', {
     prompts: [
-      namePrompt,
-      modulePrompt,
+      moduleListPrompt,
+      textPrompt("handler"),
     ],
     actions: [
       createHandler,

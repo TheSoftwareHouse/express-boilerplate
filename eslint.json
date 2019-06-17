@@ -15,9 +15,11 @@
   },
   "rules": {
     "import/prefer-default-export": "off",
+    "no-empty-pattern": "off",
     "import/no-duplicates": "off",
     "no-empty-function": "off",
     "no-useless-constructor": "off",
+    "class-methods-use-this": "off",
     "interface-name": [true, "never-prefix"],
     "no-empty-interface": false,
     "ordered-imports": false,

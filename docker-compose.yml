@@ -45,7 +45,8 @@ services:
     container_name: percent_api
     command: [sh, -c, 'node-dev ./src/index.js --configKey percent_api']
     hostname: percent_api
-    portsg37:1337"
+    ports:
+      - "1337:1337"
 
 networks:
   app:

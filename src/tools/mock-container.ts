@@ -29,7 +29,7 @@ export class MockContainer implements AwilixContainer {
 
   loadModules: (
     globPatterns: Array<string | GlobWithOptions>,
-    options?: LoadModulesOptions
+    options?: LoadModulesOptions,
   ) => any;
 
   config: { [key: string]: any };
