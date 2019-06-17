@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["prettier"],
+  "overrides": {
+    "files": ["src/**/*/ts"],
+    "excludedFiles": [
+      "**/*.d.ts",
+      "*.json",
+      "**/migrations/*",
+      "**/plop-templates/*"
+    ]
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "import/no-duplicates": "off",
+    "no-empty-function": "off",
+    "no-useless-constructor": "off",
+    "interface-name": [true, "never-prefix"],
+    "no-empty-interface": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "variable-name": [true, "ban-keywords", "allow-leading-underscore", "allow-pascal-case"]
+  }
+}

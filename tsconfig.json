@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "types": ["node"],
+    "module": "commonjs",
+    "declaration": false,
+    "strict": true,
+    "allowSyntheticDefaultImports": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": false,
+    "outDir": "build",
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["typings/*"]
+    }
+  },
+  "include": [ "src/**/*.ts", "config/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules", "build/**"]
+}
