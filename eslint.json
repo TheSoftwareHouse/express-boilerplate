@@ -3,6 +3,9 @@
     "airbnb-typescript/base",
     "plugin:prettier/recommended"
   ],
+  "env": {
+    "mocha": true
+  },
   "plugins": ["prettier"],
   "overrides": {
     "files": ["src/**/*/ts"],
@@ -17,6 +20,7 @@
     "import/prefer-default-export": "off",
     "import/no-duplicates": "off",
     "no-empty-function": "off",
+    "class-methods-use-this": "off",
     "no-useless-constructor": "off",
     "interface-name": [true, "never-prefix"],
     "no-empty-interface": false,
