@@ -1,0 +1,13 @@
+image: qh4r/pipelines:latest
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        services:
+          - docker
+        script:
+          - npm run docker-build
+          - npm run eslint
+          - npm run units

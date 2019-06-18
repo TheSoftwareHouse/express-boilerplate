@@ -6,10 +6,8 @@ x-common: &common
     com.app: app
   networks:
     - app
-  volumes: &volumes
-    - .:/app:delegated
+  volumes:
     - build:/app/build/
-    - ./node_modules:/app/node_modules/
     - node_dev:/usr/local/lib/node_modules/node-dev/
 
 services:
@@ -19,23 +17,8 @@ services:
     container_name: app-builder
     command: [sh, -c, './node_modules/.bin/tsc -w --pretty --skipLibCheck']
 
-  base:
-    labels:
-      com.app: app
-    networks:
-      - app
-    volumes:
-      - .:/app:delegated
-      - ./node_modules:/app/node_modules/
-    image: app:latest
-    container_name: app-base
-    command: ['tail', '-f', '/dev/null']
-
   js:
     image: app:latest
-    volumes: *volumes
-    depends_on:
-      - base
     networks:
       - app
 
@@ -45,7 +28,8 @@ services:
     container_name: percent_api
     command: [sh, -c, 'node-dev ./src/index.js --configKey percent_api']
     hostname: percent_api
-    portsg37:1337"
+    ports:
+      - "1337:1337"
 
 networks:
   app:

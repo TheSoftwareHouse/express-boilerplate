@@ -4,6 +4,7 @@ FROM $IMAGE as builder
 WORKDIR /app
 COPY . .
 
+RUN npm config set unsafe-perm true
 RUN ./docker/npm_install.sh
 
 # BASE image that will share node_modules with service containers
