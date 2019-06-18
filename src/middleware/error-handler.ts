@@ -8,7 +8,7 @@ import { Logger } from "../shared/logger";
 export const errorHandler = ({ logger }: { logger: Logger }) => <T>(
   err: Error,
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   logger.error(err.toString());
 
@@ -18,17 +18,17 @@ export const errorHandler = ({ logger }: { logger: Logger }) => <T>(
 
   if (err instanceof HttpError) {
     return res.status(err.status).json({
-      message: err.message
+      message: err.message,
     });
   }
 
   if (err instanceof AppError) {
     return res.status(INTERNAL_SERVER_ERROR).json({
-      message: err.message
+      message: err.message,
     });
   }
 
   return res.status(INTERNAL_SERVER_ERROR).json({
-    message: "Something went wrong"
+    message: "Something went wrong",
   });
 };

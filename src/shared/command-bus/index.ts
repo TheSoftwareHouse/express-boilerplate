@@ -13,12 +13,12 @@ export class CommandBus {
 
   public execute(command: any) {
     const matchedHandler = this.handlers.find(handler =>
-      handler.supports(command)
+      handler.supports(command),
     );
 
     if (!matchedHandler) {
       return Promise.reject(
-        new Error(`Command: ${command.type} is not supported.`)
+        new Error(`Command: ${command.type} is not supported.`),
       );
     }
 

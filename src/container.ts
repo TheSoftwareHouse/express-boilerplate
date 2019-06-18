@@ -6,16 +6,18 @@ import { routing } from "./app/routes";
 import { winstonLogger } from "./shared/logger";
 import { errorHandler } from "./middleware/error-handler";
 
+// ROUTING_IMPORTS
+
 const HANDLER_REGEX = /.+Handler$/;
 
 export async function createContainer(): Promise<AwilixContainer> {
   const container: AwilixContainer = awilix.createContainer({
-    injectionMode: awilix.InjectionMode.PROXY
+    injectionMode: awilix.InjectionMode.PROXY,
   });
 
   container.register({
     port: awilix.asValue(config.percentApi.port),
-    logger: awilix.asValue(winstonLogger)
+    logger: awilix.asValue(winstonLogger),
   });
 
   const handlersScope = container.createScope();
@@ -24,8 +26,8 @@ export async function createContainer(): Promise<AwilixContainer> {
     formatName: "camelCase",
     resolverOptions: {
       lifetime: Lifetime.SCOPED,
-      register: awilix.asClass
-    }
+      register: awilix.asClass,
+    },
   });
 
   const handlers = Object.keys(handlersScope.registrations)
@@ -33,13 +35,17 @@ export async function createContainer(): Promise<AwilixContainer> {
     .map(key => handlersScope.resolve(key));
 
   container.register({
-    handlers: awilix.asValue(handlers)
+    handlers: awilix.asValue(handlers),
+  });
+
+  container.register({
+    // ROUTING_SETUP
   });
 
   container.register({
     errorHandler: awilix.asFunction(errorHandler),
     routing: awilix.asFunction(routing),
-    commandBus: awilix.asFunction(appCommandBus)
+    commandBus: awilix.asFunction(appCommandBus),
   });
 
   return container;

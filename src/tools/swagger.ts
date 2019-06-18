@@ -7,8 +7,8 @@ export default jsdoc({
     info: {
       title: name,
       version,
-      description
-    }
+      description,
+    },
   },
-  apis: ["src/**/actions/*.ts"]
+  apis: ["src/**/actions/*.ts"],
 });
