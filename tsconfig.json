@@ -18,6 +18,11 @@
       "*": ["typings/*"]
     }
   },
-  "include": [ "src/**/*.ts", "config/**/*.ts", "tests/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "config/**/*.ts",
+    "tests/**/*.ts",
+    "typings/*"
+  ],
   "exclude": ["node_modules", "build/**"]
 }

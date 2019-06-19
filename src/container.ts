@@ -1,12 +1,17 @@
 import * as awilix from "awilix";
 import { AwilixContainer, Lifetime } from "awilix";
+import { createConnection } from "typeorm";
 import { config } from "../config/services";
 import appCommandBus from "./app/app-command-bus/app-command-bus";
 import { routing } from "./app/routes";
 import { winstonLogger } from "./shared/logger";
 import { errorHandler } from "./middleware/error-handler";
+import { UserDetailsModel } from "./infrastructure/models/user-details/user-details.model";
+// MODELS_IMPORTS
 
 // ROUTING_IMPORTS
+
+const dbConfig = require('../config/db');
 
 const HANDLER_REGEX = /.+Handler$/;
 
@@ -18,6 +23,13 @@ export async function createContainer(): Promise<AwilixContainer> {
   container.register({
     port: awilix.asValue(config.percentApi.port),
     logger: awilix.asValue(winstonLogger),
+  });
+
+  const dbConnection = await createConnection(dbConfig);
+
+  container.register({
+    usersRepository: awilix.asValue(dbConnection.getRepository(UserDetailsModel)),
+    // MODELS_SETUP
   });
 
   const handlersScope = container.createScope();

@@ -7,6 +7,7 @@ const getDirectories = source =>
   readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
 
 const routesLocation = path.join(__dirname, 'src/app/routes');
+const modelsLocation = path.join(__dirname, 'src/infrastructure/models');
 const containerLocation = path.join(__dirname, 'src/container.ts');
 const directories = getDirectories(routesLocation);
 
@@ -46,6 +47,12 @@ const createRouting = {
   templateFile: 'plop-templates/routing.ts',
 };
 
+const createModel = {
+  type: 'add',
+  path: `${modelsLocation}/{{name.kebabCased}}/{{name.kebabCased}}.model.ts`,
+  templateFile: 'plop-templates/model.ts',
+};
+
 const updateRootRouter = [{
   type: 'modify',
   path: `${routesLocation}/index.ts`,
@@ -63,7 +70,7 @@ const updateRootRouter = [{
   template: '{{name.camelCased}}: Router;\n$1',
 }];
 
-const updateContainer = [{
+const updateContainerRoutes = [{
   type: 'modify',
   path: containerLocation,
   pattern: /(\/\/ ROUTING_IMPORTS)/,
@@ -73,6 +80,18 @@ const updateContainer = [{
   path: containerLocation,
   pattern: /(\/\/ ROUTING_SETUP)/,
   template: '{{name.camelCased}}Routing: awilix.asFunction({{name.camelCased}}Routing),\n$1',
+}];
+
+const updateContainerModels = [{
+  type: 'modify',
+  path: containerLocation,
+  pattern: /(\/\/ MODELS_IMPORTS)/,
+  template: 'import { {{capitalize name.camelCased}}Model } from "./infrastructure/models/{{name.kebabCased}}/{{name.kebabCased}}.model";\n$1',
+}, {
+  type: 'modify',
+  path: containerLocation,
+  pattern: /(\/\/ MODELS_SETUP)/,
+  template: '{{name.camelCased}}Repository: awilix.asValue(dbConnection.getRepository({{capitalize name.camelCased}}Model)),\n$1',
 }];
 
 
@@ -181,6 +200,16 @@ module.exports = plop => {
     ]
   });
 
+  plop.setGenerator('model', {
+    prompts: [
+      textPrompt("model"),
+    ],
+    actions: [
+      createModel,
+      ...updateContainerModels,
+    ]
+  });
+
   plop.setGenerator('route', {
     prompts: [
       textPrompt("route"),
@@ -189,7 +218,7 @@ module.exports = plop => {
       ...setupModuleStructure,
       createRouting,
       ...updateRootRouter,
-      ...updateContainer,
+      ...updateContainerRoutes,
     ]
   });
 

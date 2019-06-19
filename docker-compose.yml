@@ -15,10 +15,12 @@ services:
     <<: *common
     image: app:latest
     container_name: app-builder
-    command: [sh, -c, './node_modules/.bin/tsc -w --pretty --skipLibCheck']
+    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck']
 
   js:
     image: app:latest
+    depends_on:
+      - postgres
     networks:
       - app
 
@@ -28,8 +30,19 @@ services:
     container_name: percent_api
     command: [sh, -c, 'node-dev ./src/index.js --configKey percent_api']
     hostname: percent_api
+    depends_on:
+      - postgres
     ports:
       - "1337:1337"
+
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: percent
+    networks:
+      - app
 
 networks:
   app:
