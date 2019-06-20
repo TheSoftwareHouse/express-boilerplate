@@ -1,2 +1,2 @@
-src/app/routes/index.ts
+src/app/router.ts
 src/container.ts
