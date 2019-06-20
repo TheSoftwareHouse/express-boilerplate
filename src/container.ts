@@ -2,13 +2,15 @@ import * as awilix from "awilix";
 import { AwilixContainer, Lifetime } from "awilix";
 import { createConnection } from "typeorm";
 import { config } from "../config/services";
-import appCommandBus from "./app/app-command-bus/app-command-bus";
-import { routing } from "./app/routes";
+import { CommandBus } from './shared/command-bus'
+import { router } from "./app/router";
 import { winstonLogger } from "./shared/logger";
 import { errorHandler } from "./middleware/error-handler";
-import { UserDetailsModel } from "./infrastructure/models/user-details/user-details.model";
+import { UserDetailsModel } from "./app/users/models/user-details.model";
+import { UserRoleModel } from "./app/users/models/user-role.model";
 // MODELS_IMPORTS
 
+import { usersRouting } from "./app/users/routing";
 // ROUTING_IMPORTS
 
 const dbConfig = require('../config/db');
@@ -28,8 +30,9 @@ export async function createContainer(): Promise<AwilixContainer> {
   const dbConnection = await createConnection(dbConfig);
 
   container.register({
-    usersRepository: awilix.asValue(dbConnection.getRepository(UserDetailsModel)),
-    // MODELS_SETUP
+    userDetailsRepository: awilix.asValue(dbConnection.getRepository(UserDetailsModel)),
+userRoleRepository: awilix.asValue(dbConnection.getRepository(UserRoleModel)),
+// MODELS_SETUP
   });
 
   const handlersScope = container.createScope();
@@ -51,13 +54,14 @@ export async function createContainer(): Promise<AwilixContainer> {
   });
 
   container.register({
-    // ROUTING_SETUP
+    usersRouting: awilix.asFunction(usersRouting),
+// ROUTING_SETUP
   });
 
   container.register({
     errorHandler: awilix.asFunction(errorHandler),
-    routing: awilix.asFunction(routing),
-    commandBus: awilix.asFunction(appCommandBus),
+    router: awilix.asFunction(router),
+    commandBus: awilix.asClass(CommandBus).classic().singleton(),
   });
 
   return container;

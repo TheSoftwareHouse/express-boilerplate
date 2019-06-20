@@ -1,9 +1,9 @@
 import { v4 } from "uuid";
 import { createConnection } from "typeorm";
-import { UserRoleModel } from "../models/user-role/user-role.model";
-import { UserDetailsModel } from "../models/user-details/user-details.model";
+import { UserRoleModel } from "../app/users/models/user-role.model";
+import { UserDetailsModel } from "../app/users/models/user-details.model";
 
-const dbConfig = require("../../../config/db");
+const dbConfig = require("../../config/db");
 
 (async () => {
   const dbConnection = await createConnection(dbConfig);

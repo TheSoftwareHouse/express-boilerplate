@@ -3,11 +3,11 @@ import { CommandBus } from "../../shared/command-bus";
 
 // COMMAND_IMPORTS
 
-export interface {{capitalize name.camelCased}}RoutingProps {
+export interface UsersRoutingProps {
   commandBus: CommandBus;
 };
 
-export const {{name.camelCased}}Routing = ({commandBus}: {{capitalize name.camelCased}}RoutingProps) => {
+export const usersRouting = ({commandBus}: UsersRoutingProps) => {
   const router = express.Router();
 
   // COMMANDS_SETUP

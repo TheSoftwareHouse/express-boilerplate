@@ -6,8 +6,7 @@ const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source =>
   readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
 
-const routesLocation = path.join(__dirname, 'src/app/routes');
-const modelsLocation = path.join(__dirname, 'src/infrastructure/models');
+const routesLocation = path.join(__dirname, 'src/app');
 const containerLocation = path.join(__dirname, 'src/container.ts');
 const directories = getDirectories(routesLocation);
 
@@ -43,38 +42,38 @@ const createHandler = {
 
 const createRouting = {
   type: 'add',
-  path: `${routesLocation}/{{name.kebabCased}}/{{name.kebabCased}}.routing.ts`,
+  path: `${routesLocation}/{{name.kebabCased}}/routing.ts`,
   templateFile: 'plop-templates/routing.ts',
 };
 
 const createModel = {
   type: 'add',
-  path: `${modelsLocation}/{{name.kebabCased}}/{{name.kebabCased}}.model.ts`,
+  path: `{{module}}/models/{{name.kebabCased}}.model.ts`,
   templateFile: 'plop-templates/model.ts',
 };
 
 const updateRootRouter = [{
   type: 'modify',
-  path: `${routesLocation}/index.ts`,
+  path: `${routesLocation}/router.ts`,
   pattern: /(\/\/ ROUTES_CONFIG)/,
-  template: 'router.use({{name.camelCased}});\n$1',
+  template: 'router.use({{name.camelCased}}Routing);\n$1',
 }, {
   type: 'modify',
-  path: `${routesLocation}/index.ts`,
+  path: `${routesLocation}/router.ts`,
   pattern: /(\/\/ ROUTES_DEPENDENCIES)/,
-  template: '{{name.camelCased}},\n$1',
+  template: '{{name.camelCased}}Routing,\n$1',
 }, {
   type: 'modify',
-  path: `${routesLocation}/index.ts`,
+  path: `${routesLocation}/router.ts`,
   pattern: /(\/\/ ROUTES_INTERFACE)/,
-  template: '{{name.camelCased}}: Router;\n$1',
+  template: '{{name.camelCased}}Routing: express.Router;\n$1',
 }];
 
 const updateContainerRoutes = [{
   type: 'modify',
   path: containerLocation,
   pattern: /(\/\/ ROUTING_IMPORTS)/,
-  template: 'import { {{name.camelCased}}Routing } from "./app/routes/{{name.kebabCased}}/{{name.kebabCased}}.routing";\n$1',
+  template: 'import { {{name.camelCased}}Routing } from "./app/{{name.kebabCased}}/routing";\n$1',
 }, {
   type: 'modify',
   path: containerLocation,
@@ -86,7 +85,7 @@ const updateContainerModels = [{
   type: 'modify',
   path: containerLocation,
   pattern: /(\/\/ MODELS_IMPORTS)/,
-  template: 'import { {{capitalize name.camelCased}}Model } from "./infrastructure/models/{{name.kebabCased}}/{{name.kebabCased}}.model";\n$1',
+  template: 'import { {{capitalize name.camelCased}}Model } from "./app/{{getModuleName module}}/models/{{name.kebabCased}}.model";\n$1',
 }, {
   type: 'modify',
   path: containerLocation,
@@ -94,15 +93,14 @@ const updateContainerModels = [{
   template: '{{name.camelCased}}Repository: awilix.asValue(dbConnection.getRepository({{capitalize name.camelCased}}Model)),\n$1',
 }];
 
-
 const updateModuleRouter = [{
   type: 'modify',
-  path: '{{module}}/{{getName module}}.routing.ts',
+  path: '{{module}}/routing.ts',
   pattern: /(\/\/ COMMAND_IMPORTS)/,
   template: 'import { {{name.camelCased}}Action } from "./actions/{{name.kebabCased}}.action";\n$1',
 }, {
   type: 'modify',
-  path: '{{module}}/{{getName module}}.routing.ts',
+  path: '{{module}}/routing.ts',
   pattern: /(\/\/ COMMANDS_SETUP)/,
   template: 'router.{{method}}(\'/{{name.kebabCased}}\', {{name.camelCased}}Action({commandBus}));\n$1',
 }];
@@ -123,6 +121,10 @@ const setupModuleStructure = [
   {
     type: 'makeDir',
     configProp: 'actions',
+  },
+  {
+    type: 'makeDir',
+    configProp: 'models',
   },
 ];
 
@@ -181,6 +183,10 @@ module.exports = plop => {
     return typeof text === 'string' ? text.toLowerCase() : text;
   });
 
+  plop.setHelper('getModuleName', function (text) {
+    return typeof text === 'string' ? text.split('/').reverse()[0] : text;
+  });
+
   plop.setHelper('getName', function (text) {
     const name = NAME_REGEX.exec(text);
     return !!name[0] ? name[0] : text;
@@ -202,6 +208,7 @@ module.exports = plop => {
 
   plop.setGenerator('model', {
     prompts: [
+      moduleListPrompt,
       textPrompt("model"),
     ],
     actions: [

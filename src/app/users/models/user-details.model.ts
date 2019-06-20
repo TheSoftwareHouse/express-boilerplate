@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn, JoinColumn, OneToOne } from "typeorm";
-import { UserRoleModel } from "../user-role/user-role.model";
+import { UserRoleModel } from "./user-role.model";
 
 interface UserDetailsModelProps {
   id: string;

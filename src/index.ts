@@ -9,7 +9,6 @@ import { Logger } from "./shared/logger";
     container
       .resolve<Logger>("logger")
       .error(`Uncaught: ${err.toString()}`, err);
-    console.log(err);
     process.exit(1);
   });
 
@@ -18,7 +17,6 @@ import { Logger } from "./shared/logger";
       container
         .resolve<Logger>("logger")
         .error(`Unhandled: ${err.toString()}`, err);
-      console.log(err);
     }
     process.exit(1);
   });
