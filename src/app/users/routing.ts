@@ -5,9 +5,9 @@ import { CommandBus } from "../../shared/command-bus";
 
 export interface UsersRoutingProps {
   commandBus: CommandBus;
-};
+}
 
-export const usersRouting = ({commandBus}: UsersRoutingProps) => {
+export const usersRouting = ({ commandBus }: UsersRoutingProps) => {
   const router = express.Router();
 
   // COMMANDS_SETUP

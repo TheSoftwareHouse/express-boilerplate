@@ -6,8 +6,8 @@ import { Command, CommandBus, Handler } from "./index";
 use(chaiAsPromised);
 
 export default class TestHandler implements Handler<Command<string>> {
-  public commandType: string = "test-type"
-  
+  public commandType: string = "test-type";
+
   async execute(command: Command<string>) {
     return `handler-message ${command.payload}`;
   }

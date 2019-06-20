@@ -4,22 +4,25 @@ export interface Command<T> {
 }
 
 export interface Handler<T extends Command<any> = Command<any>> {
-  commandType: string
+  commandType: string;
   execute: (command: T) => Promise<any>;
 }
 
-interface CommandHandlers{
-  [key: string]: Handler
+interface CommandHandlers {
+  [key: string]: Handler;
 }
 
 export class CommandBus {
-  private availableHandlers: CommandHandlers
+  private availableHandlers: CommandHandlers;
 
   constructor(handlers: Handler[]) {
-    this.availableHandlers = handlers.reduce((result: CommandHandlers, handler) => {
-      result[handler.commandType] = handler
-      return result
-    }, {})
+    this.availableHandlers = handlers.reduce(
+      (result: CommandHandlers, handler) => {
+        result[handler.commandType] = handler;
+        return result;
+      },
+      {},
+    );
   }
 
   public execute(command: any) {
