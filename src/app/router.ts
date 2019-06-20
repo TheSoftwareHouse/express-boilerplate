@@ -5,7 +5,7 @@ export interface RoutingProps {
   // ROUTES_INTERFACE
 }
 
-export const router = ({
+export const createRouter = ({
   usersRouting,
 }: // ROUTES_DEPENDENCIES
 RoutingProps) => {

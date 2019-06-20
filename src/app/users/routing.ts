@@ -7,6 +7,7 @@ export interface UsersRoutingProps {
   commandBus: CommandBus;
 }
 
+// eslint-disable-next-line
 export const usersRouting = ({ commandBus }: UsersRoutingProps) => {
   const router = express.Router();
 

@@ -3,7 +3,7 @@ import { AwilixContainer, Lifetime } from "awilix";
 import { createConnection } from "typeorm";
 import { config } from "../config/services";
 import { CommandBus } from './shared/command-bus'
-import { router } from "./app/router";
+import { createRouter } from "./app/router";
 import { winstonLogger } from "./shared/logger";
 import { errorHandler } from "./middleware/error-handler";
 import { UserDetailsModel } from "./app/users/models/user-details.model";
@@ -31,8 +31,8 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   container.register({
     userDetailsRepository: awilix.asValue(dbConnection.getRepository(UserDetailsModel)),
-userRoleRepository: awilix.asValue(dbConnection.getRepository(UserRoleModel)),
-// MODELS_SETUP
+    userRoleRepository: awilix.asValue(dbConnection.getRepository(UserRoleModel)),
+    // MODELS_SETUP
   });
 
   const handlersScope = container.createScope();
@@ -55,12 +55,12 @@ userRoleRepository: awilix.asValue(dbConnection.getRepository(UserRoleModel)),
 
   container.register({
     usersRouting: awilix.asFunction(usersRouting),
-// ROUTING_SETUP
+    // ROUTING_SETUP
   });
 
   container.register({
     errorHandler: awilix.asFunction(errorHandler),
-    router: awilix.asFunction(router),
+    router: awilix.asFunction(createRouter),
     commandBus: awilix.asClass(CommandBus).classic().singleton(),
   });
 
