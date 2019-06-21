@@ -2,7 +2,7 @@ import * as awilix from "awilix";
 import { config as dotenvConfig } from "dotenv-safe";
 import { AwilixContainer, Lifetime } from "awilix";
 import { createConnection } from "typeorm";
-import { makePercentApiConfig } from "../config/services";
+import { makeApiConfig } from "../config/services";
 import { CommandBus } from './shared/command-bus'
 import { createRouter } from "./app/router";
 import { winstonLogger } from "./shared/logger";
@@ -20,7 +20,7 @@ dotenvConfig({
   example: ".env.dist",
 });
 
-const config = makePercentApiConfig(process.env);
+const config = makeApiConfig(process.env);
 const dbConfig = require('../config/db');
 
 const HANDLER_REGEX = /.+Handler$/;

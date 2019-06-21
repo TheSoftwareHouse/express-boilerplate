@@ -1,6 +1,6 @@
 import { OK, UNAUTHORIZED } from "http-status-codes";
 import { config as dotenvConfig } from "dotenv-safe";
-import { makePercentApiConfig } from "../../../config/services";
+import { makeApiConfig } from "../../../config/services";
 
 export const ADMIN_ID = "85639e7b-3ce5-47bc-b773-1c8756b48c5a";
 export const REVIEWER_ID = "c83e8b83-df11-47d2-9018-dbf7e4c59d51";
@@ -20,7 +20,7 @@ export interface MockResponse {
   }>;
 }
 
-const config = makePercentApiConfig(process.env);
+const config = makeApiConfig(process.env);
 
 export class ExternalAuthenticationMock {
   mockData: { [secret: string]: { [key: string]: any } };

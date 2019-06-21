@@ -1,5 +1,5 @@
 {
-  "name": "percent_api",
+  "name": "boilerplate_api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,8 +7,8 @@
     "build": "tsc --skipLibCheck",
     "watch": "docker-compose up builder",
     "docker-build": "./docker/build.sh",
-    "docker-build-prod": "docker build -t percent-api:latest -f ./docker/prod/Dockerfile .",
-    "api": "docker-compose up percent_api",
+    "docker-build-prod": "docker build -t boilerplate-api:latest -f ./docker/prod/Dockerfile .",
+    "api": "docker-compose up boilerplate_api",
     "down": "docker-compose down -v",
     "format": "docker-compose run --rm js ./node_modules/.bin/prettier --write \"**/**/*.ts\" \"!**/**/*.d.ts\"",
     "eslint": "docker-compose run --rm js ./node_modules/.bin/eslint -c ./eslint.json --ext .ts ./",

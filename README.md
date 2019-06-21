@@ -1,4 +1,4 @@
-# Percent API
+# Boilerplate API
 
 ## Configuration
 

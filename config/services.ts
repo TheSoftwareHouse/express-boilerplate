@@ -1,5 +1,5 @@
-export const makePercentApiConfig = (env: any) => ({
-  appName: "percent_api",
+export const makeApiConfig = (env: any) => ({
+  appName: "boilerplate_api",
   port: "1337",
   externalAuthSecret: env.EXTERNAL_AUTH_SECRET,
   accessTokenKey: env.ACCESS_TOKEN_KEY,

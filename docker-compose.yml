@@ -28,12 +28,12 @@ services:
     networks:
       - app
 
-  percent_api:
+  boilerplate_api:
     <<: *common
     working_dir: /app/build
-    container_name: percent_api
-    command: [sh, -c, 'node-dev ./src/index.js --configKey percent_api']
-    hostname: percent_api
+    container_name: boilerplate_api
+    command: [sh, -c, 'node-dev ./src/index.js']
+    hostname: boilerplate_api
     depends_on:
       - postgres
     ports:
