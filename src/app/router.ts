@@ -8,8 +8,7 @@ export interface RoutingProps {
 export const createRouter = ({
   usersRouting,
   // ROUTES_DEPENDENCIES
-}:
-RoutingProps) => {
+}: RoutingProps) => {
   const router = express.Router();
 
   router.use(usersRouting);

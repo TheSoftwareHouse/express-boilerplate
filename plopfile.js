@@ -2,13 +2,20 @@ const {lstatSync, readdirSync, mkdirSync} = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
+const DIRECTORIES_BLACKLIST = ['services'];
+
+const NAME_REGEX = /[^\/]+$/;
+const SNAKE_REGEX = /\-(.)/g;
+
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source =>
   readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
 
 const routesLocation = path.join(__dirname, 'src/app');
 const containerLocation = path.join(__dirname, 'src/container.ts');
-const directories = getDirectories(routesLocation);
+
+const directories = getDirectories(routesLocation)
+  .filter(name => !DIRECTORIES_BLACKLIST.includes(NAME_REGEX.exec(name)[0]));
 
 const isNotEmptyFor = name => {
   return value => {
@@ -16,9 +23,6 @@ const isNotEmptyFor = name => {
     return true
   }
 };
-
-const NAME_REGEX = /[^\/]+$/;
-const SNAKE_REGEX = /\-(.)/g;
 
 // ACTIONS
 
@@ -155,11 +159,11 @@ const mothodPrompt = {
   message: 'What is your action type?',
   default: 'get',
   choices: [
-    { name: 'get', value: 'get'},
-    { name: 'post', value: 'post'},
-    { name: 'delete', value: 'delete'},
-    { name: 'patch', value: 'patch'},
-    { name: 'put', value: 'put'},
+    {name: 'get', value: 'get'},
+    {name: 'post', value: 'post'},
+    {name: 'delete', value: 'delete'},
+    {name: 'patch', value: 'patch'},
+    {name: 'put', value: 'put'},
   ],
 };
 

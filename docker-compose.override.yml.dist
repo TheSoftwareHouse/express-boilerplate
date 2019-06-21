@@ -1,21 +1,37 @@
 version: '3.4'
 
 x-common:
+  environment:
   volumes: &volumes
     - .:/app:delegated
     - build:/app/build/
     - ./node_modules:/app/node_modules/
     - node_dev:/usr/local/lib/node_modules/node-dev/
-
+    - ./.env.dist:/app/build/.env.dist
 
 services:
   builder:
     volumes: *volumes
+
   js:
     volumes: *volumes
 
   percent_api:
     volumes: *volumes
+    depends_on:
+      - adminer
+      - postgres
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    networks:
+      - app
+
 
 networks:
   app:

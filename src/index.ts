@@ -1,5 +1,4 @@
 import { createApp } from "./app/app";
-import { config } from "../config/services";
 import { createContainer } from "./container";
 import { Logger } from "./shared/logger";
 
@@ -22,8 +21,7 @@ import { Logger } from "./shared/logger";
   });
 
   const app = createApp({ container });
-  app.listen(config.percentApi.port);
-  container
-    .resolve<Logger>("logger")
-    .info(`listening on port: ${config.percentApi.port}`);
+  const port = container.resolve("port");
+  app.listen(port);
+  container.resolve<Logger>("logger").info(`listening on port: ${port}`);
 })();

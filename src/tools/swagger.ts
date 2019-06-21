@@ -10,5 +10,5 @@ export default jsdoc({
       description,
     },
   },
-  apis: ["src/**/actions/*.ts"],
+  apis: ["src/**/actions/*.js"],
 });
