@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import { CommandBus } from "../../../../shared/command-bus";
+import { CommandBus } from "../../../shared/command-bus";
 import { {{capitalize name.camelCased}}Command } from "../commands/{{name.kebabCased}}.command";
 
 export interface {{capitalize name.camelCased}}ActionProps {

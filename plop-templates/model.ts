@@ -15,6 +15,6 @@ export class {{capitalize name.camelCased}}Model {
     return entity
   }
 
-  @PrimaryColumn();
+  @PrimaryColumn()
   id: string;
 }

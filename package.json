@@ -19,11 +19,12 @@
     "integration": "docker-compose run --rm js npm run integration-tests",
     "units": "docker-compose run --rm js npm run services-units",
     "shell": "docker-compose run --rm js sh",
-    "seed-data": "docker-compose run --rm js node ./build/src/infrastructure/seed/seed-data.js",
+    "seed-data": "docker-compose run --rm js node ./build/src/seed/seed-data.js",
     "generate-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:generate -f ./build/config/db -n",
     "run-migrations": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:run -f ./build/config/db",
     "revert-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:revert -f ./build/config/db",
-    "create-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:create -f ./build/config/db -n"
+    "create-migration": "docker-compose run --rm js ./node_modules/.bin/typeorm migration:create -f ./build/config/db -n",
+    "plop": "plop"
   },
   "keywords": [],
   "author": "",

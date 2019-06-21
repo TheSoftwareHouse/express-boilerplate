@@ -3,9 +3,9 @@ module.exports = {
   url: "postgres://postgres:password@postgres:5432/percent",
   synchronize: false,
   logging: true,
-  entities: ["/app/build/src/infrastructure/models/**/*"],
-  migrations: ["/app/build/src/infrastructure/migrations/*"],
+  entities: ["/app/build/src/**/*.model.*"],
+  migrations: ["/app/build/src/migrations/*"],
   cli: {
-    migrationsDir: "src/infrastructure/migrations",
+    migrationsDir: "src/migrations",
   },
 };

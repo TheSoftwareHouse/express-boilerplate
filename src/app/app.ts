@@ -14,7 +14,7 @@ function createApp({ container }: { container: AwilixContainer }) {
   app.use(express.json());
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(jsdoc));
-  app.use("/api", container.resolve("routing"));
+  app.use("/api", container.resolve("router"));
 
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
   app.use(container.resolve("errorHandler"));
