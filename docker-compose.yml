@@ -21,6 +21,8 @@ services:
 
   js:
     image: app:latest
+    env_file:
+      - .env.dist
     depends_on:
       - postgres
     networks:

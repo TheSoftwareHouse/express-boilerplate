@@ -7,6 +7,8 @@ COPY . .
 RUN npm config set unsafe-perm true
 RUN ./docker/npm_install.sh
 
+COPY .env.dist ./build/.env.dist
+
 # BASE image that will share node_modules with service containers
 FROM $IMAGE as base
 WORKDIR /app

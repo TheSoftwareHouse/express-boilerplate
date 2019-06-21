@@ -6,6 +6,7 @@ x-common:
     - build:/app/build/
     - ./node_modules:/app/node_modules/
     - node_dev:/usr/local/lib/node_modules/node-dev/
+    - ./.env.dist:/app/build/.env.dist
     - ./.env:/app/build/.env
 
 services:
