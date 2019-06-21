@@ -12,3 +12,4 @@ resources
 !resources/docker_entrypoint.sh
 deploy
 .git
+.env
