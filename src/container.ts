@@ -1,5 +1,5 @@
 import * as awilix from "awilix";
-import { config as dotenvConfig } from "dotenv-safe";
+import { config as dotenvConfig } from "dotenv";
 import { AwilixContainer, Lifetime } from "awilix";
 import { createConnection } from "typeorm";
 import { makePercentApiConfig } from "../config/services";
@@ -16,9 +16,7 @@ import { UserRoleModel } from "./app/users/models/user-role.model";
 import { usersRouting } from "./app/users/routing";
 // ROUTING_IMPORTS
 
-dotenvConfig({
-  example: ".env.dist",
-});
+dotenvConfig();
 
 const config = makePercentApiConfig(process.env);
 const dbConfig = require('../config/db');
