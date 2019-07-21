@@ -21,9 +21,7 @@ describe("command bus", () => {
       type: "test-type",
     };
 
-    await expect(bus.execute(testCommand)).to.be.rejectedWith(
-      `Command: test-type is not supported.`,
-    );
+    await expect(bus.execute(testCommand)).to.be.rejectedWith(`Command: test-type is not supported.`);
   });
 
   it("executes matched handler if found", async () => {
@@ -33,8 +31,6 @@ describe("command bus", () => {
       type: "test-type",
     };
 
-    expect(await bus.execute(testCommand)).to.be.equal(
-      "handler-message payload-data",
-    );
+    expect(await bus.execute(testCommand)).to.be.equal("handler-message payload-data");
   });
 });

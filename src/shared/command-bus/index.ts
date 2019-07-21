@@ -16,21 +16,16 @@ export class CommandBus {
   private availableHandlers: CommandHandlers;
 
   constructor(handlers: Handler[]) {
-    this.availableHandlers = handlers.reduce(
-      (result: CommandHandlers, handler) => {
-        // eslint-disable-next-line
+    this.availableHandlers = handlers.reduce((result: CommandHandlers, handler) => {
+      // eslint-disable-next-line
         result[handler.commandType] = handler;
-        return result;
-      },
-      {},
-    );
+      return result;
+    }, {});
   }
 
   public execute(command: any) {
     if (!this.availableHandlers[command.type]) {
-      return Promise.reject(
-        new Error(`Command: ${command.type} is not supported.`),
-      );
+      return Promise.reject(new Error(`Command: ${command.type} is not supported.`));
     }
 
     return this.availableHandlers[command.type].execute(command);

@@ -17,11 +17,13 @@
     ]
   },
   "rules": {
+    "no-console": "error",
     "import/prefer-default-export": "off",
     "no-empty-pattern": "off",
+    "import/no-cycle": "off",
     "import/no-duplicates": "off",
     "no-empty-function": "off",
-    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "interface-name": [true, "never-prefix"],

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
 
@@ -6,33 +7,42 @@ export interface LoginActionProps {
   commandBus: CommandBus;
 }
 
+export const loginActionValidation = celebrate(
+  {
+    body: Joi.object().keys({
+      authToken: Joi.string().required(),
+    }),
+  },
+  { abortEarly: false },
+);
+
 /**
  * @swagger
  *
- * /api/login:
+ * /api/users/login:
  *   post:
- *     consumes:
- *      - application/json
- *     produces:
- *      - application/json
+ *     security: []
  *     summary: login to app
- *     parameters:
- *      - in: body
- *        required: true
- *        name: body
- *        schema:
- *         type: object
- *         properties:
- *          authToken:
- *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              authToken:
+ *                type: string
  *     responses:
- *       201:
+ *       200:
  *        description: auth success
- *        schema:
- *          type: object
- *          properties:
- *           accessToken:
- *             type: string
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                accessToken:
+ *                  type: string
+ *                refreshToken:
+ *                  type: string
  *       400:
  *         description: Validation Error
  *       500:

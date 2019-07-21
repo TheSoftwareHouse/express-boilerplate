@@ -2,7 +2,7 @@ const {lstatSync, readdirSync, mkdirSync} = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-const DIRECTORIES_BLACKLIST = ['services'];
+const DIRECTORIES_BLACKLIST = ['services', 'repositories', 'read-models', 'managers'];
 
 const NAME_REGEX = /[^\/]+$/;
 const SNAKE_REGEX = /\-(.)/g;
@@ -60,7 +60,7 @@ const updateRootRouter = [{
   type: 'modify',
   path: `${routesLocation}/router.ts`,
   pattern: /(\/\/ ROUTES_CONFIG)/,
-  template: 'router.use({{name.camelCased}}Routing);\n$1',
+  template: 'router.use("/{{name.kebabCased}}", {{name.camelCased}}Routing);\n$1',
 }, {
   type: 'modify',
   path: `${routesLocation}/router.ts`,
@@ -101,12 +101,12 @@ const updateModuleRouter = [{
   type: 'modify',
   path: '{{module}}/routing.ts',
   pattern: /(\/\/ COMMAND_IMPORTS)/,
-  template: 'import { {{name.camelCased}}Action } from "./actions/{{name.kebabCased}}.action";\n$1',
+  template: 'import { {{name.camelCased}}Action, {{name.camelCased}}ActionValidation } from "./actions/{{name.kebabCased}}.action";\n$1',
 }, {
   type: 'modify',
   path: '{{module}}/routing.ts',
   pattern: /(\/\/ COMMANDS_SETUP)/,
-  template: 'router.{{method}}(\'/{{name.kebabCased}}\', {{name.camelCased}}Action({commandBus}));\n$1',
+  template: 'router.{{method}}(\'/{{name.kebabCased}}\', [{{name.camelCased}}ActionValidation], {{name.camelCased}}Action({commandBus}));\n$1',
 }];
 
 const setupModuleStructure = [

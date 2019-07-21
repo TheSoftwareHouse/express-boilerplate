@@ -1,6 +1,6 @@
-module.exports = {
+module.exports = (env: any) => ({
   type: "postgres",
-  url: "postgres://postgres:password@postgres:5432/percent",
+  url: env.POSTGRES_URL,
   synchronize: false,
   logging: true,
   entities: ["/app/build/src/**/*.model.*"],
@@ -8,4 +8,4 @@ module.exports = {
   cli: {
     migrationsDir: "src/migrations",
   },
-};
+});
