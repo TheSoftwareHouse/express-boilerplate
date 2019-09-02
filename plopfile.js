@@ -14,7 +14,7 @@ const getDirectories = source =>
 const routesLocation = path.join(__dirname, 'src/app');
 const containerLocation = path.join(__dirname, 'src/container.ts');
 
-const directories = getDirectories(routesLocation)
+const directories = getDirectories(`${routesLocation}/features`)
   .filter(name => !DIRECTORIES_BLACKLIST.includes(NAME_REGEX.exec(name)[0]));
 
 const isNotEmptyFor = name => {
@@ -46,7 +46,7 @@ const createHandler = {
 
 const createRouting = {
   type: 'add',
-  path: `${routesLocation}/{{name.kebabCased}}/routing.ts`,
+  path: `${routesLocation}/features/{{name.kebabCased}}/routing.ts`,
   templateFile: 'plop-templates/routing.ts',
 };
 
@@ -77,7 +77,7 @@ const updateContainerRoutes = [{
   type: 'modify',
   path: containerLocation,
   pattern: /(\/\/ ROUTING_IMPORTS)/,
-  template: 'import { {{name.camelCased}}Routing } from "./app/{{name.kebabCased}}/routing";\n$1',
+  template: 'import { {{name.camelCased}}Routing } from "./app/features/{{name.kebabCased}}/routing";\n$1',
 }, {
   type: 'modify',
   path: containerLocation,
@@ -89,7 +89,7 @@ const updateContainerModels = [{
   type: 'modify',
   path: containerLocation,
   pattern: /(\/\/ MODELS_IMPORTS)/,
-  template: 'import { {{capitalize name.camelCased}}Model } from "./app/{{getModuleName module}}/models/{{name.kebabCased}}.model";\n$1',
+  template: 'import { {{capitalize name.camelCased}}Model } from "./app/features/{{getModuleName module}}/models/{{name.kebabCased}}.model";\n$1',
 }, {
   type: 'modify',
   path: containerLocation,

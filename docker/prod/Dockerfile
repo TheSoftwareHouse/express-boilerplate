@@ -18,7 +18,6 @@ RUN apk add --no-cache curl git py-pip make && \
 
 FROM $IMAGE
 COPY --from=build /app/build /app/build
-COPY --from=build /app/.env.dist /app/build/.env.dist
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/docker/prod/docker_entrypoint.sh /docker_entrypoint.sh
 ENTRYPOINT [ "/docker_entrypoint.sh" ]

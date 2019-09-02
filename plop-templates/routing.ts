@@ -1,5 +1,5 @@
 import * as express from "express";
-import { CommandBus } from "../../shared/command-bus";
+import { CommandBus } from "../../../shared/command-bus";
 
 // COMMAND_IMPORTS
 

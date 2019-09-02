@@ -4,8 +4,6 @@ x-common: &common
   image: app-service:latest
   labels:
     com.app: app
-  env_file:
-    - .env.dist
   networks:
     - app
   volumes:
@@ -21,8 +19,6 @@ services:
 
   js:
     image: app:latest
-    env_file:
-      - .env.dist
     depends_on:
       - postgres
     networks:

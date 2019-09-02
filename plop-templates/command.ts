@@ -1,4 +1,4 @@
-import { Command } from "../../../shared/command-bus";
+import { Command } from "../../../../shared/command-bus";
 
 export const {{name.capitalSnake}}_COMMAND_TYPE = '{{getName module}}/{{uppercase name.camelCased}}';
 

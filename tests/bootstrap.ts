@@ -13,7 +13,7 @@ const dbConfig = require("../config/db")(process.env);
 
 use(chaiAsPromised);
 
-const clearDb = async (connection: Connection, mongoDb: Db) => {
+const clearDb = async (connection: Connection) => {
 
 };
 
@@ -27,12 +27,12 @@ before(async () => {
   global.dbConnection = dbConnection;
   await dbConnection.dropDatabase();
 
-  global.container = await createContainer(true);
+  global.container = await createContainer();
 });
 
 beforeEach(async () => {
   if (global.dbConnection) {
-    await clearDb(global.dbConnection, global.mongoDb);
+    await clearDb(global.dbConnection);
   }
 });
 

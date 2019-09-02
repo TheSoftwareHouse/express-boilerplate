@@ -25,10 +25,10 @@ function createApp({ router, errorHandler }: AppProps) {
   });
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(jsdoc));
-  app.use("/api", container.resolve("router"));
+  app.use("/api", router);
 
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
-  app.use(container.resolve("errorHandler"));
+  app.use(errorHandler);
 
   return app;
 }

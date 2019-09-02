@@ -57,7 +57,7 @@ npm run plop
 We're using Prettier and ESLint to keep code clean. In order to reformat/check code run:
 
 ```
-npm run eslint
+npm run lint
 npm run format
 ```
 
@@ -72,14 +72,6 @@ npm run generate-migration -- <migration-name>
 ```
 
 This should generate a migration for all connected entities.
-
-## Seeding data:
-
-In order to simulate real data we allow you to run seeding command by:
-
-```
-npm run seed-data
-```
 
 ##Tests
 

@@ -1,4 +1,4 @@
-import { createApp } from "./app/app";
+import { Server } from "http";
 import { createContainer } from "./container";
 import { Logger } from "./shared/logger";
 
@@ -20,8 +20,9 @@ import { Logger } from "./shared/logger";
     process.exit(1);
   });
 
-  const app = createApp({ container });
+  const server: Server = container.resolve("server");
+
   const port = container.resolve("port");
-  app.listen(port);
+  server.listen(port);
   container.resolve<Logger>("logger").info(`listening on port: ${port}`);
 })();
