@@ -171,7 +171,7 @@ console.log(chalk.red.bold("PLEASE USE KEBAB CASE!"));
 
 module.exports = plop => {
   plop.setActionType('makeDir', function (answers, {configProp}) {
-    const absolutePath = path.join(routesLocation, answers.name.kebabCased, configProp);
+    const absolutePath = path.join(`${routesLocation}/features`, answers.name.kebabCased, configProp);
     return mkdirSync(absolutePath);
   });
 
