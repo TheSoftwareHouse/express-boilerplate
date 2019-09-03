@@ -8,7 +8,7 @@ export default class LoginHandler implements Handler<LoginCommand> {
 
   async execute(command: LoginCommand) {
     return {
-      ...command
-    }
+      ...command,
+    };
   }
 }

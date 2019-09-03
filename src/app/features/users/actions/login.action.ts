@@ -48,11 +48,7 @@ export const loginActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-export const loginAction = ({ commandBus }: LoginActionProps) => (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const loginAction = ({ commandBus }: LoginActionProps) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
     .execute(
       new LoginCommand({

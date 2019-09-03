@@ -27,10 +27,7 @@ export class MockContainer implements AwilixContainer {
 
   build: any;
 
-  loadModules: (
-    globPatterns: Array<string | GlobWithOptions>,
-    options?: LoadModulesOptions,
-  ) => any;
+  loadModules: (globPatterns: Array<string | GlobWithOptions>, options?: LoadModulesOptions) => any;
 
   config: { [key: string]: any };
 

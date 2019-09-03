@@ -18,7 +18,7 @@ export class CommandBus {
   constructor(handlers: Handler[]) {
     this.availableHandlers = handlers.reduce((result: CommandHandlers, handler) => {
       // eslint-disable-next-line
-        result[handler.commandType] = handler;
+      result[handler.commandType] = handler;
       return result;
     }, {});
   }

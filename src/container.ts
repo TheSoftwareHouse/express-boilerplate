@@ -13,7 +13,7 @@ import { createApp } from "./app/app";
 import { usersRouting } from "./app/features/users/routing";
 // ROUTING_IMPORTS
 
-const config = makeApiConfig(process.env);
+const config = makeApiConfig();
 
 const HANDLER_REGEX = /.+Handler$/;
 
@@ -47,7 +47,7 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   container.register({
     usersRouting: awilix.asFunction(usersRouting),
-// ROUTING_SETUP
+    // ROUTING_SETUP
   });
 
   container.register({

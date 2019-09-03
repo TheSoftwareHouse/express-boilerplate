@@ -1,4 +1,4 @@
-export const makeApiConfig = (env: any) => ({
+export const makeApiConfig = () => ({
   appName: "boilerplate_api",
-  port: "1337"
+  port: "1337",
 });
