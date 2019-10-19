@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import { celebrate } from "celebrate";
+import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { {{capitalize name.camelCased}}Command } from "../commands/{{name.kebabCased}}.command";
 
@@ -8,7 +8,9 @@ export interface {{capitalize name.camelCased}}ActionProps {
 }
 
 export const {{name.camelCased}}ActionValidation = celebrate(
-  {},
+  {
+    headers: Joi.object()
+  },
   { abortEarly: false }
 );
 
