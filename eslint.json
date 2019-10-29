@@ -6,7 +6,7 @@
   "env": {
     "mocha": true
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "unicorn"],
   "overrides": {
     "files": ["src/**/*/ts"],
     "excludedFiles": [
@@ -26,10 +26,16 @@
     "no-underscore-dangle": "off",
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
-    "interface-name": [true, "never-prefix"],
+    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
     "no-empty-interface": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "variable-name": [true, "ban-keywords", "allow-leading-underscore", "allow-pascal-case"]
+    "variable-name": [true, "ban-keywords", "allow-leading-underscore", "allow-pascal-case"],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "kebabCase"
+      }
+    ]
   }
 }
