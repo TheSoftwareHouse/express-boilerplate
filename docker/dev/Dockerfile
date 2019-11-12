@@ -2,19 +2,20 @@ ARG IMAGE=node:12.1.0-alpine
 FROM $IMAGE as builder
 
 WORKDIR /app
-COPY . .
+
+COPY docker ./docker
+COPY .npmr[c] package.json package-lock.json ./
 
 RUN npm config set unsafe-perm true
-RUN npm config set unsafe-perm true && \
-    apk add --no-cache bash git py-pip make && \
-    rm -rf .git && \
-    npm i --no-package-lock && \
-    npm run build && \
-    npm install node-dev@3.1.3 -g && \
-    ./docker/node-modules-clean.sh && \
-    npm dedupe && \
-    npm cache clean --force && \
-    apk del git py-pip make
+RUN apk add --no-cache bash curl git py-pip make && \
+  curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | sh && \
+  npm install node-dev@3.1.3 -g && npm cache clean --force
+
+RUN npm ci && npm cache clean --force && \
+  ./docker/node-modules-clean.sh && npm dedupe
+
+COPY . .
+RUN npm run build
 
 # BASE image that will share node_modules with service containers
 FROM $IMAGE as base
