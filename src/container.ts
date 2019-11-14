@@ -3,7 +3,7 @@ import * as http from "http";
 import { AwilixContainer, Lifetime } from "awilix";
 import { Application } from "express";
 import { makeApiConfig } from "../config/services";
-import { CommandBus } from './shared/command-bus'
+import { CommandBus } from "./shared/command-bus";
 import { createRouter } from "./app/router";
 import { winstonLogger } from "./shared/logger";
 import { errorHandler } from "./middleware/error-handler";
@@ -60,7 +60,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     app: awilix.asFunction(createApp).singleton(),
   });
 
-  const app: Application = container.resolve('app');
+  const app: Application = container.resolve("app");
 
   container.register({
     server: awilix.asValue(http.createServer(app)),

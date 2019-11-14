@@ -40,7 +40,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USERNAME: postgres
-      POSTGRES_DB: percent
+      POSTGRES_DB: app
     networks:
       - app
 
