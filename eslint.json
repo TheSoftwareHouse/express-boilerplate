@@ -7,15 +7,6 @@
     "mocha": true
   },
   "plugins": ["prettier", "unicorn"],
-  "overrides": {
-    "files": ["src/**/*/ts"],
-    "excludedFiles": [
-      "**/*.d.ts",
-      "*.json",
-      "**/migrations/*",
-      "**/plop-templates/*"
-    ]
-  },
   "rules": {
     "no-console": "error",
     "import/prefer-default-export": "off",
@@ -26,11 +17,11 @@
     "no-underscore-dangle": "off",
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
+    "@typescript-eslint/quotes": ["error", "double"],
     "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
-    "no-empty-interface": false,
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "variable-name": [true, "ban-keywords", "allow-leading-underscore", "allow-pascal-case"],
+    "no-empty-interface": "off",
+    "ordered-imports": "off",
+    "object-literal-sort-keys": "off",
     "unicorn/filename-case": [
       "error",
       {
