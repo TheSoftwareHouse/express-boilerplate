@@ -41,10 +41,22 @@ const createCommand = {
   templateFile: "plop-templates/command.ts",
 };
 
-const createHandler = {
+const createQuery = {
+  type: "add",
+  path: "{{module}}/queries/{{name.kebabCased}}.query.ts",
+  templateFile: "plop-templates/query.ts",
+};
+
+const createCommandHandler = {
   type: "add",
   path: "{{module}}/handlers/{{name.kebabCased}}.handler.ts",
-  templateFile: "plop-templates/handler.ts",
+  templateFile: "plop-templates/command-handler.ts",
+};
+
+const createQueryHandler = {
+  type: "add",
+  path: "{{module}}/query-handlers/{{name.kebabCased}}.handler.ts",
+  templateFile: "plop-templates/query-handler.ts",
 };
 
 const createRouting = {
@@ -125,7 +137,7 @@ const updateModuleRouter = [
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ COMMANDS_SETUP)/,
     template:
-      "router.{{method}}('/{{name.kebabCased}}', [{{name.camelCased}}ActionValidation], {{name.camelCased}}Action({commandBus}));\n$1",
+      "router.{{method}}('/{{name.kebabCased}}', [{{name.camelCased}}ActionValidation],{{#eq method 'get'}} {{name.camelCased}}Action({queryBus}));{{else}}{{name.camelCased}}Action({commandBus}));{{/eq}}\n$1",
   },
 ];
 
@@ -195,6 +207,10 @@ module.exports = plop => {
     return mkdirSync(absolutePath);
   });
 
+  plop.setHelper("eq", function(arg1, arg2, options) {
+    return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+  });
+
   plop.setHelper("capitalize", function(text) {
     return typeof text === "string" ? text.charAt(0).toUpperCase() + text.slice(1) : text;
   });
@@ -218,7 +234,12 @@ module.exports = plop => {
 
   plop.setGenerator("action+command+handler", {
     prompts: [moduleListPrompt, textPrompt("action+command+handler"), mothodPrompt],
-    actions: [createAction, ...updateModuleRouter, createCommand, createHandler],
+    actions: [createAction, ...updateModuleRouter, createCommand, createCommandHandler],
+  });
+
+  plop.setGenerator("action+query+handler", {
+    prompts: [moduleListPrompt, textPrompt("action+query+handler"), mothodPrompt],
+    actions: [createAction, ...updateModuleRouter, createQuery, createQueryHandler],
   });
 
   plop.setGenerator("model", {
@@ -241,8 +262,18 @@ module.exports = plop => {
     actions: [createCommand],
   });
 
-  plop.setGenerator("handler", {
-    prompts: [moduleListPrompt, textPrompt("handler")],
-    actions: [createHandler],
+  plop.setGenerator("command handler", {
+    prompts: [moduleListPrompt, textPrompt("command handler")],
+    actions: [createCommandHandler],
+  });
+
+  plop.setGenerator("query", {
+    prompts: [moduleListPrompt, textPrompt("query")],
+    actions: [createQuery],
+  });
+
+  plop.setGenerator("query handler", {
+    prompts: [moduleListPrompt, textPrompt("query handler")],
+    actions: [createQueryHandler],
   });
 };

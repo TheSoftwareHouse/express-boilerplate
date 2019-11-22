@@ -1,11 +1,11 @@
 import "mocha";
 import { expect, use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
-import { Command, CommandBus, Handler } from "./index";
+import { Command, CommandBus, CommandHandler } from "./index";
 
 use(chaiAsPromised);
 
-export default class TestHandler implements Handler<Command<string>> {
+export default class TestHandler implements CommandHandler<Command<string>> {
   public commandType: string = "test-type";
 
   async execute(command: Command<string>) {
