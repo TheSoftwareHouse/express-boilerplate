@@ -21,6 +21,7 @@ export class QueryBus {
 
   constructor(queryHandlers: QueryHandler<any, any>[]) {
     this.availableHandlers = queryHandlers.reduce((result: QueryHandlers, handler) => {
+      // eslint-disable-next-line no-param-reassign
       result[handler.queryType] = handler;
 
       return result;

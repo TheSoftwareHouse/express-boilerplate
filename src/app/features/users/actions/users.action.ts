@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { celebrate, Joi } from "celebrate";
 import { QueryBus } from "../../../../shared/query-bus";
-import { UsersQuery } from "../queries/users.query";
+import { UsersQuery } from "../queries/users";
 
 export interface UsersActionProps {
   queryBus: QueryBus;
@@ -32,7 +32,7 @@ export const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, re
   queryBus
     .execute(
       new UsersQuery({
-        // command props
+        // query props
       }),
     )
     .then(queryResult => {

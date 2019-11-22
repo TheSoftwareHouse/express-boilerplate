@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { expect } from "chai";
 import { Query, QueryBus, QueryHandler, QueryResult } from ".";
 
@@ -28,7 +29,7 @@ describe("query bus", () => {
       type: "query-type",
     };
 
-    await expect(bus.execute(testQuery)).to.be.rejectedWith(`Query: query-type is not supported.`);
+    await expect(bus.execute(testQuery)).to.be.rejectedWith("Query: query-type is not supported.");
   });
 
   it("executes matched handler if found", async () => {

@@ -1,35 +1,34 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from "express";
 import { celebrate, Joi } from "celebrate";
 {{#eq method "get"}}
 import { QueryBus } from "../../../../shared/query-bus";
-import { {{capitalize name.camelCased}}Query } from "../queries/{{name.kebabCased}}.query";
+import { {{pascalCase name}}Query } from "../queries/{{kebabCase name}}";
 {{else}}
 import { CommandBus } from "../../../../shared/command-bus";
-import { {{capitalize name.camelCased}}Command } from "../commands/{{name.kebabCased}}.command";
+import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
 {{/eq}}
 
 {{#eq method "get"}}
-export interface {{capitalize name.camelCased}}ActionProps {
-  queryBus: QueryBus
+export interface {{pascalCase name}}ActionProps {
+  queryBus: QueryBus;
 }
 {{else}}
-export interface {{capitalize name.camelCased}}ActionProps {
-  commandBus: CommandBus
+export interface {{pascalCase name}}ActionProps {
+  commandBus: CommandBus;
 }
 {{/eq}}
 
-
-export const {{name.camelCased}}ActionValidation = celebrate(
+export const {{camelCase name}}ActionValidation = celebrate(
   {
-    headers: Joi.object()
+    headers: Joi.object(),
   },
-  { abortEarly: false }
+  { abortEarly: false },
 );
 
 /**
  * @swagger
  *
- * /api/{{getName module}}/{{name.kebabCased}}:
+ * /api/{{getName module}}/{{kebabCase name}}:
  *   {{method}}:
  *     description: desc
  *     responses:
@@ -41,22 +40,26 @@ export const {{name.camelCased}}ActionValidation = celebrate(
  *         description: Internal Server Error
  */
 {{#eq method "get"}}
-export const {{name.camelCased}}Action = ({queryBus}: {{capitalize name.camelCased}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+export const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
-    .execute(new {{capitalize name.camelCased}}Query({
-      // command props
-    }))
+    .execute(
+      new {{pascalCase name}}Query({
+        // query props
+      }),
+    )
     .then(queryResult => {
-      // response
+      res.json(queryResult.result)
     })
     .catch(next);
 };
 {{else}}
-export const {{name.camelCased}}Action = ({commandBus}: {{capitalize name.camelCased}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+export const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
-    .execute(new {{capitalize name.camelCased}}Command({
+    .execute(
+      new {{pascalCase name}}Command({
       // command props
-    }))
+      }),
+    )
     .then(commandResult => {
       res.json(commandResult.result)
     })

@@ -1,14 +1,14 @@
 import * as awilix from "awilix";
-import * as http from "http";
 import { AwilixContainer, Lifetime } from "awilix";
 import { Application } from "express";
+import * as http from "http";
 import { makeApiConfig } from "../config/services";
-import { CommandBus } from "./shared/command-bus";
-import { QueryBus } from "./shared/query-bus";
-import { createRouter } from "./app/router";
-import { winstonLogger } from "./shared/logger";
-import { errorHandler } from "./middleware/error-handler";
 import { createApp } from "./app/app";
+import { createRouter } from "./app/router";
+import { errorHandler } from "./middleware/error-handler";
+import { CommandBus } from "./shared/command-bus";
+import { winstonLogger } from "./shared/logger";
+import { QueryBus } from "./shared/query-bus";
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
@@ -45,7 +45,7 @@ export async function createContainer(): Promise<AwilixContainer> {
 
   const queryHandlers = Object.keys(handlersScope.registrations)
     .filter(key => key.match(QUERY_HANDLER_REGEX))
-    .map(key => handlersScope.resolve(key)); 
+    .map(key => handlersScope.resolve(key));
 
   container.register({
     commandHandlers: awilix.asValue(commandHandlers),
