@@ -1,16 +1,16 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
-interface {{capitalize name.camelCased}}ModelProps {
+interface {{pascalCase name}}ModelProps {
   id: string;
 }
 
 @Entity({
-  name: "{{capitalize name.camelCased}}"
+  name: "{{snakeCase name}}"
 })
-export class {{capitalize name.camelCased}}Model {
+export class {{pascalCase name}}Model {
 
-  public static create(data: Partial<{{capitalize name.camelCased}}ModelProps>): {{capitalize name.camelCased}}Model {
-    const entity = new {{capitalize name.camelCased}}Model();
+  public static create(data: Partial<{{pascalCase name}}ModelProps>): {{pascalCase name}}Model {
+    const entity = new {{pascalCase name}}Model();
     Object.assign(entity, data);
     return entity
   }

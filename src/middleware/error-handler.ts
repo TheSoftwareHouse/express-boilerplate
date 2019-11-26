@@ -12,9 +12,7 @@ export const celebrateToValidationError = (errors: any): { [key: string]: Transl
     const translationId = `validation.${error.type}`;
 
     return {
-      [key]: new Translation(translationId, {
-        field: key,
-      }),
+      [key]: new Translation(translationId),
     };
   });
 

@@ -1,11 +1,10 @@
 const { lstatSync, readdirSync, mkdirSync } = require("fs");
 const path = require("path");
-const chalk = require("chalk");
+const kebabCase = require("lodash.kebabcase");
 
 const DIRECTORIES_BLACKLIST = ["services", "repositories", "read-models", "managers"];
 
 const NAME_REGEX = /[^\/]+$/;
-const SNAKE_REGEX = /\-(.)/g;
 
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source =>
@@ -22,7 +21,7 @@ const directories = getDirectories(`${routesLocation}/features`).filter(
 
 const isNotEmptyFor = name => {
   return value => {
-    if (!value.kebabCased.trim()) return name + " is required";
+    if (!value.trim()) return name + " is required";
     return true;
   };
 };
@@ -31,32 +30,62 @@ const isNotEmptyFor = name => {
 
 const createAction = {
   type: "add",
-  path: "{{module}}/actions/{{name.kebabCased}}.action.ts",
+  path: "{{module}}/actions/{{kebabCase name}}.action.ts",
   templateFile: "plop-templates/action.ts",
 };
 
 const createCommand = {
   type: "add",
-  path: "{{module}}/commands/{{name.kebabCased}}.command.ts",
+  path: "{{module}}/commands/{{kebabCase name}}.command.ts",
   templateFile: "plop-templates/command.ts",
 };
 
-const createHandler = {
+const createQuery = [
+  {
+    type: "add",
+    path: "{{module}}/queries/{{kebabCase name}}/{{kebabCase name}}.query.ts",
+    templateFile: "plop-templates/query/query.ts",
+  },
+  {
+    type: "add",
+    path: "{{module}}/queries/{{kebabCase name}}/{{kebabCase name}}.query.result.ts",
+    templateFile: "plop-templates/query/query-result.ts",
+  },
+  {
+    type: "add",
+    path: "{{module}}/queries/{{kebabCase name}}/index.ts",
+    templateFile: "plop-templates/query/index.ts",
+  },
+];
+
+const createCommandHandler = {
   type: "add",
-  path: "{{module}}/handlers/{{name.kebabCased}}.handler.ts",
-  templateFile: "plop-templates/handler.ts",
+  path: "{{module}}/handlers/{{kebabCase name}}.handler.ts",
+  templateFile: "plop-templates/command-handler.ts",
+};
+
+const createQueryHandler = {
+  type: "add",
+  path: "{{module}}/query-handlers/{{kebabCase name}}.query.handler.ts",
+  templateFile: "plop-templates/query/query-handler.ts",
 };
 
 const createRouting = {
   type: "add",
-  path: `${routesLocation}/features/{{name.kebabCased}}/routing.ts`,
+  path: `${routesLocation}/features/{{kebabCase name}}/routing.ts`,
   templateFile: "plop-templates/routing.ts",
 };
 
 const createModel = {
   type: "add",
-  path: `{{module}}/models/{{name.kebabCased}}.model.ts`,
+  path: `{{module}}/models/{{kebabCase name}}.model.ts`,
   templateFile: "plop-templates/model.ts",
+};
+
+const createIntegrationTest = {
+  type: "add",
+  path: `tests/{{module}}/{{kebabCase name}}.integration.spec.ts`,
+  templateFile: "plop-templates/integration-test.ts",
 };
 
 const updateRootRouter = [
@@ -64,19 +93,19 @@ const updateRootRouter = [
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_CONFIG)/,
-    template: 'router.use("/{{name.kebabCased}}", {{name.camelCased}}Routing);\n$1',
+    template: 'router.use("/{{kebabCase name}}", {{camelCase name}}Routing);\n$1',
   },
   {
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_DEPENDENCIES)/,
-    template: "{{name.camelCased}}Routing,\n$1",
+    template: "{{camelCase name}}Routing,\n$1",
   },
   {
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_INTERFACE)/,
-    template: "{{name.camelCased}}Routing: express.Router;\n$1",
+    template: "{{camelCase name}}Routing: express.Router;\n$1",
   },
 ];
 
@@ -85,13 +114,13 @@ const updateContainerRoutes = [
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ ROUTING_IMPORTS)/,
-    template: 'import { {{name.camelCased}}Routing } from "./app/features/{{name.kebabCased}}/routing";\n$1',
+    template: 'import { {{camelCase name}}Routing } from "./app/features/{{kebabCase name}}/routing";\n$1',
   },
   {
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ ROUTING_SETUP)/,
-    template: "{{name.camelCased}}Routing: awilix.asFunction({{name.camelCased}}Routing),\n$1",
+    template: "{{camelCase name}}Routing: awilix.asFunction({{camelCase name}}Routing),\n$1",
   },
 ];
 
@@ -101,14 +130,13 @@ const updateContainerModels = [
     path: containerLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{capitalize name.camelCased}}Model } from "./app/features/{{getModuleName module}}/models/{{name.kebabCased}}.model";\n$1',
+      'import { {{pascalCase name}}Model } from "./app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
   },
   {
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template:
-      "{{name.camelCased}}Repository: awilix.asValue(dbConnection.getRepository({{capitalize name.camelCased}}Model)),\n$1",
+    template: "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n$1",
   },
 ];
 
@@ -118,14 +146,14 @@ const updateModuleRouter = [
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ COMMAND_IMPORTS)/,
     template:
-      'import { {{name.camelCased}}Action, {{name.camelCased}}ActionValidation } from "./actions/{{name.kebabCased}}.action";\n$1',
+      'import { {{camelCase name}}Action, {{camelCase name}}ActionValidation } from "./actions/{{kebabCase name}}.action";\n$1',
   },
   {
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ COMMANDS_SETUP)/,
     template:
-      "router.{{method}}('/{{name.kebabCased}}', [{{name.camelCased}}ActionValidation], {{name.camelCased}}Action({commandBus}));\n$1",
+      "router.{{method}}(\"/{{kebabCase name}}\", [{{camelCase name}}ActionValidation],{{#eq method 'get'}} {{camelCase name}}Action({ queryBus }));{{else}}{{camelCase name}}Action({ commandBus }));{{/eq}}\n$1",
   },
 ];
 
@@ -166,11 +194,6 @@ const textPrompt = name => ({
   name: "name",
   message: `What is your ${name} name?`,
   validate: isNotEmptyFor("name"),
-  filter: text => ({
-    camelCased: (text || "").replace(SNAKE_REGEX, (_, match) => match.toUpperCase()),
-    capitalSnake: (text || "").replace(SNAKE_REGEX, (_, match) => `_${match.toUpperCase()}`).toUpperCase(),
-    kebabCased: text,
-  }),
 });
 
 const mothodPrompt = {
@@ -187,12 +210,14 @@ const mothodPrompt = {
   ],
 };
 
-console.log(chalk.red.bold("PLEASE USE KEBAB CASE!"));
-
 module.exports = plop => {
   plop.setActionType("makeDir", function(answers, { configProp }) {
-    const absolutePath = path.join(`${routesLocation}/features`, answers.name.kebabCased, configProp);
+    const absolutePath = path.join(`${routesLocation}/features`, kebabCase(answers.name), configProp);
     return mkdirSync(absolutePath);
+  });
+
+  plop.setHelper("eq", function(arg1, arg2, options) {
+    return arg1 === arg2 ? options.fn(this) : options.inverse(this);
   });
 
   plop.setHelper("capitalize", function(text) {
@@ -218,7 +243,12 @@ module.exports = plop => {
 
   plop.setGenerator("action+command+handler", {
     prompts: [moduleListPrompt, textPrompt("action+command+handler"), mothodPrompt],
-    actions: [createAction, ...updateModuleRouter, createCommand, createHandler],
+    actions: [createAction, ...updateModuleRouter, createCommand, createCommandHandler],
+  });
+
+  plop.setGenerator("action+query+handler", {
+    prompts: [moduleListPrompt, textPrompt("action+query+handler"), mothodPrompt],
+    actions: [createAction, ...updateModuleRouter, ...createQuery, createQueryHandler],
   });
 
   plop.setGenerator("model", {
@@ -228,7 +258,13 @@ module.exports = plop => {
 
   plop.setGenerator("feature", {
     prompts: [textPrompt("feature")],
-    actions: [...setupModuleStructure, createRouting, ...updateRootRouter, ...updateContainerRoutes],
+    actions: [
+      ...setupModuleStructure,
+      createRouting,
+      ...updateRootRouter,
+      ...updateContainerRoutes,
+      createIntegrationTest,
+    ],
   });
 
   plop.setGenerator("action", {
@@ -241,8 +277,23 @@ module.exports = plop => {
     actions: [createCommand],
   });
 
-  plop.setGenerator("handler", {
-    prompts: [moduleListPrompt, textPrompt("handler")],
-    actions: [createHandler],
+  plop.setGenerator("command handler", {
+    prompts: [moduleListPrompt, textPrompt("command handler")],
+    actions: [createCommandHandler],
+  });
+
+  plop.setGenerator("query", {
+    prompts: [moduleListPrompt, textPrompt("query")],
+    actions: [...createQuery],
+  });
+
+  plop.setGenerator("query handler", {
+    prompts: [moduleListPrompt, textPrompt("query handler")],
+    actions: [createQueryHandler],
+  });
+
+  plop.setGenerator("query with handler", {
+    prompts: [moduleListPrompt, textPrompt("query handler")],
+    actions: [createQueryHandler, ...createQuery],
   });
 };

@@ -3,21 +3,21 @@ export interface Command<T> {
   payload: T;
 }
 
-export interface Handler<T extends Command<any> = Command<any>> {
+export interface CommandHandler<T extends Command<any> = Command<any>> {
   commandType: string;
   execute: (command: T) => Promise<any>;
 }
 
 interface CommandHandlers {
-  [key: string]: Handler;
+  [key: string]: CommandHandler;
 }
 
 export class CommandBus {
   private availableHandlers: CommandHandlers;
 
-  constructor(handlers: Handler[]) {
-    this.availableHandlers = handlers.reduce((result: CommandHandlers, handler) => {
-      // eslint-disable-next-line
+  constructor(commandHandlers: CommandHandler[]) {
+    this.availableHandlers = commandHandlers.reduce((result: CommandHandlers, handler) => {
+      // eslint-disable-next-line no-param-reassign
       result[handler.commandType] = handler;
       return result;
     }, {});

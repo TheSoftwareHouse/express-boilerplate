@@ -1,12 +1,11 @@
 import { Command } from "../../../../shared/command-bus";
 
-export const {{name.capitalSnake}}_COMMAND_TYPE = '{{getName module}}/{{uppercase name.camelCased}}';
+export const {{constantCase name}}_COMMAND_TYPE = "{{getName module}}/{{constantCase name}}";
 
-export interface {{capitalize name.camelCased}}CommandPayload {
-}
+export interface {{pascalCase name}}CommandPayload {}
 
-export class {{capitalize name.camelCased}}Command implements Command<{{capitalize name.camelCased}}CommandPayload> {
-  public type: string = {{name.capitalSnake}}_COMMAND_TYPE;
+export class {{pascalCase name}}Command implements Command<{{pascalCase name}}CommandPayload> {
+  public type: string = {{constantCase name}}_COMMAND_TYPE;
 
-  constructor(public payload: {{capitalize name.camelCased}}CommandPayload) {}
+  constructor(public payload: {{pascalCase name}}CommandPayload) {}
 }

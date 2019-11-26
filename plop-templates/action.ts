@@ -1,23 +1,34 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from "express";
 import { celebrate, Joi } from "celebrate";
+{{#eq method "get"}}
+import { QueryBus } from "../../../../shared/query-bus";
+import { {{pascalCase name}}Query } from "../queries/{{kebabCase name}}";
+{{else}}
 import { CommandBus } from "../../../../shared/command-bus";
-import { {{capitalize name.camelCased}}Command } from "../commands/{{name.kebabCased}}.command";
+import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
+{{/eq}}
 
-export interface {{capitalize name.camelCased}}ActionProps {
-  commandBus: CommandBus
+{{#eq method "get"}}
+export interface {{pascalCase name}}ActionProps {
+  queryBus: QueryBus;
 }
+{{else}}
+export interface {{pascalCase name}}ActionProps {
+  commandBus: CommandBus;
+}
+{{/eq}}
 
-export const {{name.camelCased}}ActionValidation = celebrate(
+export const {{camelCase name}}ActionValidation = celebrate(
   {
-    headers: Joi.object()
+    headers: Joi.object(),
   },
-  { abortEarly: false }
+  { abortEarly: false },
 );
 
 /**
  * @swagger
  *
- * /api/{{getName module}}/{{name.kebabCased}}:
+ * /api/{{getName module}}/{{kebabCase name}}:
  *   {{method}}:
  *     description: desc
  *     responses:
@@ -28,13 +39,30 @@ export const {{name.camelCased}}ActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-export const {{name.camelCased}}Action = ({commandBus}: {{capitalize name.camelCased}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
-  commandBus
-    .execute(new {{capitalize name.camelCased}}Command({
-      // command props
-    }))
-    .then(commandResult => {
-      // response
+{{#eq method "get"}}
+export const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+  queryBus
+    .execute(
+      new {{pascalCase name}}Query({
+        // query props
+      }),
+    )
+    .then(queryResult => {
+      res.json(queryResult.result)
     })
     .catch(next);
 };
+{{else}}
+export const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+  commandBus
+    .execute(
+      new {{pascalCase name}}Command({
+      // command props
+      }),
+    )
+    .then(commandResult => {
+      res.json(commandResult.result)
+    })
+    .catch(next);
+};
+{{/eq}}
