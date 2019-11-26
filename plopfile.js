@@ -88,6 +88,12 @@ const createIntegrationTest = {
   templateFile: "plop-templates/integration-test.ts",
 };
 
+const createEventSubscriber = {
+  type: "add",
+  path: `{{module}}/subscribers/{{kebabCase name}}.subscriber.ts`,
+  templateFile: "plop-templates/events/event-subscriber.ts",
+};
+
 const updateRootRouter = [
   {
     type: "modify",
@@ -295,5 +301,10 @@ module.exports = plop => {
   plop.setGenerator("query with handler", {
     prompts: [moduleListPrompt, textPrompt("query handler")],
     actions: [createQueryHandler, ...createQuery],
+  });
+
+  plop.setGenerator("event subscriber", {
+    prompts: [moduleListPrompt, textPrompt("event subscriber")],
+    actions: [createEventSubscriber],
   });
 };
