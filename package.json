@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "docker-compose up boilerplate_api",
     "build": "tsc --skipLibCheck",
     "watch": "docker-compose up builder",
-    "docker-build": "./docker/build.sh",
+    "docker-build": "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | sed 's/[/]/-/g'); docker-compose build builder && docker tag app:local app:${BRANCH_NAME}",
     "docker-build-prod": "docker build -t boilerplate-api:latest -f ./docker/prod/Dockerfile .",
-    "api": "docker-compose up boilerplate_api",
     "down": "docker-compose down -v",
     "format": "docker-compose run --rm js ./node_modules/.bin/prettier --write \"**/**/*.ts\" \"!**/**/*.d.ts\"",
     "lint": "docker-compose run --rm js ./node_modules/.bin/eslint -c ./eslint.json --ext .ts ./",
