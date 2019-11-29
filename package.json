@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "api": "docker-compose up boilerplate_api",
     "start": "docker-compose up boilerplate_api",
     "build": "tsc --skipLibCheck",
     "watch": "docker-compose up builder",

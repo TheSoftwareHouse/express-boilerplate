@@ -2,7 +2,6 @@ version: '3.4'
 
 x-common:
   volumes: &volumes
-    - node_modules:/app/node_modules/
     - build:/app/build/
     - .:/app:delegated
     - ./.env.dist:/app/build/.env.dist

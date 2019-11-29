@@ -24,7 +24,7 @@ services:
         - 'app:${BRANCH_NAME:-ignore}'
     container_name: app-builder
     working_dir: /app
-    command: [sh, -c, './node_modules/.bin/tsc -w --pretty --skipLibCheck']
+    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck']
 
   js:
     image: app:local
