@@ -27,7 +27,7 @@ services:
     command: [sh, -c, './node_modules/.bin/tsc -w --pretty --skipLibCheck']
 
   js:
-    image: app:latest
+    image: app:local
     depends_on:
       - postgres
     networks:
