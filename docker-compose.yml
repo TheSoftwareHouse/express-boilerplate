@@ -1,21 +1,30 @@
 version: '3.4'
 
 x-common: &common
-  image: app-service:latest
+  image: app:local
   labels:
     com.app: app
   networks:
     - app
   volumes:
     - build:/app/build/
-    - node_dev:/usr/local/lib/node_modules/node-dev/
 
 services:
   builder:
+    volumes:
+      - node_modules:/app/node_modules/
+      - build:/app/build/
+      - .:/app:delegated
     <<: *common
-    image: app:latest
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      cache_from:
+        - 'app:local'
+        - 'app:${BRANCH_NAME:-ignore}'
     container_name: app-builder
-    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck']
+    working_dir: /app
+    command: [sh, -c, './node_modules/.bin/tsc -w --pretty --skipLibCheck']
 
   js:
     image: app:latest
@@ -49,4 +58,4 @@ networks:
 
 volumes:
   build:
-  node_dev:
+  node_modules:
