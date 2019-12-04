@@ -28,7 +28,7 @@ export const usersActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-export const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
     .execute(
       new UsersQuery({
@@ -40,3 +40,5 @@ export const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, re
     })
     .catch(next);
 };
+
+export default usersAction;

@@ -10,17 +10,25 @@ import { CommandBus } from "./shared/command-bus";
 import { winstonLogger } from "./shared/logger";
 import { QueryBus } from "./shared/query-bus";
 import { EventDispatcher } from "./shared/event-dispatcher";
-
 // MODELS_IMPORTS
 
 import { usersRouting } from "./app/features/users/routing";
 // ROUTING_IMPORTS
 
+import LoginCommandHandler from "./app/features/users/handlers/login.handler";
+import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
+// HANDLERS_IMPORTS
+
+import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
+// SUBSCRIBERS_IMPORTS
+
 const config = makeApiConfig();
 
-const COMMAND_HANDLER_REGEX = /.+Handler$/;
-const QUERY_HANDLER_REGEX = /.+QueryHandler$/;
-const SUBSCRIBER_REGEX = /.+Subscriber$/;
+function asArray(resolvers: any): any {
+  return {
+    resolve: (container: AwilixContainer, opts: any) => resolvers.map((r: any) => container.build(r, opts))
+  };
+}
 
 export async function createContainer(): Promise<AwilixContainer> {
   const container: AwilixContainer = awilix.createContainer({
@@ -32,51 +40,15 @@ export async function createContainer(): Promise<AwilixContainer> {
     logger: awilix.asValue(winstonLogger),
   });
 
-  const eventSubscribersScope = container.createScope();
-  eventSubscribersScope.loadModules([ 
-    "src/**/*.subscriber.ts",
-    "src/**/*.subscriber.js"
+  container.loadModules([ 
+    "src/**/*.action.ts",
+    "src/**/*.action.js"
   ], {
     formatName: "camelCase",
     resolverOptions: {
       lifetime: Lifetime.SCOPED,
-      register: awilix.asClass,
+      register: awilix.asFunction,
     },
-  });
-
-  const eventSubscribers = Object.keys(eventSubscribersScope.registrations)
-    .filter(key => key.match(SUBSCRIBER_REGEX))
-    .map(key => eventSubscribersScope.resolve(key));
-
-  container.register({
-    eventSubscribers: awilix.asValue(eventSubscribers),
-    eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton()
-  });
-
-  const handlersScope = container.createScope();
-
-  handlersScope.loadModules([
-    "src/**/*.handler.ts",
-    "src/**/*.handler.js",
-  ], {
-    formatName: "camelCase",
-    resolverOptions: {
-      lifetime: Lifetime.SCOPED,
-      register: awilix.asClass,
-    },
-  });
-
-  const commandHandlers = Object.keys(handlersScope.registrations)
-    .filter(key => key.match(COMMAND_HANDLER_REGEX) && !key.match(QUERY_HANDLER_REGEX))
-    .map(key => handlersScope.resolve(key));
-
-  const queryHandlers = Object.keys(handlersScope.registrations)
-    .filter(key => key.match(QUERY_HANDLER_REGEX))
-    .map(key => handlersScope.resolve(key));
-
-  container.register({
-    commandHandlers: awilix.asValue(commandHandlers),
-    queryHandlers: awilix.asValue(queryHandlers),
   });
 
   container.register({
@@ -87,8 +59,21 @@ export async function createContainer(): Promise<AwilixContainer> {
   container.register({
     errorHandler: awilix.asFunction(errorHandler),
     router: awilix.asFunction(createRouter),
-    commandBus: awilix.asClass(CommandBus).classic().singleton(),
     queryBus: awilix.asClass(QueryBus).classic().singleton(),
+    eventSubscribers: asArray([
+      awilix.asClass(EmailEventSubscriber),
+      // SUBSCRIBERS_SETUP
+    ]),
+    eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
+    commandHandlers: asArray([
+      awilix.asClass(LoginCommandHandler),
+      // COMMAND_HANDLERS_SETUP
+    ]),
+    commandBus: awilix.asClass(CommandBus).classic().singleton(),
+    queryHandlers: asArray([
+      awilix.asClass(UsersQueryHandler),
+      // QUERY_HANDLERS_SETUP
+    ]),
   });
 
   container.register({

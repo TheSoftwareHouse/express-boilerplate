@@ -3,6 +3,7 @@ import { Logger } from "../../../../shared/logger";
 
 type EmailEventSubscriberProps = {
   logger: Logger;
+  commandBus: any;
 };
 
 /**
