@@ -1,5 +1,5 @@
 import * as awilix from "awilix";
-import { AwilixContainer, Lifetime } from "awilix";
+import { AwilixContainer, Lifetime, Resolver } from "awilix";
 import { Application } from "express";
 import * as http from "http";
 import { makeApiConfig } from "../config/services";
@@ -24,9 +24,9 @@ import EmailEventSubscriber from "./app/features/users/subscribers/email.subscri
 
 const config = makeApiConfig();
 
-function asArray(resolvers: any): any {
+function asArray<T>(resolvers: Resolver<T>[]): Resolver<T[]> {
   return {
-    resolve: (container: AwilixContainer, opts: any) => resolvers.map((r: any) => container.build(r, opts))
+    resolve: (container: AwilixContainer) => resolvers.map((r: Resolver<T>) => container.build(r))
   };
 }
 
