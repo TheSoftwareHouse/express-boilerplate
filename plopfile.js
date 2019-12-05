@@ -187,7 +187,8 @@ const updateContainerModels = [
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n$1",
+    template:
+      "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
   },
 ];
 
