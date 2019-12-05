@@ -1,18 +1,15 @@
 import * as express from "express";
-import { CommandBus } from "../../../shared/command-bus";
-import { QueryBus } from "../../../shared/query-bus";
 
-// COMMAND_IMPORTS
+// VALIDATION_IMPORTS
 
 export interface {{pascalCase name}}RoutingProps {
-  commandBus: CommandBus;
-  queryBus: QueryBus;
+  // ACTIONS_IMPORTS
 }
 
-export const {{camelCase name}}Routing = ({ commandBus, queryBus }: {{pascalCase name}}RoutingProps) => {
+export const {{camelCase name}}Routing = (actions: {{pascalCase name}}RoutingProps) => {
   const router = express.Router();
 
-  // COMMANDS_SETUP
+  // ACTIONS_SETUP
 
   return router;
 };

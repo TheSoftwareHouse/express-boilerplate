@@ -1,23 +1,22 @@
 import * as express from "express";
-import { CommandBus } from "../../../shared/command-bus";
-import { QueryBus } from "../../../shared/query-bus";
 
-import { loginAction, loginActionValidation } from "./actions/login.action";
-import { usersAction, usersActionValidation } from "./actions/users.action";
-// COMMAND_IMPORTS
+import { loginActionValidation } from "./actions/login.action";
+import { usersActionValidation } from "./actions/users.action";
+// VALIDATION_IMPORTS
 
 export interface UsersRoutingProps {
-  commandBus: CommandBus;
-  queryBus: QueryBus;
+  loginAction: express.RequestHandler;
+  usersAction: express.RequestHandler;
+  // ACTIONS_IMPORTS
 }
 
 // eslint-disable-next-line
-export const usersRouting = ({ commandBus, queryBus }: UsersRoutingProps) => {
+export const usersRouting = (actions: UsersRoutingProps) => {
   const router = express.Router();
 
-  router.post("/login", [loginActionValidation], loginAction({ commandBus }));
-  router.get("/users", [usersActionValidation], usersAction({ queryBus }));
-  // COMMANDS_SETUP
+  router.post("/login", [loginActionValidation], actions.loginAction);
+  router.get("/users", [usersActionValidation], actions.usersAction);
+  // ACTIONS_SETUP
 
   return router;
 };

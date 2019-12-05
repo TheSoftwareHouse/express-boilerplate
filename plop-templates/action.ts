@@ -40,7 +40,7 @@ export const {{camelCase name}}ActionValidation = celebrate(
  *         description: Internal Server Error
  */
 {{#eq method "get"}}
-export const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
     .execute(
       new {{pascalCase name}}Query({
@@ -53,7 +53,7 @@ export const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}Action
     .catch(next);
 };
 {{else}}
-export const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
     .execute(
       new {{pascalCase name}}Command({
@@ -61,8 +61,9 @@ export const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}Acti
       }),
     )
     .then(commandResult => {
-      res.json(commandResult.result)
+      res.json(commandResult.result);
     })
     .catch(next);
 };
 {{/eq}}
+export default {{camelCase name}}Action;

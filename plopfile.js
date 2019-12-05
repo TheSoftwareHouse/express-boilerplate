@@ -58,17 +58,47 @@ const createQuery = [
   },
 ];
 
-const createCommandHandler = {
-  type: "add",
-  path: "{{module}}/handlers/{{kebabCase name}}.handler.ts",
-  templateFile: "plop-templates/command-handler.ts",
-};
+const createCommandHandler = [
+  {
+    type: "add",
+    path: "{{module}}/handlers/{{kebabCase name}}.handler.ts",
+    templateFile: "plop-templates/command-handler.ts",
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ HANDLERS_IMPORTS)/,
+    template:
+      'import {{pascalCase name}}CommandHandler from "./app/features/{{ getModuleName module }}/handlers/{{kebabCase name}}.handler";\n$1',
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ COMMAND_HANDLERS_SETUP)/,
+    template: "awilix.asClass({{pascalCase name}}CommandHandler),\n      $1",
+  },
+];
 
-const createQueryHandler = {
-  type: "add",
-  path: "{{module}}/query-handlers/{{kebabCase name}}.query.handler.ts",
-  templateFile: "plop-templates/query/query-handler.ts",
-};
+const createQueryHandler = [
+  {
+    type: "add",
+    path: "{{module}}/query-handlers/{{kebabCase name}}.query.handler.ts",
+    templateFile: "plop-templates/query/query-handler.ts",
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ HANDLERS_IMPORTS)/,
+    template:
+      'import {{pascalCase name}}QueryHandler from "./app/features/{{ getModuleName module }}/query-handlers/{{kebabCase name}}.query";\n$1',
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ QUERY_HANDLERS_SETUP)/,
+    template: "awilix.asClass({{pascalCase name}}QueryHandler),\n      $1",
+  },
+];
 
 const createRouting = {
   type: "add",
@@ -88,30 +118,45 @@ const createIntegrationTest = {
   templateFile: "plop-templates/integration-test.ts",
 };
 
-const createEventSubscriber = {
-  type: "add",
-  path: `{{module}}/subscribers/{{kebabCase name}}.subscriber.ts`,
-  templateFile: "plop-templates/events/event-subscriber.ts",
-};
+const createEventSubscriber = [
+  {
+    type: "add",
+    path: `{{module}}/subscribers/{{kebabCase name}}.subscriber.ts`,
+    templateFile: "plop-templates/events/event-subscriber.ts",
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ SUBSCRIBERS_IMPORTS)/,
+    template:
+      'import {{pascalCase name}}EventSubscriber from "./app/features/{{ getModuleName module }}/subscribers/{{kebabCase name}}.subscriber";\n$1',
+  },
+  {
+    type: "modify",
+    path: containerLocation,
+    pattern: /(\/\/ SUBSCRIBERS_SETUP)/,
+    template: "awilix.asClass({{pascalCase name}}EventSubscriber),\n      $1",
+  },
+];
 
 const updateRootRouter = [
   {
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_CONFIG)/,
-    template: 'router.use("/{{kebabCase name}}", {{camelCase name}}Routing);\n$1',
+    template: 'router.use("/{{kebabCase name}}", {{camelCase name}}Routing);\n  $1',
   },
   {
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_DEPENDENCIES)/,
-    template: "{{camelCase name}}Routing,\n$1",
+    template: "{{camelCase name}}Routing,\n  $1",
   },
   {
     type: "modify",
     path: `${routesLocation}/router.ts`,
     pattern: /(\/\/ ROUTES_INTERFACE)/,
-    template: "{{camelCase name}}Routing: express.Router;\n$1",
+    template: "{{camelCase name}}Routing: express.Router;\n  $1",
   },
 ];
 
@@ -126,7 +171,7 @@ const updateContainerRoutes = [
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ ROUTING_SETUP)/,
-    template: "{{camelCase name}}Routing: awilix.asFunction({{camelCase name}}Routing),\n$1",
+    template: "{{camelCase name}}Routing: awilix.asFunction({{camelCase name}}Routing),\n  $1",
   },
 ];
 
@@ -142,7 +187,8 @@ const updateContainerModels = [
     type: "modify",
     path: containerLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n$1",
+    template:
+      "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
   },
 ];
 
@@ -150,16 +196,21 @@ const updateModuleRouter = [
   {
     type: "modify",
     path: "{{module}}/routing.ts",
-    pattern: /(\/\/ COMMAND_IMPORTS)/,
-    template:
-      'import { {{camelCase name}}Action, {{camelCase name}}ActionValidation } from "./actions/{{kebabCase name}}.action";\n$1',
+    pattern: /(\/\/ VALIDATION_IMPORTS)/,
+    template: 'import { {{camelCase name}}ActionValidation } from "./actions/{{kebabCase name}}.action";\n$1',
   },
   {
     type: "modify",
     path: "{{module}}/routing.ts",
-    pattern: /(\/\/ COMMANDS_SETUP)/,
+    pattern: /(\/\/ ACTIONS_SETUP)/,
     template:
-      "router.{{method}}(\"/{{kebabCase name}}\", [{{camelCase name}}ActionValidation],{{#eq method 'get'}} {{camelCase name}}Action({ queryBus }));{{else}}{{camelCase name}}Action({ commandBus }));{{/eq}}\n$1",
+      'router.{{method}}("/{{kebabCase name}}", [{{camelCase name}}ActionValidation], actions.{{camelCase name}}Action);\n  $1',
+  },
+  {
+    type: "modify",
+    path: "{{module}}/routing.ts",
+    pattern: /(\/\/ ACTIONS_IMPORTS)/,
+    template: "{{camelCase name}}Action: express.RequestHandler;\n  $1",
   },
 ];
 
@@ -249,12 +300,12 @@ module.exports = plop => {
 
   plop.setGenerator("action+command+handler", {
     prompts: [moduleListPrompt, textPrompt("action+command+handler"), mothodPrompt],
-    actions: [createAction, ...updateModuleRouter, createCommand, createCommandHandler],
+    actions: [createAction, ...updateModuleRouter, createCommand, ...createCommandHandler],
   });
 
   plop.setGenerator("action+query+handler", {
     prompts: [moduleListPrompt, textPrompt("action+query+handler"), mothodPrompt],
-    actions: [createAction, ...updateModuleRouter, ...createQuery, createQueryHandler],
+    actions: [createAction, ...updateModuleRouter, ...createQuery, ...createQueryHandler],
   });
 
   plop.setGenerator("model", {
@@ -285,7 +336,7 @@ module.exports = plop => {
 
   plop.setGenerator("command handler", {
     prompts: [moduleListPrompt, textPrompt("command handler")],
-    actions: [createCommandHandler],
+    actions: [...createCommandHandler],
   });
 
   plop.setGenerator("query", {
@@ -295,16 +346,16 @@ module.exports = plop => {
 
   plop.setGenerator("query handler", {
     prompts: [moduleListPrompt, textPrompt("query handler")],
-    actions: [createQueryHandler],
+    actions: [...createQueryHandler],
   });
 
   plop.setGenerator("query with handler", {
     prompts: [moduleListPrompt, textPrompt("query handler")],
-    actions: [createQueryHandler, ...createQuery],
+    actions: [...createQueryHandler, ...createQuery],
   });
 
   plop.setGenerator("event subscriber", {
     prompts: [moduleListPrompt, textPrompt("event subscriber")],
-    actions: [createEventSubscriber],
+    actions: [...createEventSubscriber],
   });
 };
