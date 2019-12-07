@@ -29,6 +29,7 @@ services:
     image: app:local
     depends_on:
       - postgres
+      - redis
     networks:
       - app
 
@@ -40,6 +41,7 @@ services:
     hostname: boilerplate_api
     depends_on:
       - postgres
+      - redis
     ports:
       - "1337:1337"
 
@@ -49,6 +51,14 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USERNAME: postgres
       POSTGRES_DB: app
+    networks:
+      - app
+
+  redis: 
+    container_name: redis
+    image: 'redis'
+    ports:
+      - "6379:6379"
     networks:
       - app
 

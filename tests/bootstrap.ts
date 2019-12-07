@@ -9,7 +9,7 @@ dotenvConfig({
   example: ".env.dist",
 });
 
-const dbConfig = require("../config/db")(process.env);
+const dbConfig = require("../config/db");
 
 use(chaiAsPromised);
 

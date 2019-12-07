@@ -23,6 +23,8 @@ import UsersQueryHandler from "./app/features/users/query-handlers/users.query.h
 import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
 // SUBSCRIBERS_IMPORTS
 
+import { cacheClient } from "./tools/cache-client";
+
 const db = require("../config/db");
 
 const config = makeApiConfig();
@@ -36,6 +38,10 @@ function asArray<T>(resolvers: Resolver<T>[]): Resolver<T[]> {
 export async function createContainer(): Promise<AwilixContainer> {
   const container: AwilixContainer = awilix.createContainer({
     injectionMode: awilix.InjectionMode.PROXY,
+  });
+
+  container.register({
+    cacheClient: awilix.asValue(cacheClient)
   });
 
   const dbConnection = await createConnection(db);
