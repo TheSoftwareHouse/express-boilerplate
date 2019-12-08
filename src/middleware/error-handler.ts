@@ -23,8 +23,7 @@ export const errorHandler = ({ logger }: { logger: Logger }) => <T>(
   err: Error,
   req: Request,
   res: Response,
-  // eslint-disable-next-line
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
   logger.error(err.toString());
 

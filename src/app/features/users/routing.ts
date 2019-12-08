@@ -10,7 +10,6 @@ export interface UsersRoutingProps {
   // ACTIONS_IMPORTS
 }
 
-// eslint-disable-next-line
 export const usersRouting = (actions: UsersRoutingProps) => {
   const router = express.Router();
 

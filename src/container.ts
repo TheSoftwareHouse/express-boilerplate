@@ -2,7 +2,7 @@ import * as awilix from "awilix";
 import { AwilixContainer, Lifetime, Resolver } from "awilix";
 import { Application } from "express";
 import * as http from "http";
-import { createConnection } from "typeorm";
+import { createConnection, ConnectionOptions } from "typeorm";
 import { makeApiConfig } from "../config/services";
 import { createApp } from "./app/app";
 import { createRouter } from "./app/router";
@@ -23,7 +23,8 @@ import UsersQueryHandler from "./app/features/users/query-handlers/users.query.h
 import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
 // SUBSCRIBERS_IMPORTS
 
-const db = require("../config/db");
+import { cacheClient } from "./tools/cache-client";
+import * as db from "../config/db";
 
 const config = makeApiConfig();
 
@@ -38,7 +39,11 @@ export async function createContainer(): Promise<AwilixContainer> {
     injectionMode: awilix.InjectionMode.PROXY,
   });
 
-  const dbConnection = await createConnection(db);
+  container.register({
+    cacheClient: awilix.asValue(cacheClient)
+  });
+
+  const dbConnection = await createConnection(db as ConnectionOptions);
   await dbConnection.runMigrations();
 
   container.register({

@@ -4,24 +4,9 @@ import * as chaiAsPromised from "chai-as-promised";
 import "mocha";
 import { Event, EventDispatcher, EventSubscriberInterface } from ".";
 import { delay, SpiedObject } from "../../tools/tests";
-import { Logger } from "../logger";
+import { winstonLogger } from "../logger";
 
 use(chaiAsPromised);
-
-const logger = ({
-  info(e: any) {
-    // eslint-disable-next-line no-console
-    console.info(e);
-  },
-  error(e: any) {
-    // eslint-disable-next-line no-console
-    console.trace(e);
-  },
-  debug(e: any) {
-    // eslint-disable-next-line no-console
-    console.debug(e);
-  },
-} as unknown) as Logger;
 
 type StubSubscriber = EventSubscriberInterface & {
   logEmail(event: Event): Promise<void>;
@@ -47,7 +32,7 @@ const stubSubscriber = ({
 
 describe("event dispatcher", () => {
   it("it support event subscribers", async () => {
-    const dispatcher = new EventDispatcher(logger);
+    const dispatcher = new EventDispatcher(winstonLogger);
     dispatcher.addSubscriber(stubSubscriber);
 
     const testEvent = { name: "testEvent", payload: { foo: 1, bar: 2, baz: 3 } };
@@ -61,7 +46,7 @@ describe("event dispatcher", () => {
   });
 
   it("it support inline event subscribers", async () => {
-    const dispatcher = new EventDispatcher(logger);
+    const dispatcher = new EventDispatcher(winstonLogger);
 
     const stubEvent = {
       name: "test",
@@ -84,7 +69,7 @@ describe("event dispatcher", () => {
   });
 
   it("it support async operations", done => {
-    const dispatcher = new EventDispatcher(logger);
+    const dispatcher = new EventDispatcher(winstonLogger);
 
     const stubEvent = {
       name: "testAsync",
@@ -105,7 +90,7 @@ describe("event dispatcher", () => {
   });
 
   it("Error thrown by a Subscriber should not block the execution of any further Subscriber", done => {
-    const dispatcher = new EventDispatcher(logger);
+    const dispatcher = new EventDispatcher(winstonLogger);
 
     dispatcher.addSubscriber(stubSubscriber);
 
@@ -116,7 +101,7 @@ describe("event dispatcher", () => {
 
     dispatcher.subscribe("test", async () => {
       await delay(20);
-      logger.debug("Event handled");
+      winstonLogger.debug("Event handled");
     });
 
     dispatcher
