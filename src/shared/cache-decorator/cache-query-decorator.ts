@@ -12,6 +12,6 @@ export interface CacheQueryProps {
   duration?: number;
 }
 
-export function CacheQuery({ duration }: CacheQueryProps) {
+export function CacheQuery({ duration }: CacheQueryProps = { duration: 60 * 15 }) {
   return CacheDecorator(createCacheKey, duration);
 }

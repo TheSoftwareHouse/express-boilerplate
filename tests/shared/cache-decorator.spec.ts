@@ -13,7 +13,7 @@ interface CacheExampleQuery {
 class CacheExampleQueryHandler implements QueryHandler<any, any> {
   queryType = "example-query";
 
-  @CacheQuery({})
+  @CacheQuery()
   public async execute(query: CacheExampleQuery) {
     return {
       id: query.id,
