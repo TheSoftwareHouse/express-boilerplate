@@ -22,6 +22,8 @@
     "no-empty-interface": "off",
     "ordered-imports": "off",
     "object-literal-sort-keys": "off",
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["propertyDesciptor", "handlers"]}],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "unicorn/filename-case": [
       "error",
       {

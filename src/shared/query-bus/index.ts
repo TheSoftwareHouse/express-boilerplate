@@ -20,11 +20,10 @@ export class QueryBus {
   private availableHandlers: QueryHandlers;
 
   constructor(queryHandlers: QueryHandler<any, any>[]) {
-    this.availableHandlers = queryHandlers.reduce((result: QueryHandlers, handler) => {
-      // eslint-disable-next-line no-param-reassign
-      result[handler.queryType] = handler;
+    this.availableHandlers = queryHandlers.reduce((handlers: QueryHandlers, handler) => {
+      handlers[handler.queryType] = handler;
 
-      return result;
+      return handlers;
     }, {});
   }
 

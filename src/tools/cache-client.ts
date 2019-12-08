@@ -24,15 +24,15 @@ class CustomRedisClient implements CacheClient {
     return new Promise(resolve => {
       this.cacheClient.GET(key, (err, result) => {
         if (err) return resolve(null);
-        return resolve(JSON.parse(result));
+        resolve(JSON.parse(result));
       });
     });
   }
 
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
-        return resolve(cachedData === "OK");
+        resolve(cachedData === "OK");
       });
     });
   }

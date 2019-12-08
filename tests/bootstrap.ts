@@ -13,8 +13,7 @@ const dbConfig = require("../config/db");
 
 use(chaiAsPromised);
 
-// eslint-disable-next-line
-const clearDb = async (connection: Connection) => {};
+const clearDb = async (_connection: Connection) => {};
 
 before(async () => {
   const dbConnection = await createConnection({
