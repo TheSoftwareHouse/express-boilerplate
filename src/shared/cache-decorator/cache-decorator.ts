@@ -9,7 +9,6 @@ export function CacheDecorator(cacheKeyFactory: (target: Object, args: any[]) =>
     const method = propertyDesciptor.value;
     propertyDesciptor.value = async function value(...args: any[]) {
       const cacheKey = cacheKeyFactory(target, args);
-      console.log(cacheKey);
       const cacheResult = await cacheClient.get(cacheKey);
       if (cacheResult) return cacheResult;
 

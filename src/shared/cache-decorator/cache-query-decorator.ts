@@ -8,6 +8,10 @@ function createCacheKey(target: Object, args: any[]) {
     .join("_")}`;
 }
 
-export function CacheQuery(duration?: number) {
+export interface CacheQueryProps {
+  duration?: number;
+}
+
+export function CacheQuery({ duration }: CacheQueryProps) {
   return CacheDecorator(createCacheKey, duration);
 }

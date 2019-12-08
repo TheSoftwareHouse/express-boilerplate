@@ -24,13 +24,13 @@ class CustomRedisClient implements CacheClient {
     return new Promise(resolve => {
       this.cacheClient.GET(key, (err, result) => {
         if (err) return resolve(null);
-        resolve(JSON.parse(result));
+        return resolve(JSON.parse(result));
       });
     });
   }
 
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
         this.logger.info(`Cache set for key: ${key}`);
         return resolve(cachedData === "OK");
@@ -43,18 +43,17 @@ class CustomRedisClient implements CacheClient {
       new Promise((resolve, reject) => {
         this.cacheClient.KEYS(keyPattern, (err, result) => {
           if (err) return reject(err);
-
           return resolve(result);
         });
       });
     const foundKeys: string[] = await keys(pattern);
+    this.logger.info(`Cache keys found to delete: ${foundKeys}`);
     await Promise.all(
       foundKeys.map(
         key =>
           new Promise((resolve, reject) => {
             this.cacheClient.DEL(key, (err, result) => {
               if (err) return reject(err);
-
               return resolve(result);
             });
           }),

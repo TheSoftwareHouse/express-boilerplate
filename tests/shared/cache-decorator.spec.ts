@@ -1,9 +1,10 @@
+/* eslint-disable max-classes-per-file */
 import "chai";
 import { expect } from "chai";
 import { CacheClient } from "../../src/tools/cache-client";
 import { CacheQuery } from "../../src/shared/cache-decorator";
-import { QueryHandler } from "../../src/shared";
-import { FlushQueryCache } from "../../src/shared/cache-decorator/flush-query-cache-decorator";
+import { QueryHandler, CommandHandler } from "../../src/shared";
+import { FlushCachedQueries } from "../../src/shared/cache-decorator/flush-query-cache-decorator";
 
 interface CacheExampleQuery {
   id: number;
@@ -12,7 +13,7 @@ interface CacheExampleQuery {
 class CacheExampleQueryHandler implements QueryHandler<any, any> {
   queryType = "example-query";
 
-  @CacheQuery()
+  @CacheQuery({})
   public async execute(query: CacheExampleQuery) {
     return {
       id: query.id,
@@ -24,12 +25,21 @@ class CacheExampleQueryHandler implements QueryHandler<any, any> {
 class CacheExampleWithTTLQueryHandler implements QueryHandler<any, any> {
   queryType = "example-query";
 
-  @CacheQuery(2)
+  @CacheQuery({ duration: 2 })
   public async execute(query: CacheExampleQuery) {
     return {
       id: query.id,
       number: Math.random(),
     };
+  }
+}
+
+class CacheExampleCommandHandler implements CommandHandler<any> {
+  commandType = "example-command";
+
+  @FlushCachedQueries({ handlers: [CacheExampleQueryHandler] })
+  async execute() {
+    return {};
   }
 }
 
@@ -63,16 +73,11 @@ describe("Cache Decorator", () => {
     expect(result.number).equal(cachedResult.number);
   });
 
-  it.only("tests", async () => {
-    class Test {
-      @FlushQueryCache(CacheExampleQueryHandler)
-      execute() {}
-    }
-
-    const test = new Test();
+  it.only("remove cached query when command with flush cached queries decorator is executed", async () => {
+    const exampleCommandHandler = new CacheExampleCommandHandler();
     const exampleClass = new CacheExampleQueryHandler();
     const result = await exampleClass.execute({ id: 1 });
-    test.execute();
+    await exampleCommandHandler.execute();
 
     const secondResult = await exampleClass.execute({ id: 1 });
 
