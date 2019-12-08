@@ -30,8 +30,7 @@ class CustomRedisClient implements CacheClient {
   }
 
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
-    // eslint-disable-next-line
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
         return resolve(cachedData === "OK");
       });

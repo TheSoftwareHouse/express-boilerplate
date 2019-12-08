@@ -1,8 +1,11 @@
 import { cacheClient } from "../../tools/cache-client";
 
 export function CacheDecorator(cacheKeyFactory: (target: Object, args: any[]) => string, duration?: number) {
-  // eslint-disable-next-line
-  return function(target: Object, propertyName: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
+  return function decorator(
+    target: Object,
+    propertyName: string,
+    propertyDesciptor: PropertyDescriptor,
+  ): PropertyDescriptor {
     const method = propertyDesciptor.value;
     // eslint-disable-next-line
     propertyDesciptor.value = async function value(...args: any[]) {
