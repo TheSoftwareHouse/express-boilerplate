@@ -8,6 +8,7 @@ export interface CacheClient {
   get(key: string): Promise<any>;
   set(key: string, data: any, duration?: number): Promise<boolean>;
   removeByPattern(pattern: string): Promise<any>;
+  scanByPattern(pattern: string): Promise<string[]>;
 }
 
 class CustomRedisClient implements CacheClient {
@@ -36,6 +37,25 @@ class CustomRedisClient implements CacheClient {
         return resolve(cachedData === "OK");
       });
     });
+  }
+
+  public scanByPattern(pattern: string): Promise<string[]> {
+    let returnKeys: string[] = [];
+    function scan(cacheClient: RedisClient, cursor: string = "0"): Promise<any> {
+      return new Promise((resolve, reject) => {
+        cacheClient.SCAN(cursor, "MATCH", pattern, "COUNT", "10", (err, result: [string, string[]]) => {
+          if (err) reject(err);
+          const [newCoursor, newKeys] = result;
+          returnKeys = [...newKeys, ...returnKeys];
+          if (newCoursor === "0") {
+            return resolve(returnKeys);
+          }
+          return resolve(scan(cacheClient, newCoursor));
+        });
+      });
+    }
+
+    return scan(this.cacheClient);
   }
 
   public async removeByPattern(pattern: string) {

@@ -73,7 +73,7 @@ describe("Cache Decorator", () => {
     expect(result.number).equal(cachedResult.number);
   });
 
-  it.only("remove cached query when command with flush cached queries decorator is executed", async () => {
+  it("remove cached query when command with flush cached queries decorator is executed", async () => {
     const exampleCommandHandler = new CacheExampleCommandHandler();
     const exampleClass = new CacheExampleQueryHandler();
     const result = await exampleClass.execute({ id: 1 });
@@ -82,5 +82,35 @@ describe("Cache Decorator", () => {
     const secondResult = await exampleClass.execute({ id: 1 });
 
     expect(result.number).not.equal(secondResult.number);
+  });
+
+  describe("scan method", () => {
+    it("return all cached queries", async () => {
+      const exampleClass = new CacheExampleQueryHandler();
+      await exampleClass.execute({ id: 1 });
+      await exampleClass.execute({ id: 2 });
+      await exampleClass.execute({ id: 3 });
+      await exampleClass.execute({ id: 4 });
+      // await exampleCommandHandler.execute();
+      const redisClient: CacheClient = global.container.resolve("cacheClient");
+      const scanned = await redisClient.scanByPattern("Queries*");
+      expect(scanned).to.length(4);
+    });
+
+    it("not return cached queries when command with flush cached queries decorator is executed", async () => {
+      const exampleCommandHandler = new CacheExampleCommandHandler();
+      const exampleClass = new CacheExampleQueryHandler();
+      await exampleClass.execute({ id: 1 });
+      await exampleClass.execute({ id: 2 });
+      await exampleClass.execute({ id: 3 });
+      await exampleClass.execute({ id: 4 });
+
+      await exampleCommandHandler.execute();
+
+      // await exampleCommandHandler.execute();
+      const redisClient: CacheClient = global.container.resolve("cacheClient");
+      const scanned = await redisClient.scanByPattern("Queries*");
+      expect(scanned).to.length(0);
+    });
   });
 });
