@@ -1,6 +1,8 @@
-const dotenv = require("dotenv-safe");
+import { loadEnvs } from "./env";
 
-const loadEnvs = (env: any) => ({
+loadEnvs();
+
+const createDbConfigFromEnvs = (env: any) => ({
   type: "postgres",
   url: env.POSTGRES_URL,
   synchronize: false,
@@ -12,10 +14,6 @@ const loadEnvs = (env: any) => ({
   },
 });
 
-dotenv.config({
-  example: ".env.dist",
-});
+const config = createDbConfigFromEnvs(process.env);
 
-const config = loadEnvs(process.env);
-
-module.exports = config;
+export = config;

@@ -1,23 +1,23 @@
 import { RedisClient, createClient } from "redis";
+import { winstonLogger, Logger } from "../shared";
+import { loadEnvs } from "../../config/env";
 
-const dotenv = require("dotenv-safe");
+loadEnvs();
 
-dotenv.config({
-  example: ".env.dist",
-});
-
-// Need to inject logger
 export interface CacheClient {
   get(key: string): Promise<any>;
   set(key: string, data: any, duration?: number): Promise<boolean>;
-  flushAll(): Promise<any>;
+  removeByPattern(pattern: string): Promise<any>;
 }
 
 class CustomRedisClient implements CacheClient {
   private cacheClient: RedisClient;
 
+  private logger: Logger;
+
   constructor() {
     this.cacheClient = createClient(process.env.REDIS_URL as string);
+    this.logger = winstonLogger;
   }
 
   public async get(key: string) {
@@ -32,18 +32,34 @@ class CustomRedisClient implements CacheClient {
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
-        resolve(cachedData === "OK");
+        this.logger.info(`Cache set for key: ${key}`);
+        return resolve(cachedData === "OK");
       });
     });
   }
 
-  public async flushAll() {
-    return new Promise((resolve, reject) => {
-      this.cacheClient.FLUSHALL((err, result) => {
-        if (err) reject(err);
-        resolve(result);
+  public async removeByPattern(pattern: string) {
+    const keys = (keyPattern: string): Promise<string[]> =>
+      new Promise((resolve, reject) => {
+        this.cacheClient.KEYS(keyPattern, (err, result) => {
+          if (err) return reject(err);
+
+          return resolve(result);
+        });
       });
-    });
+    const foundKeys: string[] = await keys(pattern);
+    await Promise.all(
+      foundKeys.map(
+        key =>
+          new Promise((resolve, reject) => {
+            this.cacheClient.DEL(key, (err, result) => {
+              if (err) return reject(err);
+
+              return resolve(result);
+            });
+          }),
+      ),
+    );
   }
 }
 

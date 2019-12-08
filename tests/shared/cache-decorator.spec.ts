@@ -34,9 +34,9 @@ class CacheExampleWithTTLQueryHandler implements QueryHandler<any, any> {
 }
 
 describe("Cache Decorator", () => {
-  afterEach(() => {
+  afterEach(async () => {
     const redisClient: CacheClient = global.container.resolve("cacheClient");
-    redisClient.flushAll();
+    await redisClient.removeByPattern("Queries*");
   });
 
   it("return cached query result", async () => {
