@@ -1,5 +1,4 @@
 import { Server } from "http";
-import { RedisClient } from "redis";
 import { createContainer } from "./container";
 import { Logger } from "./shared/logger";
 
@@ -15,13 +14,6 @@ import { Logger } from "./shared/logger";
       container.resolve<Logger>("logger").error(`Unhandled: ${err.toString()}`, err);
     }
     process.exit(1);
-  });
-
-  const redis: RedisClient = container.resolve("cacheClient");
-  redis.on("error", err => {
-    if (err) {
-      container.resolve<Logger>("logger").error(`Unhandled redis error: ${err.toString()}`, err);
-    }
   });
 
   const server: Server = container.resolve("server");

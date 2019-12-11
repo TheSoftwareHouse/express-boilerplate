@@ -19,6 +19,11 @@ class CustomRedisClient implements CacheClient {
   constructor() {
     this.cacheClient = createClient(process.env.REDIS_URL as string);
     this.logger = winstonLogger;
+    this.cacheClient.on("error", err => {
+      if (err) {
+        this.logger.error(`Unhandled redis error: ${err.toString()}`, err);
+      }
+    });
   }
 
   public async get(key: string) {
