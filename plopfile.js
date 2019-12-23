@@ -90,7 +90,7 @@ const createQueryHandler = [
     path: containerLocation,
     pattern: /(\/\/ HANDLERS_IMPORTS)/,
     template:
-      'import {{pascalCase name}}QueryHandler from "./app/features/{{ getModuleName module }}/query-handlers/{{kebabCase name}}.query";\n$1',
+      'import {{pascalCase name}}QueryHandler from "./app/features/{{ getModuleName module }}/query-handlers/{{kebabCase name}}.query.handler";\n$1',
   },
   {
     type: "modify",
