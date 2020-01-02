@@ -25,6 +25,7 @@ function createApp({ router, errorHandler }: AppProps) {
   });
 
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(jsdoc));
+  app.get("/api-docs.json", (req, res) => res.json(jsdoc));
   app.use("/api", router);
 
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
