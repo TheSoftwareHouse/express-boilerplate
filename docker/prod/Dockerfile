@@ -16,12 +16,12 @@ RUN apk add --no-cache curl git py-pip make && \
   ./bin/node-prune
 
 FROM $IMAGE
-COPY --from=build /app/build /app/build
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/docker/prod/docker_entrypoint.sh /docker_entrypoint.sh
+COPY --chown=node:node --from=build /app/build /app/build
+COPY --chown=node:node --from=build /app/node_modules /app/node_modules
+COPY --chown=node:node --from=build /app/docker/prod/docker_entrypoint.sh /docker_entrypoint.sh
 RUN chmod +x /docker_entrypoint.sh
 ENTRYPOINT [ "/docker_entrypoint.sh" ]
 WORKDIR /app/build
 CMD [""]
 
-
+USER node
