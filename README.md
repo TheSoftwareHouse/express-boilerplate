@@ -29,7 +29,7 @@ This app is fully dockerized, so in order to use it you have to have docker and 
 1. In order to run the whole app type:
 
     ```
-    npm run api
+    npm run start
     ```
 
 2. In order to watch files for dev purpose type:
