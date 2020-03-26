@@ -12,6 +12,8 @@ FROM builder
 COPY docker ./docker
 COPY .npmr[c] package.json package-lock.json ./
 
+RUN chmod +x ./docker/node-modules-clean.sh
+
 RUN npm ci && npm cache clean --force && \
   ./docker/node-modules-clean.sh && \
   npm dedupe && \

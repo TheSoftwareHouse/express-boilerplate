@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "sourceMap": false,
+    "inlineSourceMap": true,
     "outDir": "build",
     "typeRoots": ["./node_modules/@types", "./typings"],
     "resolveJsonModule": true,
