@@ -73,7 +73,13 @@ npm run generate-migration -- <migration-name>
 
 This should generate a migration for all connected entities.
 
-##Tests
+## Debugging
+
+### VS Code
+
+There is `launch.json` configuration inside `editors/vsc` directory. Just copy it and create new debugger to make it work with vsc :) 
+
+## Tests
 
 There are two types of tests:
 
