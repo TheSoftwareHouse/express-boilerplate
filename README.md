@@ -44,9 +44,15 @@ This app is fully dockerized, so in order to use it you have to have docker and 
     npm run down
     ```
 
+4. To get into Docker container's shell:
+
+    ```
+    npm run shell
+    ```
+
 ## Code generation
 
-We're using Plop for routes, models, actions, commands and handlers generation.
+We're using Plop for routes, models, actions, graphql (queries and mutations), commands and handlers generation.
 
 ```
 npm run plop
@@ -61,7 +67,7 @@ npm run lint
 npm run format
 ```
 
-## Migrations
+## Database migrations
 
 Migrations should be stored inside migrations directory.
 
@@ -72,6 +78,31 @@ npm run generate-migration -- <migration-name>
 ```
 
 This should generate a migration for all connected entities.
+
+## Adminer setup
+
+Adminer is configured in `docker-compose.override.yml` and should work out of the box on port 8080. To login to adminer use the following values:
+```
+Database type: postgres
+Server: postgres
+User: postgres
+Password: password
+Database: app
+```
+
+Of course, if any of this is changed via configuration or otherwise, then these changes must be reflected here as well.
+
+## GraphQL
+Boilerplate has GraphQL support. Apollo server runs as a middleware and should be available locally under:
+```
+http://localhost:1337/graphql
+```
+
+To add new query/mutation run relevant `plop` commands and then:
+
+1. Modify `schema.gql` under `graphql/schema.gql`
+2. Run codegen: `npm run generate-schema`
+3. Restart watcher / API
 
 ## Debugging
 
