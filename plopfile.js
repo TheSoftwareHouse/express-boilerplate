@@ -39,13 +39,13 @@ const createGraphqlQuery = {
   type: "add",
   path: "{{module}}/graphql/queries/{{kebabCase name}}.query.ts",
   templateFile: "plop-templates/graphql/query.ts",
-}
+};
 
 const createGraphqlMutation = {
   type: "add",
   path: "{{module}}/graphql/mutations/{{kebabCase name}}.mutation.ts",
   templateFile: "plop-templates/graphql/mutation.ts",
-}
+};
 
 const createCommand = {
   type: "add",
@@ -210,14 +210,15 @@ const updateGraphqlResolverForQuery = [
     type: "modify",
     path: graphqlResolverLocation,
     pattern: /(\/\/ QUERY_IMPORTS)/,
-    template: 'import { {{camelCase name}}Query } from "../../app/features/{{getModuleName module}}/graphql/queries/{{kebabCase name}}.query";\n  $1'
+    template:
+      'import { {{camelCase name}}Query } from "../../app/features/{{getModuleName module}}/graphql/queries/{{kebabCase name}}.query";\n$1',
   },
   {
     type: "modify",
     path: graphqlResolverLocation,
     pattern: /(\/\/ GRAPHQL_QUERIES)/,
-    template: 'get{{pascalCase name}}: {{camelCase name}}Query,\n  $1'
-  }
+    template: "{{camelCase name}}: {{camelCase name}}Query,\n      $1",
+  },
 ];
 
 const updateGraphqlResolverForMutation = [
@@ -225,14 +226,15 @@ const updateGraphqlResolverForMutation = [
     type: "modify",
     path: graphqlResolverLocation,
     pattern: /(\/\/ MUTATION_IMPORTS)/,
-    template: 'import { {{camelCase name}}Mutation } from "../../app/features/{{getModuleName module}}/graphql/mutations/{{kebabCase name}}.mutation";\n  $1'
+    template:
+      'import { {{camelCase name}}Mutation } from "../../app/features/{{getModuleName module}}/graphql/mutations/{{kebabCase name}}.mutation";\n$1',
   },
   {
     type: "modify",
     path: graphqlResolverLocation,
     pattern: /(\/\/ GRAPHQL_MUTATIONS)/,
-    template: '{{camelCase name}}: {{camelCase name}}Mutation,\n  $1'
-  }
+    template: "{{camelCase name}}: {{camelCase name}}Mutation,\n      $1",
+  },
 ];
 
 const updateModuleRouter = [
