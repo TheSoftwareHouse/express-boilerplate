@@ -411,4 +411,14 @@ module.exports = plop => {
     prompts: [moduleListPrompt, textPrompt("event subscriber")],
     actions: [...createEventSubscriber],
   });
+
+  plop.setGenerator("graphql-query", {
+    prompts: [moduleListPrompt, textPrompt("graphql-query")],
+    actions: [createGraphqlQuery],
+  });
+
+  plop.setGenerator("graphql-mutation", {
+    prompts: [moduleListPrompt, textPrompt("graphql-mutation")],
+    actions: [createGraphqlMutation],
+  });
 };
