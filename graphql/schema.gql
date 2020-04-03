@@ -1,0 +1,13 @@
+type Book {
+  title: String
+  something: String
+}
+
+type Query {
+  hello: String
+  getBooks: [Book]
+}
+
+type Mutation {
+  addHello(title: String, something: String): Book
+}

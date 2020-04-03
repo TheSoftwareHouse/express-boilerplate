@@ -44,6 +44,7 @@ services:
       - redis
     ports:
       - "1337:1337"
+      - "4000:4000"
       - 9229:9229
 
   postgres:
