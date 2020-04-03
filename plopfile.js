@@ -14,6 +14,7 @@ const getDirectories = source =>
 
 const routesLocation = path.join(__dirname, "src/app");
 const containerLocation = path.join(__dirname, "src/container.ts");
+const graphqlResolverLocation = path.join(__dirname, "src/graphql/resolvers/index.ts");
 
 const directories = getDirectories(`${routesLocation}/features`).filter(
   name => !DIRECTORIES_BLACKLIST.includes(NAME_REGEX.exec(name)[0]),
@@ -33,6 +34,18 @@ const createAction = {
   path: "{{module}}/actions/{{kebabCase name}}.action.ts",
   templateFile: "plop-templates/action.ts",
 };
+
+const createGraphqlQuery = {
+  type: "add",
+  path: "{{module}}/graphql/queries/{{kebabCase name}}.query.ts",
+  templateFile: "plop-templates/graphql/query.ts",
+}
+
+const createGraphqlMutation = {
+  type: "add",
+  path: "{{module}}/graphql/mutations/{{kebabCase name}}.mutation.ts",
+  templateFile: "plop-templates/graphql/mutation.ts",
+}
 
 const createCommand = {
   type: "add",
@@ -192,6 +205,36 @@ const updateContainerModels = [
   },
 ];
 
+const updateGraphqlResolverForQuery = [
+  {
+    type: "modify",
+    path: graphqlResolverLocation,
+    pattern: /(\/\/ QUERY_IMPORTS)/,
+    template: 'import { {{camelCase name}}Query } from "../../app/features/{{getModuleName module}}/graphql/queries/{{camelCase name}}.query";\n  $1'
+  },
+  {
+    type: "modify",
+    path: graphqlResolverLocation,
+    pattern: /(\/\/ GRAPHQL_QUERIES)/,
+    template: 'get{{pascalCase name}}: {{camelCase name}}Query\n  $1'
+  }
+];
+
+const updateGraphqlResolverForMutation = [
+  {
+    type: "modify",
+    path: graphqlResolverLocation,
+    pattern: /(\/\/ MUTATION_IMPORTS)/,
+    template: 'import { {{camelCase name}}Mutation } from "../../app/features/{{getModuleName module}}/graphql/mutations/{{camelCase name}}.mutation";\n  $1'
+  },
+  {
+    type: "modify",
+    path: graphqlResolverLocation,
+    pattern: /(\/\/ GRAPHQL_MUTATIONS)/,
+    template: '{{camelCase name}}: {{camelCase name}}Mutation\n  $1'
+  }
+];
+
 const updateModuleRouter = [
   {
     type: "modify",
@@ -253,7 +296,7 @@ const textPrompt = name => ({
   validate: isNotEmptyFor("name"),
 });
 
-const mothodPrompt = {
+const methodPrompt = {
   type: "list",
   name: "method",
   message: "What is your action type?",
@@ -299,13 +342,23 @@ module.exports = plop => {
   });
 
   plop.setGenerator("action+command+handler", {
-    prompts: [moduleListPrompt, textPrompt("action+command+handler"), mothodPrompt],
+    prompts: [moduleListPrompt, textPrompt("action+command+handler"), methodPrompt],
     actions: [createAction, ...updateModuleRouter, createCommand, ...createCommandHandler],
   });
 
   plop.setGenerator("action+query+handler", {
-    prompts: [moduleListPrompt, textPrompt("action+query+handler"), mothodPrompt],
+    prompts: [moduleListPrompt, textPrompt("action+query+handler"), methodPrompt],
     actions: [createAction, ...updateModuleRouter, ...createQuery, ...createQueryHandler],
+  });
+
+  plop.setGenerator("graphql+query+handler", {
+    prompts: [moduleListPrompt, textPrompt("graphql+query+handler")],
+    actions: [createGraphqlQuery, ...updateGraphqlResolverForQuery, ...createQuery, ...createQueryHandler],
+  });
+
+  plop.setGenerator("graphql+command+handler", {
+    prompts: [moduleListPrompt, textPrompt("graphql+command+handler")],
+    actions: [createGraphqlMutation, ...updateGraphqlResolverForMutation, ...createCommand, ...createCommandHandler],
   });
 
   plop.setGenerator("model", {
@@ -325,7 +378,7 @@ module.exports = plop => {
   });
 
   plop.setGenerator("action", {
-    prompts: [moduleListPrompt, textPrompt("action"), mothodPrompt],
+    prompts: [moduleListPrompt, textPrompt("action"), methodPrompt],
     actions: [createAction, ...updateModuleRouter],
   });
 

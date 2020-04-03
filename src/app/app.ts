@@ -46,7 +46,7 @@ function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, 
   app.get("/api-docs.json", (req, res) => res.json(jsdoc));
   app.use("/api", router);
 
-  // apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app });
 
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
   app.use(errorHandler);
