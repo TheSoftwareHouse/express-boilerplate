@@ -20,6 +20,7 @@ import { usersRouting } from "./app/features/users/routing";
 
 import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
+import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
 // HANDLERS_IMPORTS
 
 import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
@@ -81,8 +82,9 @@ export async function createContainer(): Promise<AwilixContainer> {
       // SUBSCRIBERS_SETUP
     ]),
     eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
-    commandHandlers: asArray([
+    commandHandlers: asArray<any>([
       awilix.asClass(LoginCommandHandler),
+      awilix.asClass(DeleteUserCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
     commandBus: awilix.asClass(CommandBus).classic().singleton(),

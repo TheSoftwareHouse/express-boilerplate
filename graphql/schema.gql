@@ -1,13 +1,13 @@
-type Book {
-  title: String
-  something: String
+type User {
+  firstName: String
+  lastName: String
 }
 
 type Query {
-  hello: String
-  getBooks: [Book]
+  getUsers: [User]
+  getUser: User
 }
 
 type Mutation {
-  addHello(title: String, something: String): Book
+  deleteUser(id: String): String
 }

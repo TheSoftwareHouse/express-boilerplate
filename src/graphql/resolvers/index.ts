@@ -1,6 +1,9 @@
-import { Resolvers, MutationAddHelloArgs } from "../types";
+import { Resolvers } from "../types";
 import { CommandBus, QueryBus } from "../../shared";
-//
+import { usersQuery } from "../../app/features/users/graphql/queries/users.query";
+// QUERY_IMPORTS
+import { deleteUserMutation } from "../../app/features/users/graphql/mutations/delete-user.mutation";
+// MUTATION_IMPORTS
 
 export type MutationContext = {
   commandBus: CommandBus;
@@ -12,21 +15,16 @@ export type QueryContext = {
 
 interface ResolversDependencies {}
 
-export const createResolvers = (dependencies: ResolversDependencies): Resolvers => {
+export const createResolvers = (_dependencies: ResolversDependencies): Resolvers => {
   // Provide resolver functions for your schema fields
   const resolvers = {
     Query: {
+      getUsers: usersQuery,
       // GRAPHQL_QUERIES
-      hello: () => "Hello world!",
-      getBooks: () => [{ title: "asdasd", something: "sadasd" }],
     },
     Mutation: {
-      addHello: (parent, args: MutationAddHelloArgs, context: MutationContext) => {
-        return {
-          title: args.title,
-          something: args.something,
-        };
-      },
+      deleteUser: deleteUserMutation,
+      // GRAPHQL_MUTATIONS
     },
   };
 

@@ -10,27 +10,26 @@ export type Scalars = {
   Float: number;
 };
 
-export type Book = {
-   __typename?: 'Book';
-  title?: Maybe<Scalars['String']>;
-  something?: Maybe<Scalars['String']>;
+export type User = {
+   __typename?: 'User';
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
    __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
-  getBooks?: Maybe<Array<Maybe<Book>>>;
+  getUsers?: Maybe<Array<Maybe<User>>>;
+  getUser?: Maybe<User>;
 };
 
 export type Mutation = {
    __typename?: 'Mutation';
-  addHello?: Maybe<Book>;
+  deleteUser?: Maybe<Scalars['String']>;
 };
 
 
-export type MutationAddHelloArgs = {
-  title?: Maybe<Scalars['String']>;
-  something?: Maybe<Scalars['String']>;
+export type MutationDeleteUserArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -108,7 +107,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  Book: ResolverTypeWrapper<Book>,
+  User: ResolverTypeWrapper<User>,
   Query: ResolverTypeWrapper<{}>,
   Mutation: ResolverTypeWrapper<{}>,
 };
@@ -117,28 +116,28 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   String: Scalars['String'],
   Boolean: Scalars['Boolean'],
-  Book: Book,
+  User: User,
   Query: {},
   Mutation: {},
 };
 
-export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = {
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  something?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  getBooks?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>,
+  getUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>,
+  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addHello?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<MutationAddHelloArgs, never>>,
+  deleteUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationDeleteUserArgs, never>>,
 };
 
 export type Resolvers<ContextType = any> = {
-  Book?: BookResolvers<ContextType>,
+  User?: UserResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
 };

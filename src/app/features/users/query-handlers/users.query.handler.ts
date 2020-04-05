@@ -6,8 +6,8 @@ export default class UsersQueryHandler implements QueryHandler<UsersQuery, Users
   public queryType: string = USERS_QUERY_TYPE;
 
   @CacheQuery({ duration: 10 })
-  async execute(query: UsersQuery): Promise<UsersQueryResult> {
-    // do something with the query and transform it to result.
-    return new UsersQueryResult(query);
+  async execute(_query: UsersQuery): Promise<UsersQueryResult> {
+    const fakeUsers = [{ firstName: "John", lastName: "Doe" }];
+    return new UsersQueryResult(fakeUsers);
   }
 }
