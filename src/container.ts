@@ -1,4 +1,6 @@
 import * as awilix from "awilix";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 import { AwilixContainer, Lifetime, Resolver } from "awilix";
 import { Application } from "express";
 import * as http from "http";
@@ -18,6 +20,7 @@ import { usersRouting } from "./app/features/users/routing";
 
 import LoginCommandHandler from "./app/features/users/handlers/login.handler";
 import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
+import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
 // HANDLERS_IMPORTS
 
 import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
@@ -25,6 +28,7 @@ import EmailEventSubscriber from "./app/features/users/subscribers/email.subscri
 
 import { cacheClient } from "./tools/cache-client";
 import * as db from "../config/db";
+import { createResolvers } from "./graphql/resolvers";
 
 const config = makeApiConfig();
 
@@ -68,6 +72,8 @@ export async function createContainer(): Promise<AwilixContainer> {
   });
 
   container.register({
+    graphQLSchema: awilix.asValue(readFileSync(resolve("..", "graphql", "schema.gql"), "utf8")),
+    resolvers: awilix.asFunction(createResolvers),
     errorHandler: awilix.asFunction(errorHandler),
     router: awilix.asFunction(createRouter),
     queryBus: awilix.asClass(QueryBus).classic().singleton(),
@@ -76,8 +82,9 @@ export async function createContainer(): Promise<AwilixContainer> {
       // SUBSCRIBERS_SETUP
     ]),
     eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
-    commandHandlers: asArray([
+    commandHandlers: asArray<any>([
       awilix.asClass(LoginCommandHandler),
+      awilix.asClass(DeleteUserCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
     commandBus: awilix.asClass(CommandBus).classic().singleton(),
