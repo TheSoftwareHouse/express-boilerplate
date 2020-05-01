@@ -19,7 +19,7 @@ class CustomRedisClient implements CacheClient {
   constructor() {
     this.cacheClient = createClient(process.env.REDIS_URL as string);
     this.logger = winstonLogger;
-    this.cacheClient.on("error", err => {
+    this.cacheClient.on("error", (err) => {
       if (err) {
         this.logger.error(`Unhandled redis error: ${err.toString()}`, err);
       }
@@ -27,7 +27,7 @@ class CustomRedisClient implements CacheClient {
   }
 
   public async get(key: string) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.cacheClient.GET(key, (err, result) => {
         if (err) return resolve(null);
         return resolve(JSON.parse(result));
@@ -36,7 +36,7 @@ class CustomRedisClient implements CacheClient {
   }
 
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
         this.logger.info(`Cache set for key: ${key}`);
         return resolve(cachedData === "OK");
@@ -75,7 +75,7 @@ class CustomRedisClient implements CacheClient {
     this.logger.info(`Cache keys found to delete: ${foundKeys}`);
     await Promise.all(
       foundKeys.map(
-        key =>
+        (key) =>
           new Promise((resolve, reject) => {
             this.cacheClient.DEL(key, (err, result) => {
               if (err) return reject(err);

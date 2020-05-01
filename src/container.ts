@@ -77,7 +77,7 @@ export async function createContainer(): Promise<AwilixContainer> {
     errorHandler: awilix.asFunction(errorHandler),
     router: awilix.asFunction(createRouter),
     queryBus: awilix.asClass(QueryBus).classic().singleton(),
-    eventSubscribers: asArray([
+    eventSubscribers: asArray<any>([
       awilix.asClass(EmailEventSubscriber),
       // SUBSCRIBERS_SETUP
     ]),
@@ -88,7 +88,7 @@ export async function createContainer(): Promise<AwilixContainer> {
       // COMMAND_HANDLERS_SETUP
     ]),
     commandBus: awilix.asClass(CommandBus).classic().singleton(),
-    queryHandlers: asArray([
+    queryHandlers: asArray<any>([
       awilix.asClass(UsersQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),

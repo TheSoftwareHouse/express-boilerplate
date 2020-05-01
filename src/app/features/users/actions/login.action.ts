@@ -55,7 +55,7 @@ const loginAction = ({ commandBus }: LoginActionProps) => (req: Request, res: Re
         authToken: req.body.authToken,
       }),
     )
-    .then(commandResult => {
+    .then((commandResult) => {
       res.json(commandResult);
     })
     .catch(next);

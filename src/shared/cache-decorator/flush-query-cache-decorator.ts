@@ -1,7 +1,7 @@
 import { FlushGroupKey } from "./cache-flush-decorator";
 
 function createGroupKeys(handlers: any[]) {
-  return handlers.map(handler => `Queries:${handler.name}:*`);
+  return handlers.map((handler) => `Queries:${handler.name}:*`);
 }
 
 export interface FlushCachedQueriesProps {

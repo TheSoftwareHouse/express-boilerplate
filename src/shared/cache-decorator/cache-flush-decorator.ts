@@ -9,7 +9,7 @@ export function FlushGroupKey(groupKeys: string[]) {
     const method = propertyDesciptor.value;
     // eslint-disable-next-line
     propertyDesciptor.value = async function value(...args: any[]) {
-      await Promise.all(groupKeys.map(groupKey => cacheClient.removeByPattern(groupKey)));
+      await Promise.all(groupKeys.map((groupKey) => cacheClient.removeByPattern(groupKey)));
 
       const result = await method.apply(this, args);
 

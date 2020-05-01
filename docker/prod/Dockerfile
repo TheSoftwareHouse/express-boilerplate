@@ -1,4 +1,4 @@
-ARG IMAGE=node:12.13-alpine
+ARG IMAGE=node:13.13-alpine
 
 FROM $IMAGE as build
 
@@ -18,6 +18,7 @@ RUN apk add --no-cache curl git py-pip make && \
 FROM $IMAGE
 COPY --chown=node:node --from=build /app/build /app/build
 COPY --chown=node:node --from=build /app/graphql /app/graphql
+COPY --chown=node:node --from=build /app/.env.dist /app/build/.env.dist
 COPY --chown=node:node --from=build /app/node_modules /app/node_modules
 COPY --chown=node:node --from=build /app/docker/prod/docker_entrypoint.sh /docker_entrypoint.sh
 RUN chmod +x /docker_entrypoint.sh

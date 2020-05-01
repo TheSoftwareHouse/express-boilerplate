@@ -4,7 +4,7 @@ function createCacheKey(target: Object, args: any[]) {
   const cacheKey = `Queries:${target.constructor.name}`;
   const arg = args[0];
   return `${cacheKey}:${Object.keys(arg)
-    .map(key => arg[key])
+    .map((key) => arg[key])
     .join("_")}`;
 }
 

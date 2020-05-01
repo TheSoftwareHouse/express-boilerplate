@@ -35,7 +35,7 @@ const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, res: Resp
         // query props
       }),
     )
-    .then(queryResult => {
+    .then((queryResult) => {
       res.json(queryResult.result);
     })
     .catch(next);

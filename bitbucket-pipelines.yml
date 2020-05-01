@@ -1,4 +1,4 @@
-image: qh4r/pipelines:latest
+image: tshio/node-pipelines:latest
 
 pipelines:
   default:

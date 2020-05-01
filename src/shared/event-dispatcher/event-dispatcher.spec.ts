@@ -57,7 +57,7 @@ describe("event dispatcher", () => {
       },
     };
 
-    dispatcher.subscribe("test", async event => {
+    dispatcher.subscribe("test", async (event) => {
       deepEqual(event, stubEvent);
     });
 
@@ -68,7 +68,7 @@ describe("event dispatcher", () => {
     dispatcher.dispatch(stubEvent);
   });
 
-  it("it support async operations", done => {
+  it("it support async operations", (done) => {
     const dispatcher = new EventDispatcher(winstonLogger);
 
     const stubEvent = {
@@ -80,7 +80,7 @@ describe("event dispatcher", () => {
       },
     };
 
-    dispatcher.subscribe("testAsync", async event => {
+    dispatcher.subscribe("testAsync", async (event) => {
       await delay(10);
       deepEqual(event, stubEvent);
       done();
@@ -89,7 +89,7 @@ describe("event dispatcher", () => {
     dispatcher.dispatch(stubEvent);
   });
 
-  it("Error thrown by a Subscriber should not block the execution of any further Subscriber", done => {
+  it("Error thrown by a Subscriber should not block the execution of any further Subscriber", (done) => {
     const dispatcher = new EventDispatcher(winstonLogger);
 
     dispatcher.addSubscriber(stubSubscriber);

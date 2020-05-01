@@ -33,7 +33,7 @@ export class EventDispatcher {
   }
 
   public addSubscribers(subscribers: EventSubscriberInterface[]) {
-    subscribers.forEach(subscriber => this.addSubscriber(subscriber));
+    subscribers.forEach((subscriber) => this.addSubscriber(subscriber));
   }
 
   public addSubscriber(subscriber: EventSubscriberInterface) {
@@ -53,9 +53,9 @@ export class EventDispatcher {
     this.logger.debug(`Dispatching event ${event.name}@${JSON.stringify(event.payload)}`);
 
     const promises = this.subscribers
-      .filter(s => s.name === event.name)
+      .filter((s) => s.name === event.name)
       .map(({ subscriber }) =>
-        subscriber(event).catch(e => this.logger.debug(`Subscriber failed to handle event ${event.name}`, e)),
+        subscriber(event).catch((e) => this.logger.debug(`Subscriber failed to handle event ${event.name}`, e)),
       );
 
     await Promise.all(promises);
