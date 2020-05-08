@@ -6,7 +6,7 @@
   "env": {
     "mocha": true
   },
-  "plugins": ["prettier", "unicorn", "@typescript-eslint"],
+  "plugins": ["prettier", "unicorn", "no-only-tests", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -28,11 +28,13 @@
     "object-literal-sort-keys": "off",
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["propertyDesciptor", "handlers"]}],
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-only-tests/no-only-tests": "error",
     "unicorn/filename-case": [
       "error",
       {
         "case": "kebabCase"
       }
-    ]
+    ],
+    "curly": "error"
   }
 }

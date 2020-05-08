@@ -27,6 +27,8 @@ services:
 
   js:
     image: app:local
+    env_file: 
+      - .env.dist
     depends_on:
       - postgres
       - redis
