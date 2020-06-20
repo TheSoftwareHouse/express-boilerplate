@@ -1,6 +1,6 @@
 import * as express from "express";
 
-export interface RoutingProps {
+export interface RoutingDependencies {
   usersRouting: express.Router;
   // ROUTES_INTERFACE
 }
@@ -8,7 +8,7 @@ export interface RoutingProps {
 export const createRouter = ({
   usersRouting,
   // ROUTES_DEPENDENCIES
-}: RoutingProps) => {
+}: RoutingDependencies) => {
   const router = express.Router();
 
   router.use("/users", usersRouting);

@@ -4,10 +4,10 @@ function createGroupKeys(handlers: any[]) {
   return handlers.map((handler) => `Queries:${handler.name}:*`);
 }
 
-export interface FlushCachedQueriesProps {
+export interface FlushCachedQueriesDependencies {
   handlers: any[];
 }
 
-export function FlushCachedQueries({ handlers }: FlushCachedQueriesProps) {
+export function FlushCachedQueries({ handlers }: FlushCachedQueriesDependencies) {
   return FlushGroupKey(createGroupKeys(handlers));
 }

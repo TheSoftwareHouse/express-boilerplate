@@ -3,7 +3,7 @@ import { celebrate, Joi } from "celebrate";
 import { QueryBus } from "../../../../shared/query-bus";
 import { UsersQuery } from "../queries/users";
 
-export interface UsersActionProps {
+export interface UsersActionDependencies {
   queryBus: QueryBus;
 }
 
@@ -28,7 +28,7 @@ export const usersActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const usersAction = ({ queryBus }: UsersActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const usersAction = ({ queryBus }: UsersActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
     .execute(
       new UsersQuery({

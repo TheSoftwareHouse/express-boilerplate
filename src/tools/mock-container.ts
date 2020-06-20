@@ -1,7 +1,7 @@
 import { AwilixContainer, GlobWithOptions } from "awilix";
 import { LoadModulesOptions } from "awilix/lib/load-modules";
 
-export interface MockContainerProps {
+export interface MockContainerDependencies {
   config: { [key: string]: any };
   realContainer: AwilixContainer;
 }
@@ -33,7 +33,7 @@ export class MockContainer implements AwilixContainer {
 
   realContainer: AwilixContainer;
 
-  constructor({ config, realContainer }: MockContainerProps) {
+  constructor({ config, realContainer }: MockContainerDependencies) {
     this.config = config;
     this.realContainer = realContainer;
 
