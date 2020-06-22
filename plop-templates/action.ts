@@ -9,11 +9,11 @@ import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.comma
 {{/eq}}
 
 {{#eq method "get"}}
-export interface {{pascalCase name}}ActionProps {
+export interface {{pascalCase name}}ActionDependencies {
   queryBus: QueryBus;
 }
 {{else}}
-export interface {{pascalCase name}}ActionProps {
+export interface {{pascalCase name}}ActionDependencies {
   commandBus: CommandBus;
 }
 {{/eq}}
@@ -40,7 +40,7 @@ export const {{camelCase name}}ActionValidation = celebrate(
  *         description: Internal Server Error
  */
 {{#eq method "get"}}
-const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   queryBus
     .execute(
       new {{pascalCase name}}Query({

@@ -1,7 +1,7 @@
 import { Event, EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
 import { Logger } from "../../../../shared/logger";
 
-type EmailEventSubscriberProps = {
+type EmailEventSubscriberDependencies = {
   logger: Logger;
 };
 
@@ -9,7 +9,7 @@ type EmailEventSubscriberProps = {
  * Example subscriber
  */
 export default class EmailEventSubscriber implements EventSubscriberInterface {
-  public constructor(private dependencies: EmailEventSubscriberProps) {}
+  public constructor(private dependencies: EmailEventSubscriberDependencies) {}
 
   /**
    * Register events and listeners

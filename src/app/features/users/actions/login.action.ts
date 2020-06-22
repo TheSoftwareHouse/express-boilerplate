@@ -3,7 +3,7 @@ import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
 
-export interface LoginActionProps {
+export interface LoginActionDependencies {
   commandBus: CommandBus;
 }
 
@@ -48,7 +48,7 @@ export const loginActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const loginAction = ({ commandBus }: LoginActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const loginAction = ({ commandBus }: LoginActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
     .execute(
       new LoginCommand({

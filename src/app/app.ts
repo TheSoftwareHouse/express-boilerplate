@@ -9,7 +9,7 @@ import { NotFoundError } from "../errors/not-found.error";
 import { CommandBus } from "../shared";
 import { QueryBus } from "../shared";
 
-export interface AppProps {
+export interface AppDependencies {
   router: express.Router;
   errorHandler: MiddlewareType;
   graphQLSchema: string;
@@ -18,7 +18,7 @@ export interface AppProps {
   resolvers: any;
 }
 
-function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, resolvers }: AppProps) {
+function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, resolvers }: AppDependencies) {
   const typeDefs = gql(graphQLSchema);
 
   const app = express();

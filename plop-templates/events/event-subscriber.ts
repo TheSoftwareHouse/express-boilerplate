@@ -1,9 +1,9 @@
 import { Event, EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
 
-type {{pascalCase name}}EventSubscriberProps = {}
+type {{pascalCase name}}EventSubscriberDependencies = {}
 
 export default class {{ pascalCase name}}EventSubscriber implements EventSubscriberInterface {
-  public constructor(private dependencies: {{pascalCase name}}EventSubscriberProps) {}
+  public constructor(private dependencies: {{pascalCase name}}EventSubscriberDependencies) {}
   /**
    * Register events and listeners
    * @example
