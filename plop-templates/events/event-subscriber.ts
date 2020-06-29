@@ -1,9 +1,17 @@
-import { Event, EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
+import { EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
+import { Logger } from "../../../../shared/logger";
+import {{pascalCase name}}Event from "../events/{{kebabCase name}}.event"
 
-type {{pascalCase name}}EventSubscriberDependencies = {}
+type {{pascalCase name}}EventSubscriberDependencies = {
+  logger: Logger;
+};
 
-export default class {{ pascalCase name}}EventSubscriber implements EventSubscriberInterface {
+/**
+ * Example subscriber
+ */
+export default class {{pascalCase name}}EventSubscriber implements EventSubscriberInterface {
   public constructor(private dependencies: {{pascalCase name}}EventSubscriberDependencies) {}
+
   /**
    * Register events and listeners
    * @example
@@ -12,6 +20,10 @@ export default class {{ pascalCase name}}EventSubscriber implements EventSubscri
    * ]
    */
   getSubscribedEvents(): EventSubscribersMeta[] {
-    throw new Error("Method not implemented.");
+    return [{ name: {{pascalCase name}}Event.getName, method: "log{{pascalCase name}}" }];
+  }
+
+  public async log{{pascalCase name}}(event: {{pascalCase name}}Event) {
+    this.dependencies.logger.info("{{pascalCase name}} event logged", event.payload);
   }
 }

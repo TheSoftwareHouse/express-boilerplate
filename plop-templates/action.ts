@@ -53,7 +53,7 @@ const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionDepende
     .catch(next);
 };
 {{else}}
-const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionProps) => (req: Request, res: Response, next: NextFunction) => {
+const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
   commandBus
     .execute(
       new {{pascalCase name}}Command({
