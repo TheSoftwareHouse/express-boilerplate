@@ -6,10 +6,10 @@ const DIRECTORIES_BLACKLIST = ["services", "repositories", "read-models", "manag
 
 const NAME_REGEX = /[^\/]+$/;
 
-const isDirectory = source => lstatSync(source).isDirectory();
-const getDirectories = source =>
+const isDirectory = (source) => lstatSync(source).isDirectory();
+const getDirectories = (source) =>
   readdirSync(source)
-    .map(name => path.join(source, name))
+    .map((name) => path.join(source, name))
     .filter(isDirectory);
 
 const routesLocation = path.join(__dirname, "src/app");
@@ -17,11 +17,11 @@ const containerLocation = path.join(__dirname, "src/container.ts");
 const graphqlResolverLocation = path.join(__dirname, "src/graphql/resolvers/index.ts");
 
 const directories = getDirectories(`${routesLocation}/features`).filter(
-  name => !DIRECTORIES_BLACKLIST.includes(NAME_REGEX.exec(name)[0]),
+  (name) => !DIRECTORIES_BLACKLIST.includes(NAME_REGEX.exec(name)[0]),
 );
 
-const isNotEmptyFor = name => {
-  return value => {
+const isNotEmptyFor = (name) => {
+  return (value) => {
     if (!value.trim()) return name + " is required";
     return true;
   };
@@ -51,6 +51,12 @@ const createCommand = {
   type: "add",
   path: "{{module}}/commands/{{kebabCase name}}.command.ts",
   templateFile: "plop-templates/command.ts",
+};
+
+const createEvent = {
+  type: "add",
+  path: "{{module}}/events/{{kebabCase name}}.event.ts",
+  templateFile: "plop-templates/events/event.ts",
 };
 
 const createQuery = [
@@ -274,6 +280,10 @@ const setupModuleStructure = [
   },
   {
     type: "makeDir",
+    configProp: "events",
+  },
+  {
+    type: "makeDir",
     configProp: "actions",
   },
   {
@@ -288,10 +298,10 @@ const moduleListPrompt = {
   name: "module",
   message: "What is your feature name?",
   default: directories[0],
-  choices: directories.map(name => ({ name: NAME_REGEX.exec(name)[0], value: name })),
+  choices: directories.map((name) => ({ name: NAME_REGEX.exec(name)[0], value: name })),
 };
 
-const textPrompt = name => ({
+const textPrompt = (name) => ({
   type: "input",
   name: "name",
   message: `What is your ${name} name?`,
@@ -312,40 +322,40 @@ const methodPrompt = {
   ],
 };
 
-module.exports = plop => {
-  plop.setActionType("makeDir", function(answers, { configProp }) {
+module.exports = (plop) => {
+  plop.setActionType("makeDir", function (answers, { configProp }) {
     const absolutePath = path.join(`${routesLocation}/features`, kebabCase(answers.name), configProp);
     return mkdirSync(absolutePath);
   });
 
-  plop.setHelper("eq", function(arg1, arg2, options) {
+  plop.setHelper("eq", function (arg1, arg2, options) {
     return arg1 === arg2 ? options.fn(this) : options.inverse(this);
   });
 
-  plop.setHelper("capitalize", function(text) {
+  plop.setHelper("capitalize", function (text) {
     return typeof text === "string" ? text.charAt(0).toUpperCase() + text.slice(1) : text;
   });
 
-  plop.setHelper("uppercase", function(text) {
+  plop.setHelper("uppercase", function (text) {
     return typeof text === "string" ? text.toUpperCase() : text;
   });
 
-  plop.setHelper("downcase", function(text) {
+  plop.setHelper("downcase", function (text) {
     return typeof text === "string" ? text.toLowerCase() : text;
   });
 
-  plop.setHelper("getModuleName", function(text) {
+  plop.setHelper("getModuleName", function (text) {
     return typeof text === "string" ? text.split("/").reverse()[0] : text;
   });
 
-  plop.setHelper("getName", function(text) {
+  plop.setHelper("getName", function (text) {
     const name = NAME_REGEX.exec(text);
     return !!name[0] ? name[0] : text;
   });
 
   plop.setGenerator("action+command+handler", {
     prompts: [moduleListPrompt, textPrompt("action+command+handler"), methodPrompt],
-    actions: [createAction, ...updateModuleRouter, createCommand, ...createCommandHandler],
+    actions: [createAction, ...updateModuleRouter, createCommand, createEvent, ...createCommandHandler],
   });
 
   plop.setGenerator("action+query+handler", {

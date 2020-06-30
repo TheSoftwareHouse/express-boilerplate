@@ -1,9 +1,9 @@
 import { Logger } from "../logger";
 
-export type Event = {
+export interface Event {
   name: string;
   payload: {};
-};
+}
 
 export type EventSubscribersMeta = { name: string; method: string };
 
