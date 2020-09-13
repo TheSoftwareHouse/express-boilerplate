@@ -1,99 +1,43 @@
 import * as awilix from "awilix";
-import { readFileSync } from "fs";
-import { resolve } from "path";
-import { AwilixContainer, Lifetime, Resolver } from "awilix";
+import { AwilixContainer } from "awilix";
 import { Application } from "express";
 import * as http from "http";
-import { createConnection, ConnectionOptions } from "typeorm";
-import { makeApiConfig } from "../config/services";
+import { Connection } from "typeorm";
 import { createApp } from "./app/app";
-import { createRouter } from "./app/router";
-import { errorHandler } from "./middleware/error-handler";
-import { CommandBus } from "./shared/command-bus";
-import { winstonLogger } from "./shared/logger";
-import { QueryBus } from "./shared/query-bus";
-import { EventDispatcher } from "./shared/event-dispatcher";
-// MODELS_IMPORTS
+import { appConfigFactory, AppConfig } from "../config/app";
 
-import { usersRouting } from "./app/features/users/routing";
-// ROUTING_IMPORTS
+import { registerCommonDependencies } from "./container/common";
+import { registerDatabase } from "./container/database";
+import { loadEnvs } from "../config/env";
+import { registerMiddlewares } from "./container/middlewares";
+import { registerQueryHandlers } from "./container/query-handlers";
+import { registerCommandHandlers } from "./container/command-handlers";
+import { registerRouting } from "./container/routing";
+import { registerSubscribers } from "./container/subscribers";
+import { registerGraphQLDependencies } from "./container/graphql";
 
-import LoginCommandHandler from "./app/features/users/handlers/login.handler";
-import UsersQueryHandler from "./app/features/users/query-handlers/users.query.handler";
-import DeleteUserCommandHandler from "./app/features/users/handlers/delete-user.handler";
-// HANDLERS_IMPORTS
+loadEnvs();
 
-import EmailEventSubscriber from "./app/features/users/subscribers/email.subscriber";
-// SUBSCRIBERS_IMPORTS
-
-import { cacheClient } from "./tools/cache-client";
-import * as db from "../config/db";
-import { createResolvers } from "./graphql/resolvers";
-
-const config = makeApiConfig();
-
-function asArray<T>(resolvers: Resolver<T>[]): Resolver<T[]> {
-  return {
-    resolve: (container: AwilixContainer) => resolvers.map((r: Resolver<T>) => container.build(r))
-  };
+export interface ContainerDependencies {
+  connection?: Connection;
+  appConfig?: AppConfig;
 }
 
-export async function createContainer(): Promise<AwilixContainer> {
+export async function createContainer(dependencies?: ContainerDependencies): Promise<AwilixContainer> {
+  const appConfig = dependencies?.appConfig ? dependencies.appConfig : appConfigFactory(process.env);
+  
   const container: AwilixContainer = awilix.createContainer({
     injectionMode: awilix.InjectionMode.PROXY,
   });
 
-  container.register({
-    cacheClient: awilix.asValue(cacheClient)
-  });
-
-  const dbConnection = await createConnection(db as ConnectionOptions);
-  await dbConnection.runMigrations();
-
-  container.register({
-    port: awilix.asValue(config.port),
-    logger: awilix.asValue(winstonLogger),
-  });
-
-  container.loadModules([ 
-    "src/**/*.action.ts",
-    "src/**/*.action.js"
-  ], {
-    formatName: "camelCase",
-    resolverOptions: {
-      lifetime: Lifetime.SCOPED,
-      register: awilix.asFunction,
-    },
-  });
-
-  container.register({
-    usersRouting: awilix.asFunction(usersRouting),
-    // ROUTING_SETUP
-  });
-
-  container.register({
-    graphQLSchema: awilix.asValue(readFileSync(resolve("..", "graphql", "schema.gql"), "utf8")),
-    resolvers: awilix.asFunction(createResolvers),
-    errorHandler: awilix.asFunction(errorHandler),
-    router: awilix.asFunction(createRouter),
-    queryBus: awilix.asClass(QueryBus).classic().singleton(),
-    eventSubscribers: asArray<any>([
-      awilix.asClass(EmailEventSubscriber),
-      // SUBSCRIBERS_SETUP
-    ]),
-    eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
-    commandHandlers: asArray<any>([
-      awilix.asClass(LoginCommandHandler),
-      awilix.asClass(DeleteUserCommandHandler),
-      // COMMAND_HANDLERS_SETUP
-    ]),
-    commandBus: awilix.asClass(CommandBus).classic().singleton(),
-    queryHandlers: asArray<any>([
-      awilix.asClass(UsersQueryHandler),
-      // QUERY_HANDLERS_SETUP
-    ]),
-    // MODELS_SETUP
-  });
+  await registerCommonDependencies(appConfig, container);
+  await registerDatabase(container, dependencies);
+  await registerMiddlewares(container);
+  await registerQueryHandlers(container);
+  await registerCommandHandlers(container);
+  await registerRouting(container);
+  await registerGraphQLDependencies(container);
+  await registerSubscribers(container);
 
   container.register({
     app: awilix.asFunction(createApp).singleton(),

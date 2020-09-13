@@ -13,7 +13,11 @@ const getDirectories = (source) =>
     .filter(isDirectory);
 
 const routesLocation = path.join(__dirname, "src/app");
-const containerLocation = path.join(__dirname, "src/container.ts");
+const commandHandlersLocation = path.join(__dirname, "src/container/command-handlers.ts");
+const queryHandlersLocation = path.join(__dirname, "src/container/query-handlers.ts");
+const routingLocation = path.join(__dirname, "src/container/routing.ts");
+const databaseLocation = path.join(__dirname, "src/container/database.ts");
+const subscribersLocation = path.join(__dirname, "src/container/subscribers.ts");
 const graphqlResolverLocation = path.join(__dirname, "src/graphql/resolvers/index.ts");
 
 const directories = getDirectories(`${routesLocation}/features`).filter(
@@ -85,14 +89,14 @@ const createCommandHandler = [
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: commandHandlersLocation,
     pattern: /(\/\/ HANDLERS_IMPORTS)/,
     template:
-      'import {{pascalCase name}}CommandHandler from "./app/features/{{ getModuleName module }}/handlers/{{kebabCase name}}.handler";\n$1',
+      'import {{pascalCase name}}CommandHandler from "../app/features/{{ getModuleName module }}/handlers/{{kebabCase name}}.handler";\n$1',
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: commandHandlersLocation,
     pattern: /(\/\/ COMMAND_HANDLERS_SETUP)/,
     template: "awilix.asClass({{pascalCase name}}CommandHandler),\n      $1",
   },
@@ -106,14 +110,14 @@ const createQueryHandler = [
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: queryHandlersLocation,
     pattern: /(\/\/ HANDLERS_IMPORTS)/,
     template:
-      'import {{pascalCase name}}QueryHandler from "./app/features/{{ getModuleName module }}/query-handlers/{{kebabCase name}}.query.handler";\n$1',
+      'import {{pascalCase name}}QueryHandler from "../app/features/{{ getModuleName module }}/query-handlers/{{kebabCase name}}.query.handler";\n$1',
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: queryHandlersLocation,
     pattern: /(\/\/ QUERY_HANDLERS_SETUP)/,
     template: "awilix.asClass({{pascalCase name}}QueryHandler),\n      $1",
   },
@@ -145,14 +149,14 @@ const createEventSubscriber = [
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: subscribersLocation,
     pattern: /(\/\/ SUBSCRIBERS_IMPORTS)/,
     template:
-      'import {{pascalCase name}}EventSubscriber from "./app/features/{{ getModuleName module }}/subscribers/{{kebabCase name}}.subscriber";\n$1',
+      'import {{pascalCase name}}EventSubscriber from "../app/features/{{ getModuleName module }}/subscribers/{{kebabCase name}}.subscriber";\n$1',
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: subscribersLocation,
     pattern: /(\/\/ SUBSCRIBERS_SETUP)/,
     template: "awilix.asClass({{pascalCase name}}EventSubscriber),\n      $1",
   },
@@ -182,13 +186,13 @@ const updateRootRouter = [
 const updateContainerRoutes = [
   {
     type: "modify",
-    path: containerLocation,
+    path: routingLocation,
     pattern: /(\/\/ ROUTING_IMPORTS)/,
-    template: 'import { {{camelCase name}}Routing } from "./app/features/{{kebabCase name}}/routing";\n$1',
+    template: 'import { {{camelCase name}}Routing } from "../app/features/{{kebabCase name}}/routing";\n$1',
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: routingLocation,
     pattern: /(\/\/ ROUTING_SETUP)/,
     template: "{{camelCase name}}Routing: awilix.asFunction({{camelCase name}}Routing),\n  $1",
   },
@@ -197,14 +201,14 @@ const updateContainerRoutes = [
 const updateContainerModels = [
   {
     type: "modify",
-    path: containerLocation,
+    path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
       'import { {{pascalCase name}}Model } from "./app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
   },
   {
     type: "modify",
-    path: containerLocation,
+    path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
     template:
       "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",

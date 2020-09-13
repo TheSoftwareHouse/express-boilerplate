@@ -48,17 +48,18 @@ export const loginActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const loginAction = ({ commandBus }: LoginActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
-  commandBus
-    .execute(
-      new LoginCommand({
-        authToken: req.body.authToken,
-      }),
-    )
-    .then((commandResult) => {
-      res.json(commandResult);
-    })
-    .catch(next);
+const loginAction = ({ commandBus }: LoginActionDependencies) => async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const result = await commandBus.execute(
+    new LoginCommand({
+      authToken: req.body.authToken,
+    }),
+  );
+
+  return res.json(result);
 };
 
 export default loginAction;
