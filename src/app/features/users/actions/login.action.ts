@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
@@ -48,11 +48,7 @@ export const loginActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const loginAction = ({ commandBus }: LoginActionDependencies) => async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const loginAction = ({ commandBus }: LoginActionDependencies) => async (req: Request, res: Response) => {
   const result = await commandBus.execute(
     new LoginCommand({
       authToken: req.body.authToken,

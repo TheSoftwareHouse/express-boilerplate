@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 {{#eq method "get"}}
 import { QueryBus } from "../../../../shared/query-bus";
@@ -40,30 +40,23 @@ export const {{camelCase name}}ActionValidation = celebrate(
  *         description: Internal Server Error
  */
 {{#eq method "get"}}
-const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
-  queryBus
-    .execute(
-      new {{pascalCase name}}Query({
-        // query props
-      }),
-    )
-    .then(queryResult => {
-      res.json(queryResult.result)
-    })
-    .catch(next);
+const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionDependencies) => async (req: Request, res: Response) => {
+  const queryResult = await queryBus.execute(
+    new {{pascalCase name}}Query({
+      // query props
+    }),
+  );
+  return res.json(queryResult.result);
 };
 {{else}}
-const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
-  commandBus
-    .execute(
-      new {{pascalCase name}}Command({
+const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionDependencies) => async (req: Request, res: Response) => {
+  const commandResult = await commandBus.execute(
+    new {{pascalCase name}}Command({
       // command props
-      }),
-    )
-    .then(commandResult => {
-      res.json(commandResult.result);
-    })
-    .catch(next);
+    }),
+  );
+
+  return res.json(commandResult.result);
 };
 {{/eq}}
 export default {{camelCase name}}Action;
