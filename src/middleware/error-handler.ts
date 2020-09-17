@@ -19,22 +19,25 @@ export const celebrateToValidationError = (errors: any): { [key: string]: Transl
   return Object.assign.apply({}, errorsArray);
 };
 
-export const errorHandler = ({ logger }: { logger: Logger }) => <T>(
-  err: Error,
-  req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
+export const errorHandler = ({
+  logger,
+  restrictFromProduction,
+}: {
+  logger: Logger;
+  restrictFromProduction: Function;
+}) => <T>(err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.error(err.toString());
 
   if (isCelebrate(err)) {
     try {
       return res.status(BAD_REQUEST).json({
         error: celebrateToValidationError(err),
+        stack: restrictFromProduction(err.stack),
       });
     } catch (e) {
       return res.status(INTERNAL_SERVER_ERROR).json({
         error: new Translation("error.validation.parse"),
+        stack: restrictFromProduction(err.stack),
       });
     }
   }
@@ -42,17 +45,19 @@ export const errorHandler = ({ logger }: { logger: Logger }) => <T>(
   if (err instanceof HttpError) {
     return res.status(err.status).json({
       error: new Translation(err.message),
+      stack: restrictFromProduction(err.stack),
     });
   }
 
   if (err instanceof AppError) {
     return res.status(INTERNAL_SERVER_ERROR).json({
       error: new Translation(err.message),
+      stack: restrictFromProduction(err.stack),
     });
   }
 
   return res.status(INTERNAL_SERVER_ERROR).json({
     error: new Translation("error.unknown"),
-    stack: err.stack,
+    stack: restrictFromProduction(err.stack),
   });
 };

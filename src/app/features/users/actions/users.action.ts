@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { QueryBus } from "../../../../shared/query-bus";
 import { UsersQuery } from "../queries/users";
@@ -28,17 +28,13 @@ export const usersActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const usersAction = ({ queryBus }: UsersActionDependencies) => (req: Request, res: Response, next: NextFunction) => {
-  queryBus
-    .execute(
-      new UsersQuery({
-        // query props
-      }),
-    )
-    .then((queryResult) => {
-      res.json(queryResult.result);
-    })
-    .catch(next);
+const usersAction = ({ queryBus }: UsersActionDependencies) => async (req: Request, res: Response) => {
+  const queryResult = await queryBus.execute(
+    new UsersQuery({
+      // query props
+    }),
+  );
+  return res.json(queryResult.result);
 };
 
 export default usersAction;
