@@ -1,3 +1,4 @@
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { loadEnvs } from "./env";
 
 loadEnvs();
@@ -12,6 +13,7 @@ const createDbConfigFromEnvs = (env: any) => ({
   cli: {
     migrationsDir: "src/migrations",
   },
+  namingStrategy: new SnakeNamingStrategy(),
 });
 
 const config = createDbConfigFromEnvs(process.env);
