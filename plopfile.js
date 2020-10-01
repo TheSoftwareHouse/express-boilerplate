@@ -204,7 +204,7 @@ const updateContainerModels = [
     path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{pascalCase name}}Model } from "./app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
+      'import { {{pascalCase name}}Model } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
   },
   {
     type: "modify",
