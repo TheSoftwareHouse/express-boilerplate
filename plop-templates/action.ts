@@ -7,6 +7,7 @@ import { {{pascalCase name}}Query } from "../queries/{{kebabCase name}}";
 import { CommandBus } from "../../../../shared/command-bus";
 import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
 {{/eq}}
+import { Action } from "../../../../shared/http/types";
 
 {{#eq method "get"}}
 export interface {{pascalCase name}}ActionDependencies {
@@ -40,23 +41,32 @@ export const {{camelCase name}}ActionValidation = celebrate(
  *         description: Internal Server Error
  */
 {{#eq method "get"}}
-const {{camelCase name}}Action = ({ queryBus }: {{pascalCase name}}ActionDependencies) => async (req: Request, res: Response) => {
-  const queryResult = await queryBus.execute(
-    new {{pascalCase name}}Query({
-      // query props
-    }),
-  );
-  return res.json(queryResult.result);
-};
-{{else}}
-const {{camelCase name}}Action = ({ commandBus }: {{pascalCase name}}ActionDependencies) => async (req: Request, res: Response) => {
-  const commandResult = await commandBus.execute(
-    new {{pascalCase name}}Command({
-      // command props
-    }),
-  );
+class {{pascalCase name}}Action implements Action {
+  constructor(private dependencies: {{pascalCase name}}ActionDependencies) {}
 
-  return res.json(commandResult.result);
-};
+  async invoke(req: Request, res: Response) {
+    const queryResult = await this.dependencies.queryBus.execute(
+      new {{pascalCase name}}Query({
+        // query props
+      }),
+    );
+
+    res.json(queryResult.result);
+  }
+}
+{{else}}
+class {{pascalCase name}}Action implements Action {
+  constructor(private dependencies: {{pascalCase name}}ActionDependencies) {}
+
+  async invoke({ body }: Request, res: Response) {
+    const commandResult = await this.dependencies.commandBus.execute(
+      new {{pascalCase name}}Command({
+        // command props
+      }),
+    );
+
+    return res.json(commandResult.result);
+  }
+}
 {{/eq}}
-export default {{camelCase name}}Action;
+export default {{pascalCase name}}Action;

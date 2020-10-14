@@ -259,13 +259,13 @@ const updateModuleRouter = [
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ ACTIONS_SETUP)/,
     template:
-      'router.{{method}}("/{{kebabCase name}}", [{{camelCase name}}ActionValidation], actions.{{camelCase name}}Action);\n  $1',
+      'router.{{method}}("/{{kebabCase name}}", [{{camelCase name}}ActionValidation], actions.{{camelCase name}}Action.invoke.bind(actions.{{camelCase name}}Action));\n  $1',
   },
   {
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ ACTIONS_IMPORTS)/,
-    template: "{{camelCase name}}Action: express.RequestHandler;\n  $1",
+    template: "{{camelCase name}}Action: Action;\n  $1",
   },
 ];
 

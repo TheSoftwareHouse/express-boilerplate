@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
+import { Action } from "../../../../shared/http/types";
 
 export interface LoginActionDependencies {
   commandBus: CommandBus;
@@ -48,14 +49,18 @@ export const loginActionValidation = celebrate(
  *       500:
  *         description: Internal Server Error
  */
-const loginAction = ({ commandBus }: LoginActionDependencies) => async (req: Request, res: Response) => {
-  const result = await commandBus.execute(
-    new LoginCommand({
-      authToken: req.body.authToken,
-    }),
-  );
+class LoginAction implements Action {
+  constructor(private dependencies: LoginActionDependencies) {}
 
-  return res.json(result);
-};
+  async invoke({ body }: Request, res: Response) {
+    const result = await this.dependencies.commandBus.execute(
+      new LoginCommand({
+        authToken: body.authToken,
+      }),
+    );
 
-export default loginAction;
+    res.json(result);
+  }
+}
+
+export default LoginAction;
