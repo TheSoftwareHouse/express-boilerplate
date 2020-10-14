@@ -22,3 +22,4 @@ RUN npm ci && npm cache clean --force && \
 COPY . .
 RUN npm run build
 COPY .env.dist ./build/.env.dist
+COPY ./swagger ./swagger

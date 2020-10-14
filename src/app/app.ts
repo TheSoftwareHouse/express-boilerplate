@@ -1,13 +1,13 @@
 import * as express from "express";
 import * as helmet from "helmet";
 import * as cors from "cors";
-import * as swaggerUi from "swagger-ui-express";
+import * as swagger from "swagger-express-ts";
 import { ApolloServer, gql } from "apollo-server-express";
-import jsdoc from "../tools/swagger";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
 import { CommandBus } from "../shared";
 import { QueryBus } from "../shared";
+import { name, version, description } from "../../package.json";
 
 export interface AppDependencies {
   router: express.Router;
@@ -42,8 +42,19 @@ function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, 
     });
   });
 
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(jsdoc));
-  app.get("/api-docs.json", (req, res) => res.json(jsdoc));
+  app.use("/api-docs", express.static("../swagger"));
+  app.use("/api-docs/swagger/assets", express.static("../node_modules/swagger-ui-dist"));
+  app.use(
+    swagger.express({
+      definition: {
+        info: {
+          title: name,
+          version,
+          description,
+        },
+      },
+    }),
+  );
   app.use("/api", router);
 
   apolloServer.applyMiddleware({ app });
