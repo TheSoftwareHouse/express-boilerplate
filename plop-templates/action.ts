@@ -65,7 +65,7 @@ class {{pascalCase name}}Action implements Action {
       }),
     );
 
-    return res.json(commandResult.result);
+    res.json(commandResult.result);
   }
 }
 {{/eq}}
