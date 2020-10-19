@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
@@ -17,41 +18,38 @@ export const loginActionValidation = celebrate(
   { abortEarly: false },
 );
 
-/**
- * @swagger
- *
- * /api/users/login:
- *   post:
- *     security: []
- *     summary: login to app
- *     requestBody:
- *       content:
- *         application/json:
- *          schema:
- *            type: object
- *            properties:
- *              authToken:
- *                type: string
- *     responses:
- *       200:
- *        description: auth success
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                accessToken:
- *                  type: string
- *                refreshToken:
- *                  type: string
- *       400:
- *         description: Validation Error
- *       500:
- *         description: Internal Server Error
- */
+@ApiPath({
+  path: "/api",
+  name: "Users",
+})
 class LoginAction implements Action {
   constructor(private dependencies: LoginActionDependencies) {}
 
+  @ApiOperationPost({
+    path: "/users/login",
+    description: "Login users",
+    parameters: {
+      body: {
+        properties: {
+          authToken: {
+            type: "string",
+            required: true,
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        description: "Success",
+      },
+      400: {
+        description: "Validation error",
+      },
+      500: {
+        description: "Internal Server Error",
+      },
+    },
+  })
   async invoke({ body }: Request, res: Response) {
     const result = await this.dependencies.commandBus.execute(
       new LoginCommand({

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { ApiOperationGet, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
 import { QueryBus } from "../../../../shared/query-bus";
 import { UsersQuery } from "../queries/users";
@@ -15,23 +16,28 @@ export const usersActionValidation = celebrate(
   { abortEarly: false },
 );
 
-/**
- * @swagger
- *
- * /api/users/users:
- *   get:
- *     description: desc
- *     responses:
- *       201:
- *         description: desc
- *       400:
- *         description: Validation Error
- *       500:
- *         description: Internal Server Error
- */
+@ApiPath({
+  path: "/api",
+  name: "Users",
+})
 class UsersAction implements Action {
   constructor(private dependencies: UsersActionDependencies) {}
 
+  @ApiOperationGet({
+    path: "/users/users",
+    description: "Login users",
+    responses: {
+      200: {
+        description: "Success",
+      },
+      400: {
+        description: "Validation error",
+      },
+      500: {
+        description: "Internal Server Error",
+      },
+    },
+  })
   async invoke(req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new UsersQuery({
