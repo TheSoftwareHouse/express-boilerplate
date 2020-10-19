@@ -9,7 +9,7 @@ export async function registerRouting(container: AwilixContainer) {
     formatName: "camelCase",
     resolverOptions: {
       lifetime: Lifetime.SCOPED,
-      register: awilix.asFunction,
+      register: awilix.asClass,
     },
   });
 
