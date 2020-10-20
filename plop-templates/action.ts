@@ -67,6 +67,7 @@ class {{pascalCase name}}Action implements Action {
   @ApiOperation{{pascalCase method}}({
     path: "/{{getName module}}/{{kebabCase name}}",
     description: "Description",
+    parameters: {},
     responses: {
       200: {
         description: "Success",
