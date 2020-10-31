@@ -11,3 +11,50 @@ pipelines:
           - npm run docker-build
           - npm run lint
           - npm run units
+
+  custom:
+    create-staging:
+      - step:
+          name: create staging environment
+          image: 
+            name: python:3
+          script:
+            - pip install awscli awsebcli
+            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
+            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
+            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
+            - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
+            - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
+            - cd deploy/elastic-beanstalk
+            - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
+            - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
+            - cat Dockerrun.aws.json
+            - eb create staging --database --database.engine postgres --database.password $RDS_DB_PASSWORD --database.username $RDS_DB_USERNAME --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=$APP_NAME --instance_type t2.micro --single
+          services:
+            - docker
+    deploy-backend:
+      - step: 
+          name: build docker image
+          image:
+            name: atlassian/default-image:2
+          script: 
+            - apt-get update && apt-get install awscli -y
+            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
+            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
+            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
+            - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
+            - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
+          services:
+            - docker
+      - step: 
+          name: deploy api
+          image: 
+            name: python:3
+          script:
+            - pip install awscli awsebcli
+            - cd deploy/elastic-beanstalk
+            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
+            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
+            - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
+            - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
+            - eb deploy staging

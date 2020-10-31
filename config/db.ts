@@ -5,7 +5,11 @@ loadEnvs();
 
 const createDbConfigFromEnvs = (env: any) => ({
   type: "postgres",
-  url: env.POSTGRES_URL,
+  host: env.RDS_HOSTNAME,
+  port: env.RDS_PORT,
+  database: env.RDS_DB_NAME,
+  username: env.RDS_USERNAME,
+  password: env.RDS_PASSWORD,
   synchronize: false,
   logging: true,
   entities: ["/app/build/src/**/*.model.js"],

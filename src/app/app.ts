@@ -38,7 +38,7 @@ function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, 
 
   app.get("/health", (req, res) => {
     res.status(200).json({
-      status: "200 - ok",
+      status: "ok",
     });
   });
 
