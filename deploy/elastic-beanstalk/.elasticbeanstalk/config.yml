@@ -1,0 +1,18 @@
+branch-defaults:
+  default:
+    environment: staging
+    group_suffix: null
+global:
+  application_name: express-boilerplate-app
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Multi-container Docker running on 64bit Amazon Linux
+  default_region: eu-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: null
+  workspace_type: Application
