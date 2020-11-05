@@ -1,0 +1,6 @@
+plop-templates
+src/graphql/types/index.ts
+**/*.d.ts
+*.json
+**/migrations/*
+**/plop-templates/*

@@ -1,0 +1,5 @@
+{
+  "trailingComma": "all",
+  "parser": "typescript",
+  "printWidth": 120
+}

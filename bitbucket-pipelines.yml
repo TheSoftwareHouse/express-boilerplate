@@ -1,0 +1,13 @@
+image: tshio/node-pipelines:latest
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        services:
+          - docker
+        script:
+          - npm run docker-build
+          - npm run lint
+          - npm run units

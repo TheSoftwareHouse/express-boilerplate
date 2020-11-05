@@ -1,0 +1,15 @@
+node_modules
+build
+docs
+services/**/build
+packages/**/build
+integration_tests/build
+packages/**/node_modules
+services/**/node_modules
+integration_tests/node_modules
+docker/dev
+resources
+!resources/docker_entrypoint.sh
+deploy
+.git
+.env

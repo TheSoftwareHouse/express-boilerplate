@@ -1,0 +1,73 @@
+version: '3.4'
+
+x-common: &common
+  image: app:local
+  labels:
+    com.app: app
+  networks:
+    - app
+  volumes:
+    - build:/app/build/
+
+services:
+  builder:
+    volumes:
+      - build:/app/build/
+      - .:/app:delegated
+    <<: *common
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      cache_from:
+        - 'app:local'
+        - 'app:${BRANCH_NAME:-ignore}'
+    container_name: app-builder
+    working_dir: /app
+    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck']
+
+  js:
+    image: app:local
+    env_file: 
+      - .env.dist
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - app
+
+  boilerplate_api:
+    <<: *common
+    working_dir: /app/build
+    container_name: boilerplate_api
+    command: [sh, -c, 'node-dev --inspect=0.0.0.0 -r source-map-support/register ./src/index.js']
+    hostname: boilerplate_api
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "1337:1337"
+      - "4000:4000"
+      - 9229:9229
+
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: app
+    networks:
+      - app
+
+  redis: 
+    container_name: redis
+    image: 'redis'
+    ports:
+      - "6379:6379"
+    networks:
+      - app
+
+networks:
+  app:
+
+volumes:
+  build:
