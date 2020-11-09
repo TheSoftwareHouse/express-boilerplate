@@ -1,8 +1,8 @@
 import { Resolvers } from "../types";
 import { CommandBus, QueryBus } from "../../shared";
-import { usersQuery } from "../../app/features/users/graphql/queries/users.query";
+import { usersQuery } from "../../app/features/example/graphql/queries/users.query";
 // QUERY_IMPORTS
-import { deleteUserMutation } from "../../app/features/users/graphql/mutations/delete-user.mutation";
+import { deleteUserMutation } from "../../app/features/example/graphql/mutations/delete-user.mutation";
 // MUTATION_IMPORTS
 
 export type MutationContext = {
