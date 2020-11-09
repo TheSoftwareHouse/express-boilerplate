@@ -26,8 +26,8 @@ class LoginAction implements Action {
   constructor(private dependencies: LoginActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/users/login",
-    description: "Login users",
+    path: "/example/login",
+    description: "Login example",
     parameters: {
       body: {
         properties: {

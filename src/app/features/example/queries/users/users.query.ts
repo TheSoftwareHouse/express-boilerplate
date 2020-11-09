@@ -1,6 +1,6 @@
 import { Query } from "../../../../../shared/query-bus";
 
-export const USERS_QUERY_TYPE = "users/USERS";
+export const USERS_QUERY_TYPE = "example/USERS";
 
 export interface UsersQueryPayload {}
 

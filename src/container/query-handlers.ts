@@ -2,7 +2,7 @@ import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
 import { asArray } from "../shared/awilix-resolvers";
 
-import UsersQueryHandler from "../app/features/users/query-handlers/users.query.handler";
+import UsersQueryHandler from "../app/features/example/query-handlers/users.query.handler";
 // HANDLERS_IMPORTS
 
 export async function registerQueryHandlers(container: AwilixContainer) {

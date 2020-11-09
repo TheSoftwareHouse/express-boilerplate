@@ -1,4 +1,34 @@
+[![Build Status](https://travis-ci.com/TheSoftwareHouse/express-boilerplate.svg?branch=master)](https://travis-ci.com/github/TheSoftwareHouse/express-boilerplate)
+
 # Boilerplate API
+
+A highly scalable and a focus on performance and best practices boilerplate code for Nodejs and TypeScript based web applications.
+
+Start a new application in seconds!
+
+## Features
+
+- Quick scaffolding
+
+  Create actions, routes, and models - right from the CLI using Plop micro-generator framework.
+
+- TypeScript
+
+  The best way to write modern applications. Code is easier to understand. It is now way more difficult to write invalid code as was the case in dynamically typed languages
+
+- Dependency injection
+
+  DI is a central part of any nontrivial application today and is the core of this project.
+
+- Static code analysis
+
+  Focus on writing code, not formatting! Code formatter and linter keeps the code clean which makes work and communication with other developers more effective!
+
+**Note**
+If you have discovered a bug or have a feature suggestion, feel free to create an issue on [Github](https://github.com/TheSoftwareHouse/express-boilerplate/issues).
+
+Don't forget to star or fork this if you liked it.
+
 
 ## Configuration
 
@@ -116,3 +146,9 @@ There are two types of tests:
 
 - integration: `npm run integration`
 - units: `npm run units`
+
+## License
+
+[![license](https://img.shields.io/badge/license-MIT-4dc71f.svg)](https://raw.githubusercontent.com/TheSoftwareHouse/express-boilerplate/main/LICENSE)
+
+This project is licensed under the terms of the [MIT license](/LICENSE).

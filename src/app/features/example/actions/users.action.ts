@@ -24,8 +24,8 @@ class UsersAction implements Action {
   constructor(private dependencies: UsersActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/users/users",
-    description: "Login users",
+    path: "/example/example",
+    description: "Login example",
     responses: {
       200: {
         description: "Success",

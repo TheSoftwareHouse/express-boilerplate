@@ -1,6 +1,6 @@
 import { Command } from "../../../../shared/command-bus";
 
-export const LOGIN_COMMAND_TYPE = "users/LOGIN";
+export const LOGIN_COMMAND_TYPE = "example/LOGIN";
 
 export interface LoginCommandPayload {
   authToken: string;
