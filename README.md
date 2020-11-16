@@ -184,7 +184,8 @@ Security issues, please sent on <a href="mailto:security.opensource@tsh.io"><b>e
 ### **You may also like our other projects:**
 
 - **[RAD Modules Tools](https://github.com/TheSoftwareHouse/rad-modules-tools)**
-- **[RAD Modules](https://github.com/TheSoftwareHouse/rad-modules)**
+- **[Boilerplate API](https://github.com/TheSoftwareHouse/express-boilerplate)**
+- **[Serverless Boilerplate](https://github.com/TheSoftwareHouse/serverless-boilerplate)**
 - **[Kakunin](https://github.com/TheSoftwareHouse/Kakunin)**
 - **[Babelsheet-js](https://github.com/TheSoftwareHouse/babelsheet-js)**
 - **[Fogger](https://github.com/TheSoftwareHouse/fogger)**
