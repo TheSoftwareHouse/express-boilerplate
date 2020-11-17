@@ -27,7 +27,7 @@ services:
 
   js:
     image: app:local
-    env_file: 
+    env_file:
       - .env.dist
     depends_on:
       - postgres
@@ -45,8 +45,8 @@ services:
       - postgres
       - redis
     ports:
-      - "1337:1337"
-      - "4000:4000"
+      - 1337:1337
+      - 4000:4000
       - 9229:9229
 
   postgres:
@@ -58,7 +58,7 @@ services:
     networks:
       - app
 
-  redis: 
+  redis:
     container_name: redis
     image: 'redis'
     ports:

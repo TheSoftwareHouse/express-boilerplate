@@ -1,6 +1,6 @@
 import { Command } from "../../../../shared/command-bus";
 
-export const DELETE_USER_COMMAND_TYPE = "users/DELETE_USER";
+export const DELETE_USER_COMMAND_TYPE = "example/DELETE_USER";
 
 export interface DeleteUserCommandPayload {
   id?: string | null | undefined;
