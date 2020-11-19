@@ -15,6 +15,7 @@ import { registerCommandHandlers } from "./container/command-handlers";
 import { registerRouting } from "./container/routing";
 import { registerSubscribers } from "./container/subscribers";
 import { registerGraphQLDependencies } from "./container/graphql";
+import { registerModules } from "./container/modules";
 
 loadEnvs();
 
@@ -25,7 +26,7 @@ export interface ContainerDependencies {
 
 export async function createContainer(dependencies?: ContainerDependencies): Promise<AwilixContainer> {
   const appConfig = dependencies?.appConfig ? dependencies.appConfig : appConfigFactory(process.env);
-  
+
   const container: AwilixContainer = awilix.createContainer({
     injectionMode: awilix.InjectionMode.PROXY,
   });
@@ -38,6 +39,7 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
   await registerRouting(container);
   await registerGraphQLDependencies(container);
   await registerSubscribers(container);
+  await registerModules(container);
 
   container.register({
     app: awilix.asFunction(createApp).singleton(),
