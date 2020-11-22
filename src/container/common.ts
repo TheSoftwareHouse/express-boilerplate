@@ -14,7 +14,7 @@ export async function registerCommonDependencies(appConfig: AppConfig, container
     logger: awilix.asValue(winstonLogger),
     cacheClient: awilix.asValue(cacheClient),
     appConfig: awilix.asValue(appConfig),
-    router: awilix.asFunction(createRouter),
+    router: awilix.asFunction(createRouter).singleton(),
     queryBus: awilix.asClass(QueryBus).classic().singleton(),
     commandBus: awilix.asClass(CommandBus).classic().singleton(),
     eventDispatcher: awilix.asClass(EventDispatcher).classic().singleton(),
