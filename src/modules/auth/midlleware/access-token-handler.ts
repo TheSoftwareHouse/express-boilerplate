@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { CommandBus } from "../../../shared/command-bus";
 
 export interface AuthMiddlewareDependencies {
@@ -7,16 +7,23 @@ export interface AuthMiddlewareDependencies {
 }
 
 export const authTokenHandlerMiddleware = (dependencies: AuthMiddlewareDependencies) => {
-  return (req: Request, res, next) => {
-    const { authorization = "" } = req.headers;
-    const apiKey = req.headers["x-api-key"];
+  const { securityClient } = dependencies;
 
-    if (apiKey) {
-      res.locals.apiKey = apiKey;
-      return next();
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const { authorization = "" } = req.headers;
+
+    const accessToken = authorization.replace("Bearer ", "");
+
+    const { isAuthenticated } = await securityClient.users.isAuthenticated({ accessToken });
+
+    if (!isAuthenticated) {
+      return res.status(401).json({
+        error: "Unauthorized",
+      });
     }
 
-    res.locals.accessToken = authorization.replace("Bearer ", "");
-    return next();
+    res.locals.accessToken = accessToken;
+
+    next();
   };
 };
