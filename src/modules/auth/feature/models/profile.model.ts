@@ -1,8 +1,12 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
 interface ProfileModelProps {
-  id: string;
-  name: string;
+  username: string;
+}
+
+export interface ProfileModelGeneric extends ProfileModelProps {
+  id?: string;
+  create?(data: Partial<ProfileModelProps>): ProfileModelGeneric;
 }
 
 @Entity({
@@ -19,5 +23,5 @@ export class ProfileModel {
   id: string;
 
   @Column()
-  name: string;
+  username: string;
 }

@@ -1,15 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { Action } from "../../../../shared/http/types";
 
-export interface AuthLoginActionDependencies {
+export interface MeActionDependencies {
   commandBus: CommandBus;
-  securityClient: any;
 }
 
-export const authLoginActionValidation = celebrate(
+export const meActionValidation = celebrate(
   {
     body: Joi.object().keys({
       authToken: Joi.string().required(),
@@ -22,20 +21,16 @@ export const authLoginActionValidation = celebrate(
   path: "/api",
   name: "Auth",
 })
-class AuthLoginAction implements Action {
-  constructor(private dependencies: AuthLoginActionDependencies) {}
+class MeAction implements Action {
+  constructor(private dependencies: MeActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/auth/login",
-    description: "Login example",
+    path: "/auth/me",
+    description: "Profile example",
     parameters: {
       body: {
         properties: {
-          username: {
-            type: "string",
-            required: true,
-          },
-          password: {
+          authToken: {
             type: "string",
             required: true,
           },
@@ -54,15 +49,9 @@ class AuthLoginAction implements Action {
       },
     },
   })
-  async invoke({ body }: Request, res: Response, next: NextFunction) {
-    const { securityClient } = this.dependencies;
-    try {
-      const tokens = await securityClient.auth.login(body)
-      res.json(tokens);
-    } catch (error) {
-      next(error);
-    }
+  async invoke({ body }: Request, res: Response) {
+    res.json(body);
   }
 }
 
-export default AuthLoginAction;
+export default MeAction;

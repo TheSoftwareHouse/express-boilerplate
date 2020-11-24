@@ -1,5 +1,5 @@
-import { ModulesLoader } from "../src/modules/modules-loader";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { ModulesLoader } from "../src/modules/modules-loader";
 import { loadEnvs } from "./env";
 
 loadEnvs();
