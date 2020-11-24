@@ -19,8 +19,7 @@ class MeAction implements Action {
   @ApiOperationPost({
     path: "/auth/me",
     description: "Profile example",
-    parameters: {
-    },
+    parameters: {},
     responses: {
       200: {
         description: "Success",
@@ -35,7 +34,6 @@ class MeAction implements Action {
   })
   async invoke(req: Request, res: Response) {
     const { profileRepository } = this.dependencies;
-
 
     res.json({});
   }

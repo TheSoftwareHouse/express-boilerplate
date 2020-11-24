@@ -48,7 +48,7 @@ class AuthLoginAction implements Action {
   async invoke({ body }: Request, res: Response, next: NextFunction) {
     const { securityClient } = this.dependencies;
     try {
-      const tokens = await securityClient.auth.login(body)
+      const tokens = await securityClient.auth.login(body);
       res.json(tokens);
     } catch (error) {
       next(error);
