@@ -9,15 +9,6 @@ export interface AuthLoginActionDependencies {
   securityClient: any;
 }
 
-export const authLoginActionValidation = celebrate(
-  {
-    body: Joi.object().keys({
-      authToken: Joi.string().required(),
-    }),
-  },
-  { abortEarly: false },
-);
-
 @ApiPath({
   path: "/api",
   name: "Auth",

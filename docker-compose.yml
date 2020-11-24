@@ -48,6 +48,9 @@ services:
       - 1337:1337
       - 4000:4000
       - 9229:9229
+    networks:
+      - app
+      - rad-modules_app
 
   postgres:
     image: postgres:10-alpine
@@ -68,6 +71,8 @@ services:
 
 networks:
   app:
+  rad-modules_app:
+    external: true
 
 volumes:
   build:

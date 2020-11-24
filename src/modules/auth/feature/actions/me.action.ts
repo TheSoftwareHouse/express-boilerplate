@@ -1,21 +1,13 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
-import { celebrate, Joi } from "celebrate";
 import { CommandBus } from "../../../../shared/command-bus";
 import { Action } from "../../../../shared/http/types";
+import { ProfileRepository } from "../repositories/profile.repostiory";
 
 export interface MeActionDependencies {
   commandBus: CommandBus;
+  profileRepository: ProfileRepository;
 }
-
-export const meActionValidation = celebrate(
-  {
-    body: Joi.object().keys({
-      authToken: Joi.string().required(),
-    }),
-  },
-  { abortEarly: false },
-);
 
 @ApiPath({
   path: "/api",
@@ -28,14 +20,6 @@ class MeAction implements Action {
     path: "/auth/me",
     description: "Profile example",
     parameters: {
-      body: {
-        properties: {
-          authToken: {
-            type: "string",
-            required: true,
-          },
-        },
-      },
     },
     responses: {
       200: {
@@ -49,8 +33,11 @@ class MeAction implements Action {
       },
     },
   })
-  async invoke({ body }: Request, res: Response) {
-    res.json(body);
+  async invoke(req: Request, res: Response) {
+    const { profileRepository } = this.dependencies;
+
+
+    res.json({});
   }
 }
 
