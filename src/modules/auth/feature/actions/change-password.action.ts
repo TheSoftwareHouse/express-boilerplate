@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { SecurityClient } from "@tshio/security-client/dist/services/security-client";
+import { CREATED, INTERNAL_SERVER_ERROR } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
 import { ProfileRepository } from "../repositories/profile.repostiory";
 import { AuthModuleConfig } from "../../config/auth";
@@ -19,14 +20,20 @@ class ChangePasswordAction implements Action {
   constructor(private dependencies: ChangePasswordActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/auth/change-password",
+    path: "/auth/change-password/:resetPasswordToken",
     description: "Change password example",
     parameters: {
+      path: {
+        resetPasswordToken: {
+          type: "string",
+          required: true,
+        },
+      },
       body: {
         properties: {
-          username: {
+          newPassword: {
             type: "string",
-            required: true,
+            required: false,
           },
         },
       },
@@ -46,18 +53,19 @@ class ChangePasswordAction implements Action {
   async invoke(req: Request, res: Response) {
     const { securityClient } = this.dependencies;
 
-    const { resetPasswordToken, newPassword } = req.body;
+    const { resetPasswordToken } = req.params;
+    const { newPassword } = req.body;
 
-    const resetPasswordRequest = {
+    const changePasswordRequest = {
       resetPasswordToken,
       newPassword,
     };
 
     try {
-      const result = await securityClient.auth.resetPassword(resetPasswordRequest);
-      res.status(201).json();
+      const result = await securityClient.auth.resetPassword(changePasswordRequest);
+      res.status(CREATED).json();
     } catch (error) {
-      const statusCode = error.statusCode ?? 500;
+      const statusCode = error.statusCode ?? INTERNAL_SERVER_ERROR;
       res.status(statusCode).json({
         error: error.message,
       });
