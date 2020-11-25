@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
-import { CommandBus } from "../../../../shared/command-bus";
+import { ApiOperationGet, ApiPath } from "swagger-express-ts";
 import { Action } from "../../../../shared/http/types";
 import { ProfileRepository } from "../repositories/profile.repostiory";
 
 export interface MeActionDependencies {
-  commandBus: CommandBus;
   profileRepository: ProfileRepository;
 }
 
@@ -16,7 +14,7 @@ export interface MeActionDependencies {
 class MeAction implements Action {
   constructor(private dependencies: MeActionDependencies) {}
 
-  @ApiOperationPost({
+  @ApiOperationGet({
     path: "/auth/me",
     description: "Profile example",
     parameters: {},
@@ -35,7 +33,20 @@ class MeAction implements Action {
   async invoke(req: Request, res: Response) {
     const { profileRepository } = this.dependencies;
 
-    res.json({});
+    const { tokenInfo } = res.locals;
+
+    const { userId } = tokenInfo;
+
+    const profile = await profileRepository.findById(userId);
+
+    if (!profile) {
+      res.status(403).json({
+        error: "Forbidden",
+      });
+      return;
+    }
+
+    res.json(profile);
   }
 }
 
