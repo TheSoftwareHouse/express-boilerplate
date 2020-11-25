@@ -2,9 +2,9 @@ import "mocha";
 import { use } from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import { createConnection, Connection, ConnectionOptions } from "typeorm";
+import "express-async-errors";
 import { createContainer } from "../src/container";
 import * as db from "../config/db";
-import "express-async-errors";
 
 use(chaiAsPromised);
 
