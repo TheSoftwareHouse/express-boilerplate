@@ -4,6 +4,7 @@ import * as chaiAsPromised from "chai-as-promised";
 import { createConnection, Connection, ConnectionOptions } from "typeorm";
 import { createContainer } from "../src/container";
 import * as db from "../config/db";
+import "express-async-errors";
 
 use(chaiAsPromised);
 
