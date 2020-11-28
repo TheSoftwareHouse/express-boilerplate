@@ -34,7 +34,7 @@ Now we need to create environemnt. We're going with a cheapest one:
 In order to do that you need to run:
 
 ```
-eb create staging --database --database.engine postgres --database.password <RDS_DB_PASSWORD> --database.username <RDS_DB_USERNAME> --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=<APP_NAME> --instance_type t2.micro --single
+eb create staging --database --database.engine postgres --database.password <RDS_PASSWORD> --database.username <RDS_USERNAME> --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=<APP_NAME> --instance_type t2.micro --single
 ```
 
 Once again, if you're using Bitbucket remember to set proper environment variables.
