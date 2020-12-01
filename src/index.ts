@@ -1,7 +1,7 @@
 import { Server } from "http";
+import "express-async-errors";
 import { createContainer } from "./container";
 import { Logger } from "./shared/logger";
-import "express-async-errors";
 
 (async () => {
   const container = await createContainer();

@@ -5,6 +5,8 @@ import { Action } from "../../../shared/http/types";
 
 export interface AuthModuleRoutingDependencies {
   authLoginAction: Action;
+  googleLoginAction: Action;
+  facebookLoginAction: Action;
   meAction: Action;
   registerAction: Action;
   resetPasswordAction: Action;
@@ -17,6 +19,8 @@ export const authRouting = (dependencies: AuthModuleRoutingDependencies) => {
   const router = express.Router();
   const {
     authLoginAction,
+    googleLoginAction,
+    facebookLoginAction,
     meAction,
     registerAction,
     resetPasswordAction,
@@ -25,6 +29,8 @@ export const authRouting = (dependencies: AuthModuleRoutingDependencies) => {
   } = dependencies;
 
   router.post("/login", authLoginAction.invoke.bind(authLoginAction));
+  router.post("/login/google", googleLoginAction.invoke.bind(googleLoginAction));
+  router.post("/login/facebook", facebookLoginAction.invoke.bind(facebookLoginAction));
   router.get("/me", [authTokenHandlerMiddleware], meAction.invoke.bind(meAction));
   router.post("/register", registerAction.invoke.bind(registerAction));
   router.post("/change-password/:resetPasswordToken", changePasswordAction.invoke.bind(changePasswordAction));

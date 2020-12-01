@@ -4,7 +4,7 @@ import { CommandBus } from "../../../../shared/command-bus";
 import { Action } from "../../../../shared/http/types";
 import { SecurityClient } from "@tshio/security-client";
 
-export interface AuthLoginActionDependencies {
+export interface GoogleLoginActionDependencies {
   commandBus: CommandBus;
   securityClient: SecurityClient;
 }
@@ -13,20 +13,20 @@ export interface AuthLoginActionDependencies {
   path: "/api",
   name: "Auth",
 })
-class AuthLoginAction implements Action {
-  constructor(private dependencies: AuthLoginActionDependencies) {}
+class GoogleLoginAction implements Action {
+  constructor(private dependencies: GoogleLoginActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/auth/login",
-    description: "Login example",
+    path: "/auth/login/google",
+    description: "Google login example",
     parameters: {
       body: {
         properties: {
-          username: {
+          code: {
             type: "string",
             required: true,
           },
-          password: {
+          redirectUrl: {
             type: "string",
             required: true,
           },
@@ -48,7 +48,7 @@ class AuthLoginAction implements Action {
   async invoke({ body }: Request, res: Response, next: NextFunction) {
     const { securityClient } = this.dependencies;
     try {
-      const tokens = await securityClient.auth.login(body);
+      const tokens = await securityClient.auth.googleLogin(body);
       res.json(tokens);
     } catch (error) {
       next(error);
@@ -56,4 +56,4 @@ class AuthLoginAction implements Action {
   }
 }
 
-export default AuthLoginAction;
+export default GoogleLoginAction;

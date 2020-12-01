@@ -28,7 +28,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@tshio/security-client": "0.0.18",
+    "@tshio/security-client": "0.0.19",
     "apollo-server-express": "^2.11.0",
     "awilix": "^4.2.6",
     "celebrate": "^12.1.1",
@@ -45,7 +45,6 @@
     "pg": "^8.0.3",
     "redis": "^3.0.2",
     "source-map-support": "^0.5.19",
-    "supertest": "^4.0.2",
     "swagger-express-ts": "^1.0.1",
     "swagger-ui-dist": "^3.35.1",
     "typeorm": "^0.2.24",
@@ -84,8 +83,10 @@
     "eslint-plugin-unicorn": "^19.0.1",
     "lodash.kebabcase": "^4.1.1",
     "mocha": "^7.1.2",
+    "nock": "^13.0.5",
     "plop": "^2.6.0",
     "prettier": "^2.0.5",
+    "supertest": "^4.0.2",
     "typescript": "^3.8.3"
   }
 }

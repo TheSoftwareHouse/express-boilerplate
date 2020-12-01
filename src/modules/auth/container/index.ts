@@ -19,9 +19,7 @@ export const registerDependencies = (container: AwilixContainer) => {
     authModuleConfig: awilix.asValue(authModuleConfig),
     securityClient: awilix.asValue(securityClient),
     profileRepository: awilix.asValue(getCustomRepository(ProfileTypeormRepository)),
-    // authTokenHandlerMiddleware: awilix.asValue(authTokenHandlerMiddleware({securityClient})),
     authTokenHandlerMiddleware: awilix.asFunction(authTokenHandlerMiddleware),
-    // authTokenHandlerMiddleware: awilix.asFunction(authTokenHandlerMiddleware).singleton(),
   });
 };
 
