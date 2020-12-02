@@ -62,7 +62,7 @@ class ChangePasswordAction implements Action {
     };
 
     try {
-      const result = await securityClient.auth.resetPassword(changePasswordRequest);
+      await securityClient.auth.resetPassword(changePasswordRequest);
       res.status(CREATED).json();
     } catch (error) {
       const statusCode = error.statusCode ?? INTERNAL_SERVER_ERROR;

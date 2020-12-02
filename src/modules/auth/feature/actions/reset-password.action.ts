@@ -3,7 +3,6 @@ import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { SecurityClient } from "@tshio/security-client/dist/services/security-client";
 import { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
-import { ProfileRepository } from "../repositories/profile.repostiory";
 import { AuthModuleConfig } from "../../config/auth";
 
 export interface ResetPasswordActionDependencies {
@@ -53,6 +52,7 @@ class ResetPasswordAction implements Action {
     };
 
     try {
+      // eslint-disable-next-line
       const { resetPasswordToken } = await securityClient.users.passwordResetToken(resetPasswordRequest, {
         apiKey: authModuleConfig.apiKey,
       });

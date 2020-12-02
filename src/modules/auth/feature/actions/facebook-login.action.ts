@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { SecurityClient } from "@tshio/security-client";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { Action } from "../../../../shared/http/types";
-import { SecurityClient } from "@tshio/security-client";
 
 export interface FacebookLoginActionDependencies {
   commandBus: CommandBus;
