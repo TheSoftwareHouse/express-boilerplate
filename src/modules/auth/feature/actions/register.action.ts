@@ -5,6 +5,7 @@ import { CREATED, INTERNAL_SERVER_ERROR } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
 import { ProfileRepository } from "../repositories/profile.repostiory";
 import { AuthModuleConfig } from "../../config/auth";
+import { ProfileModel } from "../models/profile.model";
 
 export interface RegisterActionDependencies {
   profileRepository: ProfileRepository;
@@ -62,12 +63,12 @@ class RegisterAction implements Action {
     try {
       const { newUserId } = await securityClient.users.addUser(user, { apiKey: authModuleConfig.apiKey });
 
-      const profile = {
+      const profile = ProfileModel.create({
         id: newUserId,
         username,
-      };
+      });
 
-      await profileRepository.save(profile);
+      await profileRepository.addProfile(profile);
 
       res.status(CREATED).json({
         status: "success",

@@ -13,7 +13,7 @@ export interface ProfileModelGeneric extends ProfileModelProps {
   name: "profiles",
 })
 export class ProfileModel {
-  public static create(data: Partial<ProfileModelProps>): ProfileModel {
+  public static create(data: Partial<ProfileModelGeneric>): ProfileModel {
     const entity = new ProfileModel();
     Object.assign(entity, data);
     return entity;
