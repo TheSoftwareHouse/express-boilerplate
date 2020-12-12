@@ -19,10 +19,13 @@ const validateConfig = (config: any) => {
     port: Joi.string().required(),
     env: Joi.string().required(),
   });
+  const { error, value } = schema.validate(config);
 
-  Joi.assert(config, schema);
+  if (error) {
+    throw error;
+  }
 
-  return config;
+  return value;
 };
 
 export const appConfigFactory = pipeline(loadConfig, validateConfig);

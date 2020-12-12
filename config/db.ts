@@ -49,9 +49,13 @@ const validateDbConfig = (config: any) => {
     namingStrategy: Joi.any(),
   });
 
-  Joi.assert(config, schema);
+  const { error, value } = schema.validate(config);
 
-  return config;
+  if (error) {
+    throw error;
+  }
+
+  return value;
 };
 
 const createDbConfigFromEnvs = pipeline(loadDbConfigFromEnvs, validateDbConfig);
