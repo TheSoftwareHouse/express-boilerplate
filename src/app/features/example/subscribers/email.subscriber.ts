@@ -1,4 +1,4 @@
-import { Event, EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
+import { Event, EventSubscriberInterface, EventSubscribersMeta } from "@tshio/event-dispatcher";
 import { Logger } from "../../../../shared/logger";
 
 type EmailEventSubscriberDependencies = {

@@ -3,10 +3,10 @@ import * as helmet from "helmet";
 import * as cors from "cors";
 import * as swagger from "swagger-express-ts";
 import { ApolloServer, gql } from "apollo-server-express";
+import { CommandBus } from "@tshio/command-bus";
+import { QueryBus } from "@tshio/query-bus";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
-import { CommandBus } from "../shared";
-import { QueryBus } from "../shared";
 import { name, version, description } from "../../package.json";
 
 export interface AppDependencies {

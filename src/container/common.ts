@@ -1,10 +1,12 @@
 import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
+import { QueryBus } from "@tshio/query-bus";
+import { CommandBus } from "@tshio/command-bus";
+import { EventDispatcher } from "@tshio/event-dispatcher";
 import { AppConfig } from "../../config/app";
 import { winstonLogger } from "../shared/logger";
 import { cacheClient } from "../tools/cache-client";
 import { createRouter } from "../app/router";
-import { QueryBus, CommandBus, EventDispatcher } from "../shared";
 import { restrictFromProduction } from "../shared/logger/restrict-from-production";
 
 export async function registerCommonDependencies(appConfig: AppConfig, container: AwilixContainer) {

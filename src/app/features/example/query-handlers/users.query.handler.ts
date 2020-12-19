@@ -1,5 +1,5 @@
 import { classToPlain } from "class-transformer";
-import { QueryHandler } from "../../../../shared/query-bus";
+import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
 import { User } from "../models/user.dto";

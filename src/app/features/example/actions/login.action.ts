@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
-import { CommandBus } from "../../../../shared/command-bus";
+import { CommandBus } from "@tshio/command-bus";
 import { LoginCommand } from "../commands/login.command";
 import { Action } from "../../../../shared/http/types";
 
