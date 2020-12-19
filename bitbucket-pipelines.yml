@@ -29,7 +29,7 @@ pipelines:
             - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
             - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
             - cat Dockerrun.aws.json
-            - eb create staging --database --database.engine postgres --database.password $RDS_PASSWORD --database.username $RDS_USERNAME --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=$APP_NAME --instance_type t2.micro --single
+            - eb create staging --database --database.engine postgres --database.password $RDS_PASSWORD --database.username $RDS_USERNAME --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=$APP_NAME --instance_type t2.micro --elb-type classic --min-instances 1 --max-instances 1
           services:
             - docker
     deploy-backend:
