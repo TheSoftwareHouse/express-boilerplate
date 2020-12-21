@@ -48,6 +48,8 @@ services:
       - 1337:1337
       - 4000:4000
       - 9229:9229
+    networks:
+      - app
 
   postgres:
     image: postgres:10-alpine

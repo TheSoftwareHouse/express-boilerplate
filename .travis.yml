@@ -16,3 +16,4 @@ jobs:
         - npm run docker-build
         - npm run lint
         - npm run units
+        - npm run integration
