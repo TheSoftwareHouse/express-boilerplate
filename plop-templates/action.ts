@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
+import { CommandBus } from "@tshio/command-bus";
 import { ApiOperation{{pascalCase method}}, ApiPath } from "swagger-express-ts";
 {{#eq method "get"}}
-import { QueryBus } from "../../../../shared/query-bus";
+import { QueryBus } from "@tshio/query-bus";
 import { {{pascalCase name}}Query } from "../queries/{{kebabCase name}}";
 {{else}}
-import { CommandBus } from "../../../../shared/command-bus";
 import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
 {{/eq}}
 import { Action } from "../../../../shared/http/types";

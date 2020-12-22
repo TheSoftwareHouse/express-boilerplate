@@ -1,5 +1,5 @@
 import { RedisClient, createClient } from "redis";
-import { winstonLogger, Logger } from "../shared";
+import { createLogger, Logger } from "@tshio/logger";
 import { loadEnvs } from "../../config/env";
 
 loadEnvs();
@@ -18,7 +18,7 @@ class CustomRedisClient implements CacheClient {
 
   constructor() {
     this.cacheClient = createClient(process.env.REDIS_URL as string);
-    this.logger = winstonLogger;
+    this.logger = createLogger();
     this.cacheClient.on("error", (err) => {
       if (err) {
         this.logger.error(`Unhandled redis error: ${err.toString()}`, err);

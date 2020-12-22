@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { isCelebrate } from "celebrate";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { Logger } from "@tshio/logger";
 import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
-import { Logger } from "../shared/logger";
 import { Translation } from "../shared/translation/translation";
 
 export const celebrateToValidationError = (errors: any): { [key: string]: Translation } => {

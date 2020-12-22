@@ -31,6 +31,7 @@
     "@tshio/awilix-resolver": "^1.0.2",
     "@tshio/command-bus": "^1.0.2",
     "@tshio/event-dispatcher": "^1.0.2",
+    "@tshio/logger": "^1.0.4",
     "@tshio/query-bus": "^1.0.2",
     "apollo-server-express": "^2.11.0",
     "awilix": "^4.2.6",

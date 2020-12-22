@@ -1,4 +1,4 @@
-import { Query } from "../../../../../shared/query-bus";
+import { Query } from "@tshio/query-bus";
 
 export const {{constantCase name}}_QUERY_TYPE = "{{getName module}}/{{constantCase name}}";
 
