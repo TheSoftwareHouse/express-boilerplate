@@ -16,7 +16,7 @@ const loadDbConfigFromEnvs = (env: any, modules: string[]) => ({
   synchronize: false,
   logging: true,
   entities: [
-    "/app/build/src/features/**/*.model.js",
+    "/app/build/src/app/features/**/*.model.js",
     ...modules.map((module) => `/app/build/src/modules/${module}/**/*.model.js`),
   ],
   migrations: [

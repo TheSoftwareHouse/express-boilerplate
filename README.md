@@ -65,7 +65,7 @@ After checkout of a repository, please perform the following steps in exact sequ
 
 ##
 
-###Dev setup
+### Dev setup
 
 This app is fully dockerized, so in order to use it you have to have docker and docker-compose installed. What's more you need to have npm in order to run npm scripts.
 
