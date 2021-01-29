@@ -7,7 +7,7 @@ import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
 import { CommandBus } from "../shared";
 import { QueryBus } from "../shared";
-import { name, version, description } from "../../package.json";
+import swaggerExpressOptions from "../tools/swagger";
 
 export interface AppDependencies {
   router: express.Router;
@@ -44,17 +44,7 @@ function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, 
 
   app.use("/api-docs", express.static("../swagger"));
   app.use("/api-docs/swagger/assets", express.static("../node_modules/swagger-ui-dist"));
-  app.use(
-    swagger.express({
-      definition: {
-        info: {
-          title: name,
-          version,
-          description,
-        },
-      },
-    }),
-  );
+  app.use(swagger.express(swaggerExpressOptions));
   app.use("/api", router);
 
   apolloServer.applyMiddleware({ app });
