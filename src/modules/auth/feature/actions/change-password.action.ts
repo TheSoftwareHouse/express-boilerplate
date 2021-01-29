@@ -20,7 +20,7 @@ class ChangePasswordAction implements Action {
   constructor(private dependencies: ChangePasswordActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/auth/change-password/:resetPasswordToken",
+    path: "/auth/change-password/{resetPasswordToken}",
     description: "Change password example",
     parameters: {
       path: {
