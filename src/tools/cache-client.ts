@@ -29,7 +29,7 @@ class CustomRedisClient implements CacheClient {
   public async get(key: string) {
     return new Promise((resolve) => {
       this.cacheClient.GET(key, (err, result) => {
-        if (err) return resolve(null);
+        if (err || !result) return resolve(null);
         return resolve(JSON.parse(result));
       });
     });

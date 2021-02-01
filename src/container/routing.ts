@@ -5,7 +5,7 @@ import { usersRouting } from "../app/features/example/routing";
 // ROUTING_IMPORTS
 
 export async function registerRouting(container: AwilixContainer) {
-  container.loadModules(["src/**/*.action.js"], {
+  container.loadModules(["src/app/**/*.action.js"], {
     formatName: "camelCase",
     resolverOptions: {
       lifetime: Lifetime.SCOPED,

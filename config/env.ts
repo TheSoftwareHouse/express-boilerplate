@@ -1,7 +1,5 @@
-const dotenv = require("dotenv-safe");
+const dotenv = require("dotenv");
 
 export const loadEnvs = () => {
-  dotenv.config({
-    example: ".env.dist",
-  });
+  dotenv.config();
 };
