@@ -18,6 +18,9 @@ class MeAction implements Action {
   @ApiOperationGet({
     path: "/auth/me",
     description: "Profile example",
+    security: {
+      bearerAuth: [],
+    },
     parameters: {},
     responses: {
       200: {
