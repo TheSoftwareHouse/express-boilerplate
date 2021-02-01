@@ -1,6 +1,6 @@
 import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
-import { asArray } from "../shared/awilix-resolvers";
+import { asArray } from "@tshio/awilix-resolver";
 
 import LoginHandler from "../app/features/example/handlers/login.handler";
 import DeleteUserHandler from "../app/features/example/handlers/delete-user.handler";

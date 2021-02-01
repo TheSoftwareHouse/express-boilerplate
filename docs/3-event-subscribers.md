@@ -7,8 +7,8 @@ If you wan to use this functionality, you need to create a subscriber.
 A good practice is to put your subscribers in **subscribers** directory of coresponding feature. A simple subscriber looks like this:
 
 ```
-import { Event, EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
-import { Logger } from "../../../../shared/logger";
+import { Event, EventSubscriberInterface, EventSubscribersMeta } from "@tshio/event-dispatcher";
+import { Logger } from "@tshio/logger";
 
 type EmailEventSubscriberDependencies = {
   logger: Logger;

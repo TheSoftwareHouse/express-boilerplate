@@ -1,5 +1,5 @@
-import { EventSubscriberInterface, EventSubscribersMeta } from "../../../../shared/event-dispatcher";
-import { Logger } from "../../../../shared/logger";
+import { EventSubscriberInterface, EventSubscribersMeta } from "@tshio/event-dispatcher";
+import { Logger } from "@tshio/logger";
 import {{pascalCase name}}Event from "../events/{{kebabCase name}}.event";
 
 type {{pascalCase name}}EventSubscriberDependencies = {

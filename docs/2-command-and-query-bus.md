@@ -11,7 +11,7 @@ Command or Query **does not perform any operation itself it is just a simple DTO
 Example command:
 
 ```
-import { Command } from "../../../../shared/command-bus";
+import { Command } from "@tshio/command-bus";
 
 export const LOGIN_COMMAND_TYPE = "users/LOGIN";
 
@@ -29,7 +29,7 @@ export class LoginCommand implements Command<LoginCommandPayload> {
 Example query:
 
 ```
-import { Query } from "../../../../../shared/query-bus";
+import { Query } from "@tshio/query-bus";
 
 export const USERS_QUERY_TYPE = "users/USERS";
 
@@ -47,9 +47,9 @@ In order to handle a single command/query we need to create a handler, that will
 Example command handler: 
 
 ```
-import { CommandHandler } from "../../../../shared/command-bus";
+import { CommandHandler } from "@tshio/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
+import { EventDispatcher } from "@tshio/event-dispatcher";
 
 export interface LoginHandlerDependencies {
   eventDispatcher: EventDispatcher;
@@ -80,7 +80,7 @@ export default class LoginCommandHandler implements CommandHandler<LoginCommand>
 Example query handler
 
 ```
-import { QueryHandler } from "../../../../shared/query-bus";
+import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
 

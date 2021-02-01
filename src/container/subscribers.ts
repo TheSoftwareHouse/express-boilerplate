@@ -1,6 +1,6 @@
 import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
-import { asArray } from "../shared/awilix-resolvers";
+import { asArray } from "@tshio/awilix-resolver";
 
 import EmailSubscriber from "../app/features/example/subscribers/email.subscriber";
 // SUBSCRIBERS_IMPORTS

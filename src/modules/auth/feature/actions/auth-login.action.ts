@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { SecurityClient } from "@tshio/security-client";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
-import { CommandBus } from "../../../../shared/command-bus";
+import { CommandBus } from "@tshio/command-bus";
 import { Action } from "../../../../shared/http/types";
 
 export interface AuthLoginActionDependencies {

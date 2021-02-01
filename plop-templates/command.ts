@@ -1,4 +1,4 @@
-import { Command } from "../../../../shared/command-bus";
+import { Command } from "@tshio/command-bus";
 
 export const {{constantCase name}}_COMMAND_TYPE = "{{getName module}}/{{constantCase name}}";
 

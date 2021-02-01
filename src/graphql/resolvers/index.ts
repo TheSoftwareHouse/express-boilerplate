@@ -1,5 +1,6 @@
+import { CommandBus } from "@tshio/command-bus";
+import { QueryBus } from "@tshio/query-bus";
 import { Resolvers } from "../types";
-import { CommandBus, QueryBus } from "../../shared";
 import { usersQuery } from "../../app/features/example/graphql/queries/users.query";
 // QUERY_IMPORTS
 import { deleteUserMutation } from "../../app/features/example/graphql/mutations/delete-user.mutation";

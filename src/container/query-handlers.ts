@@ -1,6 +1,6 @@
 import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
-import { asArray } from "../shared/awilix-resolvers";
+import { asArray } from "@tshio/awilix-resolver";
 
 import UsersQueryHandler from "../app/features/example/query-handlers/users.query.handler";
 // HANDLERS_IMPORTS

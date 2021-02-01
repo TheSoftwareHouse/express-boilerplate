@@ -1,6 +1,6 @@
-import { CommandHandler } from "../../../../shared/command-bus";
+import { EventDispatcher } from "@tshio/event-dispatcher";
+import { CommandHandler } from "@tshio/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
 
 export interface LoginHandlerDependencies {
   eventDispatcher: EventDispatcher;

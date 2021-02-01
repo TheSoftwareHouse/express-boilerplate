@@ -1,6 +1,6 @@
 {
   "name": "boilerplate_api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,11 @@
   "keywords": [],
   "author": "",
   "dependencies": {
+    "@tshio/awilix-resolver": "^1.0.2",
+    "@tshio/command-bus": "^1.0.2",
+    "@tshio/event-dispatcher": "^1.0.2",
+    "@tshio/logger": "^1.0.4",
+    "@tshio/query-bus": "^1.0.2",
     "@tshio/security-client": "0.0.19",
     "apollo-server-express": "^2.11.0",
     "awilix": "^4.2.6",

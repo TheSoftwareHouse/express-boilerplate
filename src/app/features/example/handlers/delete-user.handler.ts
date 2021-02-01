@@ -1,4 +1,4 @@
-import { CommandHandler } from "../../../../shared/command-bus";
+import { CommandHandler } from "@tshio/command-bus";
 import { DELETE_USER_COMMAND_TYPE, DeleteUserCommand } from "../commands/delete-user.command";
 
 export default class DeleteUserHandler implements CommandHandler<DeleteUserCommand> {
