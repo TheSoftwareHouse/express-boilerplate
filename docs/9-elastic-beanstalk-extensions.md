@@ -2,7 +2,7 @@
 
 Elastic Beanstalk has also advanced configuration options, so called extensions. 
 
-In order to use them you need to create a directory `.ebextension` inside `docker/elastic-beanstalk` directory. 
+In order to use them you need to create a directory `.ebextensions` inside `docker/elastic-beanstalk` directory. 
 
 Each file ending with `.config` is going to be parsed and used as an extensions source.
 
@@ -15,7 +15,7 @@ There are two common changes to load balancer you might want to do.
 - changing default healthcheck path
 - adding additional ports to be available
 
-The default API config has healthcheck on `/health` endpoint so it is wise to configure your EB deployment to use those. In order to do that let's create `load-balancer.config` file inside `docker/elastic-beanstalk/.ebextension` directory. 
+The default API config has healthcheck on `/health` endpoint so it is wise to configure your EB deployment to use those. In order to do that let's create `load-balancer.config` file inside `docker/elastic-beanstalk/.ebextensions` directory. 
 
 Every config is an yaml like file.
 
