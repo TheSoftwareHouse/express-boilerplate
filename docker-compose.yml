@@ -52,7 +52,7 @@ services:
       - app
 
   postgres:
-    image: postgres:10-alpine
+    image: postgres:12-alpine
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USERNAME: postgres
