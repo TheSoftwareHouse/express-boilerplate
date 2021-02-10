@@ -19,6 +19,10 @@ services:
     depends_on:
       - adminer
       - postgres
+    networks:
+      - app
+    ports:
+      - 1338:1338
 
   adminer:
     image: adminer

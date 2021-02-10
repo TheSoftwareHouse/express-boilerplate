@@ -22,13 +22,23 @@
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "@typescript-eslint/quotes": ["error", "double"],
-    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
     "no-empty-interface": "off",
     "ordered-imports": "off",
     "object-literal-sort-keys": "off",
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["propertyDesciptor", "handlers"]}],
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "no-only-tests/no-only-tests": "error",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^I[A-Z]",
+          "match": false
+        }
+      }
+    ],
     "unicorn/filename-case": [
       "error",
       {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ApiOperationGet, ApiPath } from "swagger-express-ts";
-import { FORBIDDEN } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
 import { ProfileRepository } from "../repositories/profile.repostiory";
 
@@ -44,7 +44,7 @@ class MeAction implements Action {
     const profile = await profileRepository.findById(userId);
 
     if (!profile) {
-      res.status(FORBIDDEN).json({
+      res.status(StatusCodes.FORBIDDEN).json({
         error: "Forbidden",
       });
       return;

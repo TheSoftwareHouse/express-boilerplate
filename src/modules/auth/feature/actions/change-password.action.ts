@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { SecurityClient } from "@tshio/security-client/dist/services/security-client";
-import { CREATED, INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
 import { ProfileRepository } from "../repositories/profile.repostiory";
 import { AuthModuleConfig } from "../../config/auth";
@@ -63,9 +63,9 @@ class ChangePasswordAction implements Action {
 
     try {
       await securityClient.auth.resetPassword(changePasswordRequest);
-      res.status(CREATED).json();
+      res.status(StatusCodes.CREATED).json();
     } catch (error) {
-      const statusCode = error.statusCode ?? INTERNAL_SERVER_ERROR;
+      const statusCode = error.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR;
       res.status(statusCode).json({
         error: error.message,
       });

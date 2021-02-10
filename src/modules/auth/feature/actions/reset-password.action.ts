@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { SecurityClient } from "@tshio/security-client/dist/services/security-client";
-import { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { Action } from "../../../../shared/http/types";
 import { AuthModuleConfig } from "../../config/auth";
 
@@ -59,21 +59,21 @@ class ResetPasswordAction implements Action {
 
       // TODO! send the URL address contains resetPasswordToken to the user email
 
-      res.status(CREATED).json();
+      res.status(StatusCodes.CREATED).json();
     } catch (error) {
       if (!error.statusCode) {
-        res.status(INTERNAL_SERVER_ERROR).json({
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           error: error.message,
         });
         return;
       }
-      if (error.statusCode === BAD_REQUEST) {
-        res.status(BAD_REQUEST).json({
+      if (error.statusCode === StatusCodes.BAD_REQUEST) {
+        res.status(StatusCodes.BAD_REQUEST).json({
           error: error.message,
         });
         return;
       }
-      res.status(CREATED).json();
+      res.status(StatusCodes.CREATED).json();
     }
   }
 }

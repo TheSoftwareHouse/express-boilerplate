@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { isCelebrate } from "celebrate";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { Logger } from "@tshio/logger";
 import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
@@ -25,17 +25,17 @@ export const errorHandler = ({
 }: {
   logger: Logger;
   restrictFromProduction: Function;
-}) => <T>(err: Error, req: Request, res: Response, _next: NextFunction) => {
+}) => (err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.error(err.toString());
 
   if (isCelebrate(err)) {
     try {
-      return res.status(BAD_REQUEST).json({
+      return res.status(StatusCodes.BAD_REQUEST).json({
         error: celebrateToValidationError(err),
         stack: restrictFromProduction(err.stack),
       });
     } catch (e) {
-      return res.status(INTERNAL_SERVER_ERROR).json({
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: new Translation("error.validation.parse"),
         stack: restrictFromProduction(err.stack),
       });
@@ -50,13 +50,13 @@ export const errorHandler = ({
   }
 
   if (err instanceof AppError) {
-    return res.status(INTERNAL_SERVER_ERROR).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: new Translation(err.message),
       stack: restrictFromProduction(err.stack),
     });
   }
 
-  return res.status(INTERNAL_SERVER_ERROR).json({
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     error: new Translation("error.unknown"),
     stack: restrictFromProduction(err.stack),
   });

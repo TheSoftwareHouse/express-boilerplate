@@ -1,6 +1,6 @@
 import * as Request from "supertest";
 import * as nock from "nock";
-import { OK } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import * as assert from "assert";
 import { decode } from "jsonwebtoken";
 
@@ -19,7 +19,7 @@ describe("Auth Module", () => {
       .post("/auth/login")
       .send({ username: "superadmin", password: "password" })
       .expect("Content-Type", /json/)
-      .expect(OK);
+      .expect(StatusCodes.OK);
 
     assert(decode(body.accessToken));
     assert(decode(body.refreshToken));
