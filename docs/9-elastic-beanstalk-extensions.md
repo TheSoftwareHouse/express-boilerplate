@@ -77,3 +77,26 @@ file=/var/log/containers/<container-name>-*-stdouterr.log
 ```
 
 This simple change should put logs into CloudWatch.
+
+`aws:ec2:vpc` allow us to configure VPC settings for our app. For example we could specify what VPC it should use, which Subnets should be used for EC2 isntances, Load Balancer and also if load balancer should be put to public subnet and if we should associate public ips to instances.
+
+```
+option_settings:
+  aws:ec2:vpc:
+    VPCId: vpc-0e144febd1c97a428
+    Subnets: subnet-050c76ec846a24a6a
+    ELBSubnets: subnet-050c76ec846a24a6a
+    AssociatePublicIpAddress: 'true'
+    ELBScheme: public
+```    
+
+`aws:autoscaling:launchconfiguration` is used to define starting security groups and associated ssh key.
+
+```
+option_settings:
+  aws:autoscaling:launchconfiguration:
+    SecurityGroups: sg-08fe2ef810f4fe01a
+    EC2KeyName: some-key-name
+```    
+
+You can assign multiple subnets / security groups by separating them with comma.
