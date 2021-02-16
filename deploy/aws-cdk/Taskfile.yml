@@ -1,0 +1,46 @@
+version: '2'
+
+env:
+  AWS_DEFAULT_REGION: eu-west-1
+
+tasks:
+  build:
+    desc: Build js files
+    sources:
+      - lib/*.ts
+      - bin/*.ts
+    generates:
+      - lib/cdk-stack.js
+      - lib/cdk-stack.d.ts
+      - bin/cdk.d.ts
+      - bin/cdk.js
+    cmds:
+      - npm run build
+
+  update:
+    desc: install latest cdk and other modules
+    cmds:
+      - ncu -u
+      - npm install
+
+  deploy:
+    desc: deploy stack without asking
+    deps: [build]
+    cmds:
+      - cmd: echo Profile $AWSUME_PROFILE
+        silent: true
+      - cdk deploy --require-approval never --profile $AWSUME_PROFILE
+
+  destroy:
+    desc: destroy stack without asking
+    cmds:
+      - cmd: echo Profile $AWSUME_PROFILE
+        silent: true
+      - cdk destroy --force --profile $AWSUME_PROFILE
+
+  edge-of-tomorrow:
+    desc: deploy destroy repeat
+    cmds:
+      - task: update
+      - task: deploy
+      - task: destroy

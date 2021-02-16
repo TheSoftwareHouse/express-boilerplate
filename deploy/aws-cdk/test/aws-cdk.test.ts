@@ -1,15 +1,18 @@
-import { expect as expectCDK, countResources } from "@aws-cdk/assert";
+import { expect as expectCDK, matchTemplate, MatchStyle } from "@aws-cdk/assert";
 import * as cdk from "@aws-cdk/core";
-import * as AwsCdk from "../lib/index";
+import * as AwsCdk from "../lib/aws-cdk-stack";
 
-/*
- * Example test
- */
-test("SNS Topic Created", () => {
+test("Empty Stack", () => {
   const app = new cdk.App();
-  const stack = new cdk.Stack(app, "TestStack");
   // WHEN
-  new AwsCdk.AwsCdk(stack, "MyTestConstruct");
+  const stack = new AwsCdk.AwsCdkStack(app, "MyTestStack");
   // THEN
-  expectCDK(stack).to(countResources("AWS::SNS::Topic", 0));
+  expectCDK(stack).to(
+    matchTemplate(
+      {
+        Resources: {},
+      },
+      MatchStyle.EXACT,
+    ),
+  );
 });
