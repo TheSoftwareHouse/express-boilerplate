@@ -1,14 +1,23 @@
-import ec2 = require("@aws-cdk/aws-ec2");
-import ecs = require("@aws-cdk/aws-ecs");
-import cdk = require("@aws-cdk/core");
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ecs from "@aws-cdk/aws-ecs";
+import * as cdk from "@aws-cdk/core";
 import * as elbv2 from "@aws-cdk/aws-elasticloadbalancingv2";
 import * as iam from "@aws-cdk/aws-iam";
 import { DockerImageAsset } from "@aws-cdk/aws-ecr-assets";
 import * as logs from "@aws-cdk/aws-logs";
+import {
+  Credentials,
+  DatabaseInstance,
+  DatabaseInstanceEngine,
+  PostgresEngineVersion,
+  StorageType,
+} from "@aws-cdk/aws-rds";
 
 const APP_DOMAIN = "tshio";
 
 export class AwsCdkStack extends cdk.Stack {
+
+  readonly postgresRDSInstance: DatabaseInstance;
 
   private createSecurityGroups(vpc: ec2.Vpc) {
     const redisSecurityGroup = new ec2.SecurityGroup(this, "redisSecurityGroup", {
@@ -17,9 +26,9 @@ export class AwsCdkStack extends cdk.Stack {
       vpc: vpc,
     });
 
-    const postgresSecurityGroup = new ec2.SecurityGroup(this, "postgresSecurityGroup", {
+    const postgresRDSSecurityGroup = new ec2.SecurityGroup(this, "postgresRDSSecurityGroup", {
       allowAllOutbound: true,
-      securityGroupName: "postgresSecurityGroup",
+      securityGroupName: "postgresRDSSecurityGroup",
       vpc: vpc,
     });
 
@@ -31,12 +40,12 @@ export class AwsCdkStack extends cdk.Stack {
 
 
     redisSecurityGroup.connections.allowFromAnyIpv4(ec2.Port.tcp(6379));
-    postgresSecurityGroup.connections.allowFromAnyIpv4(ec2.Port.tcp(5432));
+    postgresRDSSecurityGroup.connections.allowFromAnyIpv4(ec2.Port.tcp(3306));
     boilerplateSecurityGroup.connections.allowFromAnyIpv4(ec2.Port.tcp(1337));
 
     return {
       redisSecurityGroup,
-      postgresSecurityGroup,
+      postgresRDSSecurityGroup,
       boilerplateSecurityGroup,
     }
   }
@@ -56,12 +65,6 @@ export class AwsCdkStack extends cdk.Stack {
       taskRole: taskrole,
     });
 
-    const postgresTaskDefinition = new ecs.FargateTaskDefinition(this, "postgresTaskDef", {
-      memoryLimitMiB: 512,
-      cpu: 256,
-      taskRole: taskrole,
-    });
-
     const boilerplateTaskDefinition = new ecs.FargateTaskDefinition(this, "boilerplateTaskDef", {
       memoryLimitMiB: 512,
       cpu: 256,
@@ -70,7 +73,6 @@ export class AwsCdkStack extends cdk.Stack {
 
     return {
       redisTaskDefinition,
-      postgresTaskDefinition,
       boilerplateTaskDefinition,
     }
   }
@@ -78,11 +80,6 @@ export class AwsCdkStack extends cdk.Stack {
   private createLogDrivers() {
     const redisLogGroup = new logs.LogGroup(this, "redisLogGroup", {
       logGroupName: "/ecs/express-boilerplate/redis",
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    const postgresLogGroup = new logs.LogGroup(this, "postgresLogGroup", {
-      logGroupName: "/ecs/express-boilerplate/postgres",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
@@ -96,11 +93,6 @@ export class AwsCdkStack extends cdk.Stack {
       streamPrefix: "redis",
     });
 
-    const postgresLogDriver = new ecs.AwsLogDriver({
-      logGroup: postgresLogGroup,
-      streamPrefix: "postgres",
-    });
-
     const boilerplateLogDriver = new ecs.AwsLogDriver({
       logGroup: boilerplateLogGroup,
       streamPrefix: "boilerplate",
@@ -108,7 +100,6 @@ export class AwsCdkStack extends cdk.Stack {
 
     return {
       redisLogDriver,
-      postgresLogDriver,
       boilerplateLogDriver,
     }
   }
@@ -118,7 +109,7 @@ export class AwsCdkStack extends cdk.Stack {
 
     const vpc = new ec2.Vpc(this, "VPC");
 
-    const { redisSecurityGroup, postgresSecurityGroup, boilerplateSecurityGroup } = this.createSecurityGroups(vpc);
+    const { redisSecurityGroup, postgresRDSSecurityGroup, boilerplateSecurityGroup } = this.createSecurityGroups(vpc);
 
     const cluster = new ecs.Cluster(this, "Cluster", {
       vpc: vpc,
@@ -126,9 +117,29 @@ export class AwsCdkStack extends cdk.Stack {
 
     cluster.addDefaultCloudMapNamespace({ name: APP_DOMAIN });
 
-    const { redisTaskDefinition, postgresTaskDefinition, boilerplateTaskDefinition } = this.createFargateTasks();
+    this.postgresRDSInstance = new DatabaseInstance(this, 'postgres-rds-instance', {
+      engine: DatabaseInstanceEngine.postgres({
+        version: PostgresEngineVersion.VER_12_4,
+      }),
+      // instanceClass: InstanceType.of(InstanceClass.T2, InstanceSize.SMALL),
+      vpc,
+      // vpcPlacement: {subnetType: SubnetType.ISOLATED},
+      storageEncrypted: true,
+      multiAz: false,
+      autoMinorVersionUpgrade: false,
+      allocatedStorage: 25,
+      storageType: StorageType.GP2,
+      backupRetention: cdk.Duration.days(3),
+      deletionProtection: false,
+      databaseName: 'app',
+      credentials: Credentials.fromPassword("postgres", cdk.SecretValue.plainText("password")),
+      port: 3306,
+      securityGroups: [postgresRDSSecurityGroup],
+    });
 
-    const { redisLogDriver, postgresLogDriver, boilerplateLogDriver } = this.createLogDrivers();
+    const { redisTaskDefinition, boilerplateTaskDefinition } = this.createFargateTasks();
+
+    const { redisLogDriver, boilerplateLogDriver } = this.createLogDrivers();
 
     const apiImage = new DockerImageAsset(this, "boilerplate", {
       directory: "../..",
@@ -140,22 +151,14 @@ export class AwsCdkStack extends cdk.Stack {
       logging: redisLogDriver,
     });
 
-    const postgresContainer = postgresTaskDefinition.addContainer("postgresContainer", {
-      image: ecs.ContainerImage.fromRegistry("postgres:12-alpine"),
-      environment: {
-        POSTGRES_PASSWORD: "password",
-        POSTGRES_USERNAME: "postgres",
-        POSTGRES_DB: "app",
-      },
-      logging: postgresLogDriver,
-    });
-
     const boilerplateContainer = boilerplateTaskDefinition.addContainer("boilerplateContainer", {
       image: ecs.ContainerImage.fromDockerImageAsset(apiImage),
       environment: {
         REDIS_URL: `redis://redis.${APP_DOMAIN}:6379/1`,
-        RDS_HOSTNAME: `postgres.${APP_DOMAIN}`,
-        RDS_PORT: "5432",
+        // RDS_HOSTNAME: `postgres.${APP_DOMAIN}`,
+        // RDS_PORT: "5432",
+        RDS_HOSTNAME: this.postgresRDSInstance.dbInstanceEndpointAddress,
+        RDS_PORT: this.postgresRDSInstance.dbInstanceEndpointPort,
         RDS_DB_NAME: "app",
         RDS_USERNAME: "postgres",
         RDS_PASSWORD: "password",
@@ -171,31 +174,17 @@ export class AwsCdkStack extends cdk.Stack {
       containerPort: 6379,
     });
 
-    postgresContainer.addPortMappings({
-      containerPort: 5432,
-    });
-
     boilerplateContainer.addPortMappings({
       containerPort: 1337,
     });
 
-    const redisService = new ecs.FargateService(this, "redisService", {
+    new ecs.FargateService(this, "redisService", {
       cluster: cluster,
       taskDefinition: redisTaskDefinition,
       desiredCount: 2,
       securityGroup: redisSecurityGroup,
       cloudMapOptions: {
         name: "redis",
-      },
-    });
-
-    const postgresService = new ecs.FargateService(this, "postgresService", {
-      cluster: cluster,
-      taskDefinition: postgresTaskDefinition,
-      desiredCount: 2,
-      securityGroup: postgresSecurityGroup,
-      cloudMapOptions: {
-        name: "postgres",
       },
     });
 
