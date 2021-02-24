@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { ApiOperationGet, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
-import { QueryBus } from "@tshio/query-bus";
 import { UsersQuery } from "../queries/users";
 import { Action } from "../../../../shared/http/types";
+import { QueryBus } from "../../../../tools/query-bus";
 
 export interface UsersActionDependencies {
   queryBus: QueryBus;

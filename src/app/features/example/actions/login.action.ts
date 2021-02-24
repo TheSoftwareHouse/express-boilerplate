@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { celebrate, Joi } from "celebrate";
-import { CommandBus } from "@tshio/command-bus";
+
 import { LoginCommand } from "../commands/login.command";
 import { Action } from "../../../../shared/http/types";
+import { CommandBus } from "../../../../tools/command-bus";
 
 export interface LoginActionDependencies {
   commandBus: CommandBus;

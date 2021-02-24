@@ -1,5 +1,5 @@
-import { CommandBus } from "@tshio/command-bus";
-import { QueryBus } from "@tshio/query-bus";
+import { CommandBus } from "../../tools/command-bus";
+import { QueryBus } from "../../tools/query-bus";
 import { Resolvers } from "../types";
 import { usersQuery } from "../../app/features/example/graphql/queries/users.query";
 // QUERY_IMPORTS
