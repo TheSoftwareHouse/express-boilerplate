@@ -5,15 +5,19 @@ FROM $IMAGE as build
 WORKDIR /app
 COPY . .
 
-RUN apk add --no-cache curl git py-pip make && \
-  npm config set unsafe-perm true && \
-  curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | sh && \
-  npm i && \
-  npm run build && \
-  rm -rf node_modules && \
-  npm i --production && \
-  ./docker/node-modules-clean.sh && \
-  ./bin/node-prune
+RUN apk add --no-cache curl git py-pip make
+RUN npm config set unsafe-perm true
+RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | sh
+RUN npm i
+RUN npm run build
+#FOR SWC TRANSPILATION
+# RUN npm run build-swc
+# COPY package.json ./build/package.json
+
+RUN rm -rf node_modules
+RUN npm i --production
+RUN ./docker/node-modules-clean.sh
+RUN ./bin/node-prune
 
 FROM $IMAGE
 COPY --chown=node:node --from=build /app/build /app/build
