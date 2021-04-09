@@ -4,11 +4,11 @@ import { Application } from "express";
 import * as http from "http";
 import { Connection } from "typeorm";
 import { createApp } from "./app/app";
-import { appConfigFactory, AppConfig } from "../config/app";
+import { appConfigFactory, AppConfig } from "./config/app";
 
 import { registerCommonDependencies } from "./container/common";
 import { registerDatabase } from "./container/database";
-import { loadEnvs } from "../config/env";
+import { loadEnvs } from "./config/env";
 import { registerMiddlewares } from "./container/middlewares";
 import { registerQueryHandlers } from "./container/query-handlers";
 import { registerCommandHandlers } from "./container/command-handlers";

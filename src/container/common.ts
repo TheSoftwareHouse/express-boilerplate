@@ -4,7 +4,7 @@ import { QueryBus } from "@tshio/query-bus";
 import { CommandBus } from "@tshio/command-bus";
 import { EventDispatcher } from "@tshio/event-dispatcher";
 import { createLogger, restrictFromProduction } from "@tshio/logger";
-import { AppConfig } from "../../config/app";
+import { AppConfig } from "../config/app";
 import { cacheClient } from "../tools/cache-client";
 import { createRouter } from "../app/router";
 
