@@ -1,5 +1,4 @@
-import * as awilix from "awilix";
-import { AwilixContainer } from "awilix";
+import { AwilixContainer, createContainer as createAwilixContainer, InjectionMode, asFunction, asValue } from "awilix";
 import { Application } from "express";
 import * as http from "http";
 import { Connection } from "typeorm";
@@ -27,8 +26,8 @@ export interface ContainerDependencies {
 export async function createContainer(dependencies?: ContainerDependencies): Promise<AwilixContainer> {
   const appConfig = dependencies?.appConfig ? dependencies.appConfig : appConfigFactory(process.env);
 
-  const container: AwilixContainer = awilix.createContainer({
-    injectionMode: awilix.InjectionMode.PROXY,
+  const container: AwilixContainer = createAwilixContainer({
+    injectionMode: InjectionMode.PROXY,
   });
 
   await registerCommonDependencies(appConfig, container);
@@ -42,13 +41,13 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
   await registerModules(container);
 
   container.register({
-    app: awilix.asFunction(createApp).singleton(),
+    app: asFunction(createApp).singleton(),
   });
 
   const app: Application = container.resolve("app");
 
   container.register({
-    server: awilix.asValue(http.createServer(app)),
+    server: asValue(http.createServer(app)),
   });
 
   return container;

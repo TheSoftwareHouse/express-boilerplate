@@ -1,6 +1,6 @@
 import { getSecurityClient } from "@tshio/security-client";
-import { AwilixContainer, Lifetime } from "awilix";
-import * as awilix from "awilix";
+import { AwilixContainer, Lifetime, asValue, asClass, asFunction } from "awilix";
+
 import { Router } from "express";
 import { getCustomRepository } from "typeorm";
 import { authRouting } from "../feature/routing";
@@ -16,10 +16,10 @@ export const registerDependencies = (container: AwilixContainer) => {
   });
 
   container.register({
-    authModuleConfig: awilix.asValue(authModuleConfig),
-    securityClient: awilix.asValue(securityClient),
-    profileRepository: awilix.asValue(getCustomRepository(ProfileTypeormRepository)),
-    authTokenHandlerMiddleware: awilix.asFunction(authTokenHandlerMiddleware),
+    authModuleConfig: asValue(authModuleConfig),
+    securityClient: asValue(securityClient),
+    profileRepository: asValue(getCustomRepository(ProfileTypeormRepository)),
+    authTokenHandlerMiddleware: asFunction(authTokenHandlerMiddleware),
   });
 };
 
@@ -28,12 +28,12 @@ export const registerRouting = (container: AwilixContainer) => {
     formatName: "camelCase",
     resolverOptions: {
       lifetime: Lifetime.SINGLETON,
-      register: awilix.asClass,
+      register: asClass,
     },
   });
 
   container.register({
-    authRouting: awilix.asFunction(authRouting).singleton(),
+    authRouting: asFunction(authRouting).singleton(),
     // ROUTING_SETUP
   });
 
