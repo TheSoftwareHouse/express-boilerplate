@@ -1,5 +1,4 @@
-import { AwilixContainer } from "awilix";
-import * as awilix from "awilix";
+import { AwilixContainer, asClass } from "awilix";
 import { asArray } from "@tshio/awilix-resolver";
 
 import UsersQueryHandler from "../app/features/example/query-handlers/users.query.handler";
@@ -8,7 +7,7 @@ import UsersQueryHandler from "../app/features/example/query-handlers/users.quer
 export async function registerQueryHandlers(container: AwilixContainer) {
   container.register({
     queryHandlers: asArray<any>([
-      awilix.asClass(UsersQueryHandler),
+      asClass(UsersQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),
   });

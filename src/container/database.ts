@@ -1,5 +1,4 @@
-import { AwilixContainer } from "awilix";
-import * as awilix from "awilix";
+import { AwilixContainer, asValue } from "awilix";
 import { Logger } from "winston";
 import { createConnection, ConnectionOptions } from "typeorm";
 import { ContainerDependencies } from "../container";
@@ -15,7 +14,7 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
     (container.resolve("logger") as Logger).debug(`Migrations: ${err}`);
   }
   container.register({
-    dbConnection: awilix.asValue(dbConnection),
+    dbConnection: asValue(dbConnection),
     // MODELS_SETUP
   });
 }

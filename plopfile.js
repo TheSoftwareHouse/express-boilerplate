@@ -98,7 +98,7 @@ const createCommandHandler = [
     type: "modify",
     path: commandHandlersLocation,
     pattern: /(\/\/ COMMAND_HANDLERS_SETUP)/,
-    template: "awilix.asClass({{pascalCase name}}CommandHandler),\n      $1",
+    template: "asClass({{pascalCase name}}CommandHandler),\n      $1",
   },
 ];
 
@@ -119,7 +119,7 @@ const createQueryHandler = [
     type: "modify",
     path: queryHandlersLocation,
     pattern: /(\/\/ QUERY_HANDLERS_SETUP)/,
-    template: "awilix.asClass({{pascalCase name}}QueryHandler),\n      $1",
+    template: "asClass({{pascalCase name}}QueryHandler),\n      $1",
   },
 ];
 
@@ -158,7 +158,7 @@ const createEventSubscriber = [
     type: "modify",
     path: subscribersLocation,
     pattern: /(\/\/ SUBSCRIBERS_SETUP)/,
-    template: "awilix.asClass({{pascalCase name}}EventSubscriber),\n      $1",
+    template: "asClass({{pascalCase name}}EventSubscriber),\n      $1",
   },
 ];
 
@@ -194,7 +194,7 @@ const updateContainerRoutes = [
     type: "modify",
     path: routingLocation,
     pattern: /(\/\/ ROUTING_SETUP)/,
-    template: "{{camelCase name}}Routing: awilix.asFunction({{camelCase name}}Routing),\n  $1",
+    template: "{{camelCase name}}Routing: asFunction({{camelCase name}}Routing),\n  $1",
   },
 ];
 
@@ -210,8 +210,7 @@ const updateContainerModels = [
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template:
-      "{{camelCase name}}Repository: awilix.asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
   },
 ];
 
