@@ -1,6 +1,6 @@
 import { RedisClient, createClient } from "redis";
 import { createLogger, Logger } from "@tshio/logger";
-import { loadEnvs } from "../../config/env";
+import { loadEnvs } from "../config/env";
 
 loadEnvs();
 

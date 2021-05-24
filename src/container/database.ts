@@ -2,7 +2,7 @@ import { AwilixContainer, asValue } from "awilix";
 import { Logger } from "winston";
 import { createConnection, ConnectionOptions } from "typeorm";
 import { ContainerDependencies } from "../container";
-import * as db from "../../config/db";
+import * as db from "../config/db";
 // MODELS_IMPORTS
 
 export async function registerDatabase(container: AwilixContainer, dependencies?: ContainerDependencies) {

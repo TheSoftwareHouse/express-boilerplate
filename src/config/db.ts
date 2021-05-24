@@ -2,7 +2,7 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { Joi } from "celebrate";
 import { pipeline } from "ts-pipe-compose";
 import { loadEnvs } from "./env";
-import { ModulesLoader } from "../src/modules/modules-loader";
+import { ModulesLoader } from "../modules/modules-loader";
 
 loadEnvs();
 
@@ -65,4 +65,4 @@ const config = createDbConfigFromEnvs(
   ModulesLoader.activeModules.map((Module) => Module.moduleName),
 );
 
-export = config;
+module.exports = config;

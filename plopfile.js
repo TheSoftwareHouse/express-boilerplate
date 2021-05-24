@@ -137,7 +137,7 @@ const createModel = {
 
 const createIntegrationTest = {
   type: "add",
-  path: `tests/{{module}}/{{kebabCase name}}.integration.spec.ts`,
+  path: `src/tests/{{module}}/{{kebabCase name}}.integration.spec.ts`,
   templateFile: "plop-templates/integration-test.ts",
 };
 

@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import "chai";
 import { expect } from "chai";
 import { classToPlain, Exclude, Expose } from "class-transformer";
 

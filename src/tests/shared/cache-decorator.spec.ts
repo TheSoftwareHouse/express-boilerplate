@@ -1,11 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import "chai";
 import { expect } from "chai";
 import { QueryHandler } from "@tshio/query-bus";
 import { CommandHandler } from "@tshio/command-bus";
-import { CacheClient } from "../../src/tools/cache-client";
-import { CacheQuery } from "../../src/shared/cache-decorator";
-import { FlushCachedQueries } from "../../src/shared/cache-decorator/flush-query-cache-decorator";
+import { CacheClient } from "../../tools/cache-client";
+import { CacheQuery } from "../../shared/cache-decorator";
+import { FlushCachedQueries } from "../../shared/cache-decorator/flush-query-cache-decorator";
 
 interface CacheExampleQuery {
   id: number;
