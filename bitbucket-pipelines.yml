@@ -57,4 +57,4 @@ pipelines:
             - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
             - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
             - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
-            - eb deploy staging
+            - eb deploy boilerplate-staging
