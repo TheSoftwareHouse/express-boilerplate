@@ -99,3 +99,9 @@ sudo su
 We're using Multi-container platform, meaning we're bound to Dockerrun V2 syntax.
 
 Read more about it on: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_v2config.html
+
+### Bitbucket environmental variables
+
+If you are using Bitbucket and you would like to pass an environmental variable that contains special characters to your EB environment, please keep in mind that:
+1. EB has some limitations over possible characters - please see https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html#environments-cfg-softwaresettings-console
+2. you will have to pass the variable to EB using the following syntax: `"${KEY_NAME}"`, e.g. `eb create hello-world --envvars SIMPLE_KEY=$SIMPLE_KEY,SPECIAL_KEY="${SPECIAL_KEY}"`
