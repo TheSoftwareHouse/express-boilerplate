@@ -45,7 +45,7 @@ class CacheExampleCommandHandler implements CommandHandler<any> {
 
 describe("Cache Decorator", () => {
   afterEach(async () => {
-    const redisClient: CacheClient = global.container.resolve("cacheClient");
+    const redisClient: CacheClient = global.container.cradle.cacheClient;
     await redisClient.removeByPattern("Queries*");
   });
 
@@ -92,7 +92,7 @@ describe("Cache Decorator", () => {
       await exampleClass.execute({ id: 3 });
       await exampleClass.execute({ id: 4 });
       // await exampleCommandHandler.execute();
-      const redisClient: CacheClient = global.container.resolve("cacheClient");
+      const redisClient: CacheClient = global.container.cradle.cacheClient;
       const scanned = await redisClient.scanByPattern("Queries*");
       expect(scanned).to.length(4);
     });
@@ -108,7 +108,7 @@ describe("Cache Decorator", () => {
       await exampleCommandHandler.execute();
 
       // await exampleCommandHandler.execute();
-      const redisClient: CacheClient = global.container.resolve("cacheClient");
+      const redisClient: CacheClient = global.container.cradle.cacheClient;
       const scanned = await redisClient.scanByPattern("Queries*");
       expect(scanned).to.length(0);
     });
