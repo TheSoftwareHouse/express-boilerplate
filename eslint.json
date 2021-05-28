@@ -6,7 +6,7 @@
   "env": {
     "mocha": true
   },
-  "plugins": ["prettier", "unicorn", "no-only-tests", "@typescript-eslint"],
+  "plugins": ["prettier", "unicorn", "no-only-tests", "@typescript-eslint", "tsh-custom"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
@@ -36,7 +36,8 @@
         "case": "kebabCase"
       }
     ],
-    "curly": "error"
+    "curly": "error",
+    "tsh-custom/event-subscriptions": "error"
   },
   "overrides": [
     {
