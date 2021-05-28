@@ -1,7 +1,5 @@
 import { getSecurityClient } from "@tshio/security-client";
-import { AwilixContainer, Lifetime, asValue, asClass, asFunction } from "awilix";
-
-import { Router } from "express";
+import { asClass, asFunction, asValue, AwilixContainer, Lifetime } from "awilix";
 import { getCustomRepository } from "typeorm";
 import { authRouting } from "../feature/routing";
 import { ProfileTypeormRepository } from "../feature/repositories/typeorm/profile.typeorm.repository";
@@ -37,9 +35,9 @@ export const registerRouting = (container: AwilixContainer) => {
     // ROUTING_SETUP
   });
 
-  const router: Router = container.resolve("router");
+  const { router } = container.cradle;
 
-  router.use("/auth", <any>container.resolve("authRouting"));
+  router.use("/auth", container.cradle.authRouting);
 
   return container;
 };

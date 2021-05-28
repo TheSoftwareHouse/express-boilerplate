@@ -1,9 +1,8 @@
-import { AwilixContainer, createContainer as createAwilixContainer, InjectionMode, asFunction, asValue } from "awilix";
-import { Application } from "express";
+import { asFunction, asValue, AwilixContainer, createContainer as createAwilixContainer, InjectionMode } from "awilix";
 import * as http from "http";
 import { Connection } from "typeorm";
 import { createApp } from "./app/app";
-import { appConfigFactory, AppConfig } from "./config/app";
+import { AppConfig, appConfigFactory } from "./config/app";
 
 import { registerCommonDependencies } from "./container/common";
 import { registerDatabase } from "./container/database";
@@ -44,7 +43,7 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
     app: asFunction(createApp).singleton(),
   });
 
-  const app: Application = container.resolve("app");
+  const { app } = container.cradle;
 
   container.register({
     server: asValue(http.createServer(app)),
