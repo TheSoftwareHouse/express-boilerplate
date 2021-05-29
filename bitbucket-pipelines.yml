@@ -1,4 +1,4 @@
-image: tshio/node-pipelines:latest
+image: tshio/awscli-docker-compose-pipelines:latest
 
 pipelines:
   default:
@@ -16,12 +16,7 @@ pipelines:
     create-staging:
       - step:
           name: create staging environment
-          image: 
-            name: python:3
           script:
-            - pip install awscli awsebcli
-            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
-            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
             - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
             - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
             - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
@@ -35,12 +30,7 @@ pipelines:
     deploy-backend:
       - step: 
           name: build docker image
-          image:
-            name: atlassian/default-image:2
           script: 
-            - apt-get update && apt-get install awscli -y
-            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
-            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
             - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
             - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
             - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
@@ -48,13 +38,10 @@ pipelines:
             - docker
       - step: 
           name: deploy api
-          image: 
-            name: python:3
           script:
-            - pip install awscli awsebcli
             - cd deploy/elastic-beanstalk
-            - aws --profile default configure set aws_access_key_id $AWS_ACCESS_KEY
-            - aws --profile default configure set aws_secret_access_key $AWS_SECRET_KEY
             - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
             - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
             - eb deploy boilerplate-staging
+          services:
+            - docker  
