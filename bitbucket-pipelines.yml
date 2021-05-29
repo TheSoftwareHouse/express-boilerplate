@@ -1,4 +1,4 @@
-image: tshio/node-pipelines:latest
+image: tshio/awscli-docker-compose-pipelines:latest
 
 pipelines:
   default:
@@ -16,7 +16,6 @@ pipelines:
     create-staging:
       - step:
           name: create staging environment
-          image: tshio/awscli-docker-compose-pipelines:latest
           script:
             - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
             - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
@@ -31,7 +30,6 @@ pipelines:
     deploy-backend:
       - step: 
           name: build docker image
-          image: tshio/awscli-docker-compose-pipelines:latest
           script: 
             - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
             - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
@@ -40,7 +38,6 @@ pipelines:
             - docker
       - step: 
           name: deploy api
-          image: tshio/awscli-docker-compose-pipelines:latest
           script:
             - cd deploy/elastic-beanstalk
             - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
