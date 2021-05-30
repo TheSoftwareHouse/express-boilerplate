@@ -101,7 +101,6 @@
     "plop": "^2.6.0",
     "prettier": "^2.0.5",
     "supertest": "^4.0.2",
-    "typescript": "^3.8.3",
-    "eslint-plugin-tsh-custom": "file:./eslint"
+    "typescript": "^3.8.3"
   }
 }
