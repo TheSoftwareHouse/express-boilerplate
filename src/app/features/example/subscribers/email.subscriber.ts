@@ -1,5 +1,6 @@
-import { Event, EventSubscriberInterface, EventSubscribersMeta } from "@tshio/event-dispatcher";
+import { EventSubscriberInterface, EventSubscribersMeta } from "@tshio/event-dispatcher";
 import { Logger } from "@tshio/logger";
+import UserLoggedInEvent from "../events/user-logged-in.event";
 
 type EmailEventSubscriberDependencies = {
   logger: Logger;
@@ -15,14 +16,16 @@ export default class EmailEventSubscriber implements EventSubscriberInterface {
    * Register events and listeners
    * @example
    * return [
-   *  { 'name': 'TestEvent', method: 'sendEmail' }
+   *  { name: TestEvent.eventName, method: "sendEmail" }
    * ]
    */
   getSubscribedEvents(): EventSubscribersMeta[] {
-    return [{ name: "UserLoggedIn", method: "logUserLogin" }];
+    return [{ name: UserLoggedInEvent.eventName, method: "logUserLogin" }];
   }
 
-  public async logUserLogin(event: Event) {
-    this.dependencies.logger.info("User logged in", event.payload);
+  public async logUserLogin(event: UserLoggedInEvent) {
+    const { logger } = this.dependencies;
+
+    logger.info("User logged in", event.payload);
   }
 }
