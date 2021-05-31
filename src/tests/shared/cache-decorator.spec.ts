@@ -8,6 +8,11 @@ import { FlushCachedQueries } from "../../shared/cache-decorator/flush-query-cac
 
 interface CacheExampleQuery {
   id: number;
+  nestedQuery?: {
+    userDetails: {
+      name: string;
+    };
+  };
 }
 
 class CacheExampleQueryHandler implements QueryHandler<any, any> {
@@ -63,6 +68,22 @@ describe("Cache Decorator", () => {
     const secondResult = await exampleClass.execute({ id: 2 });
 
     expect(result.number).not.equal(secondResult.number);
+  });
+
+  it("return cached query result when nested query object provided", async () => {
+    const exampleClass = new CacheExampleQueryHandler();
+    const result = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "foo" } } });
+    const cachedResult = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "foo" } } });
+
+    expect(result.number).equal(cachedResult.number);
+  });
+
+  it("not return cached data for the same nested query with different params", async () => {
+    const exampleClass = new CacheExampleQueryHandler();
+    const result = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "foo" } } });
+    const cachedResult = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "bar" } } });
+
+    expect(result.number).not.equal(cachedResult.number);
   });
 
   it("return cached query result for cache decorator with TTL", async () => {
