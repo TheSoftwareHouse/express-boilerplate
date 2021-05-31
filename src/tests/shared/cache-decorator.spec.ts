@@ -78,7 +78,7 @@ describe("Cache Decorator", () => {
     expect(result.number).equal(cachedResult.number);
   });
 
-  it("not return cached data for ghe same nested query with different params", async () => {
+  it("not return cached data for the same nested query with different params", async () => {
     const exampleClass = new CacheExampleQueryHandler();
     const result = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "foo" } } });
     const cachedResult = await exampleClass.execute({ id: 1, nestedQuery: { userDetails: { name: "bar" } } });
