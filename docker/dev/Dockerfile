@@ -11,6 +11,7 @@ FROM builder
 
 COPY docker ./docker
 COPY .npmr[c] package.json package-lock.json ./
+COPY eslint eslint
 
 RUN chmod +x ./docker/node-modules-clean.sh
 
