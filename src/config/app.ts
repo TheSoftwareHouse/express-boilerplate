@@ -4,13 +4,13 @@ import { pipeline } from "ts-pipe-compose";
 export interface AppConfig {
   appName: string;
   port: string;
-  env: string | undefined;
+  env: string;
 }
 
 const loadConfig = (env: any) => ({
   appName: env.APP_NAME ?? "boilerplate_api",
   port: env.PORT ?? "1337",
-  env: env.NODE_ENV ?? "development",
+  env: env.STAGE,
 });
 
 const validateConfig = (config: any) => {
