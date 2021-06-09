@@ -358,7 +358,7 @@ module.exports = (plop) => {
 
   plop.setGenerator("action+command+handler", {
     prompts: [moduleListPrompt, textPrompt("action+command+handler"), methodPrompt],
-    actions: [createAction, ...updateModuleRouter, createCommand, createEvent, ...createCommandHandler],
+    actions: [createAction, ...updateModuleRouter, createCommand, ...createCommandHandler],
   });
 
   plop.setGenerator("action+query+handler", {
@@ -424,7 +424,12 @@ module.exports = (plop) => {
 
   plop.setGenerator("event subscriber", {
     prompts: [moduleListPrompt, textPrompt("event subscriber")],
-    actions: [...createEventSubscriber],
+    actions: [...createEventSubscriber, createEvent],
+  });
+
+  plop.setGenerator("event", {
+    prompts: [moduleListPrompt, textPrompt("event")],
+    actions: [createEvent],
   });
 
   plop.setGenerator("graphql-query", {

@@ -1,11 +1,10 @@
 import { CommandHandler } from "@tshio/command-bus";
-import { EventDispatcher } from "@tshio/event-dispatcher";
+import { Logger } from "@tshio/logger";
 import { {{constantCase name}}_COMMAND_TYPE, {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
-import {{pascalCase name}}Event from "../events/{{kebabCase name}}.event";
 
 
 export interface {{pascalCase name}}HandlerDependencies {
-  eventDispatcher: EventDispatcher;
+  logger: Logger;
 }
 
 export default class {{pascalCase name}}Handler implements CommandHandler<{{pascalCase name}}Command> {
@@ -16,6 +15,7 @@ export default class {{pascalCase name}}Handler implements CommandHandler<{{pasc
   async execute(command: {{pascalCase name}}Command) {
     // execute body
     await this.dependencies.eventDispatcher.dispatch(new {{pascalCase name}}Event(command))
+    this.dependencies.logger.info(`Command ${ {{pascalCase name}} } executed`);
 
     return {
       result: command
