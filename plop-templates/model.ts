@@ -5,14 +5,13 @@ interface {{pascalCase name}}ModelProps {
 }
 
 @Entity({
-  name: "{{snakeCase name}}"
+  name: "{{snakeCase name}}",
 })
 export class {{pascalCase name}}Model {
-
   public static create(data: Partial<{{pascalCase name}}ModelProps>): {{pascalCase name}}Model {
     const entity = new {{pascalCase name}}Model();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
