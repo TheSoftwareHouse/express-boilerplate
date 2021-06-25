@@ -56,7 +56,7 @@ Now we need to login into the ECR. This will require AWS Access Key and AWS Secr
 Let's configure our AWS CLI:
 
 ```
-aws --profile default configure set aws_access_key_id <AWS_ACCESS_KEY>
+aws --profile default configure set aws_access_key_id <AWS_ACCESS_KEY_ID>
 aws --profile default configure set aws_secret_access_key <AWS_SECRET_KEY>
 ```
 
