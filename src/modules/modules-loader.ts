@@ -1,12 +1,13 @@
 import { AwilixContainer } from "awilix";
-import { AuthModule } from "./auth";
 
 export interface Module {
+  new (): Module;
   register: (container: AwilixContainer) => void;
+  moduleName: string;
 }
 
 export class ModulesLoader {
-  static activeModules = [AuthModule];
+  static activeModules: Module[] = [];
 
   constructor(private container: AwilixContainer) {}
 
