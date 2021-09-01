@@ -1,6 +1,6 @@
 {
   "name": "boilerplate_api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -47,8 +47,6 @@
     "graphql": "^15.0.0",
     "helmet": "^3.22.0",
     "http-status-codes": "^1.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "^3.1.2",
     "pg": "^8.0.3",
     "redis": "^3.1.2",
     "source-map-support": "^0.5.19",
