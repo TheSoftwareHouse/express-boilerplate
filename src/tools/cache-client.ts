@@ -1,4 +1,4 @@
-import { RedisClient, createClient } from "redis";
+import { createClient } from "redis";
 import { createLogger, Logger } from "@tshio/logger";
 import { loadEnvs } from "../config/env";
 
@@ -12,12 +12,12 @@ export interface CacheClient {
 }
 
 class CustomRedisClient implements CacheClient {
-  private cacheClient: RedisClient;
+  private cacheClient: ReturnType<typeof createClient>;
 
   private logger: Logger;
 
   constructor() {
-    this.cacheClient = createClient(process.env.REDIS_URL as string);
+    this.cacheClient = createClient({ url: process.env.REDIS_URL as string });
     this.logger = createLogger();
     this.cacheClient.on("error", (err) => {
       if (err) {
@@ -26,64 +26,56 @@ class CustomRedisClient implements CacheClient {
     });
   }
 
+  public async connect() {
+    return this.cacheClient.connect();
+  }
+
   public async get(key: string) {
-    return new Promise((resolve) => {
-      this.cacheClient.GET(key, (err, result) => {
-        if (err || !result) return resolve(null);
-        return resolve(JSON.parse(result));
-      });
-    });
+    try {
+      const result = await this.cacheClient.get(key);
+      if (!result) {
+        return null;
+      }
+      return JSON.parse(result);
+    } catch (err) {
+      return null;
+    }
   }
 
   public async set(key: string, data: any, duration: number = 1800): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.cacheClient.SET(key, JSON.stringify(data), "EX", duration, (err, cachedData) => {
-        this.logger.info(`Cache set for key: ${key}`);
-        return resolve(cachedData === "OK");
-      });
+    const status = await this.cacheClient.set(key, JSON.stringify(data), {
+      EX: duration,
     });
+
+    this.logger.info(`Cache set for key: ${key}`);
+
+    return status === "OK";
   }
 
   public scanByPattern(pattern: string): Promise<string[]> {
     let returnKeys: string[] = [];
-    function scan(cacheClient: RedisClient, cursor: string = "0"): Promise<any> {
-      return new Promise((resolve, reject) => {
-        cacheClient.SCAN(cursor, "MATCH", pattern, "COUNT", "10", (err, result: [string, string[]]) => {
-          if (err) reject(err);
-          const [newCoursor, newKeys] = result;
-          returnKeys = [...newKeys, ...returnKeys];
-          if (newCoursor === "0") {
-            return resolve(returnKeys);
+    function scan(cacheClient: ReturnType<typeof createClient>, cursor: number = 0): Promise<any> {
+      return cacheClient
+        .scan(cursor, {
+          MATCH: pattern,
+          COUNT: 10,
+        })
+        .then((result) => {
+          returnKeys = [...result.keys, ...returnKeys];
+          if (result.cursor === 0) {
+            return returnKeys;
           }
-          return resolve(scan(cacheClient, newCoursor));
+          return scan(cacheClient, result.cursor);
         });
-      });
     }
 
     return scan(this.cacheClient);
   }
 
   public async removeByPattern(pattern: string) {
-    const keys = (keyPattern: string): Promise<string[]> =>
-      new Promise((resolve, reject) => {
-        this.cacheClient.KEYS(keyPattern, (err, result) => {
-          if (err) return reject(err);
-          return resolve(result);
-        });
-      });
-    const foundKeys: string[] = await keys(pattern);
+    const foundKeys: string[] = await this.cacheClient.keys(pattern);
     this.logger.info(`Cache keys found to delete: ${foundKeys}`);
-    await Promise.all(
-      foundKeys.map(
-        (key) =>
-          new Promise((resolve, reject) => {
-            this.cacheClient.DEL(key, (err, result) => {
-              if (err) return reject(err);
-              return resolve(result);
-            });
-          }),
-      ),
-    );
+    await Promise.all(foundKeys.map((key) => this.cacheClient.del(key)));
   }
 }
 

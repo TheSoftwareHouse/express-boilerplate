@@ -10,4 +10,7 @@ declare global {
       dbConnection: Connection;
     }
   }
+
+  var container: AwilixContainer;
+  var dbConnection: Connection;
 }
