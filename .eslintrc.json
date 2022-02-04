@@ -1,5 +1,6 @@
 {
   "extends": [
+    "airbnb-base",
     "airbnb-typescript/base",
     "plugin:prettier/recommended"
   ],
@@ -22,7 +23,14 @@
     "no-useless-constructor": "off",
     "class-methods-use-this": "off",
     "@typescript-eslint/quotes": ["error", "double"],
-    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "never" }],
+    "@typescript-eslint/naming-convention": ["error", {
+      "selector": "interface",
+      "format": ["PascalCase"],
+      "custom": {
+        "regex": "^I[A-Z]",
+        "match": false
+      }
+    }],
     "no-empty-interface": "off",
     "ordered-imports": "off",
     "object-literal-sort-keys": "off",
@@ -37,7 +45,10 @@
       }
     ],
     "curly": "error",
-    "tsh-custom/event-subscriptions": "error"
+    "tsh-custom/event-subscriptions": "error",
+    "import/no-import-module-exports": ["error", {
+      "exceptions": ["**/config/db.ts"]
+    }]
   },
   "overrides": [
     {

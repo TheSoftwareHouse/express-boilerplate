@@ -2,11 +2,10 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { Joi } from "celebrate";
 import { pipeline } from "ts-pipe-compose";
 import { loadEnvs } from "./env";
-import { ModulesLoader } from "../modules/modules-loader";
 
 loadEnvs();
 
-const loadDbConfigFromEnvs = (env: any, modules: string[]) => ({
+const loadDbConfigFromEnvs = (env: any) => ({
   type: "postgres",
   host: env.RDS_HOSTNAME,
   port: env.RDS_PORT,
@@ -15,14 +14,8 @@ const loadDbConfigFromEnvs = (env: any, modules: string[]) => ({
   password: env.RDS_PASSWORD,
   synchronize: false,
   logging: true,
-  entities: [
-    "/app/build/src/app/features/**/*.model.js",
-    ...modules.map((module) => `/app/build/src/modules/${module}/**/*.model.js`),
-  ],
-  migrations: [
-    "/app/build/src/migrations/*",
-    ...modules.map((module) => `/app/build/src/modules/${module}/migrations/*`),
-  ],
+  entities: ["/app/build/src/app/features/**/*.model.js"],
+  migrations: ["/app/build/src/migrations/*"],
   cli: {
     migrationsDir: "src/migrations",
   },
@@ -60,9 +53,6 @@ const validateDbConfig = (config: any) => {
 
 const createDbConfigFromEnvs = pipeline(loadDbConfigFromEnvs, validateDbConfig);
 
-const config = createDbConfigFromEnvs(
-  process.env,
-  ModulesLoader.activeModules.map((Module) => Module.moduleName),
-);
+const config = createDbConfigFromEnvs(process.env);
 
 module.exports = config;

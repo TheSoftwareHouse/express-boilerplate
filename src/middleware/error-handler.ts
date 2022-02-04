@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { isCelebrate } from "celebrate";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { isCelebrateError } from "celebrate";
+import { StatusCodes } from "http-status-codes";
 import { Logger } from "@tshio/logger";
 import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
@@ -19,45 +19,41 @@ export const celebrateToValidationError = (errors: any): { [key: string]: Transl
   return Object.assign.apply({}, errorsArray);
 };
 
-export const errorHandler = ({
-  logger,
-  restrictFromProduction,
-}: {
-  logger: Logger;
-  restrictFromProduction: Function;
-}) => <T>(err: Error, req: Request, res: Response, _next: NextFunction) => {
-  logger.error(err.toString());
+export const errorHandler =
+  ({ logger, restrictFromProduction }: { logger: Logger; restrictFromProduction: Function }) =>
+  (err: Error, req: Request, res: Response, _next: NextFunction) => {
+    logger.error(err.toString());
 
-  if (isCelebrate(err)) {
-    try {
-      return res.status(BAD_REQUEST).json({
-        error: celebrateToValidationError(err),
-        stack: restrictFromProduction(err.stack),
-      });
-    } catch (e) {
-      return res.status(INTERNAL_SERVER_ERROR).json({
-        error: new Translation("error.validation.parse"),
+    if (isCelebrateError(err)) {
+      try {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          error: celebrateToValidationError(err),
+          stack: restrictFromProduction(err.stack),
+        });
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+          error: new Translation("error.validation.parse"),
+          stack: restrictFromProduction(err.stack),
+        });
+      }
+    }
+
+    if (err instanceof HttpError) {
+      return res.status(err.status).json({
+        error: new Translation(err.message),
         stack: restrictFromProduction(err.stack),
       });
     }
-  }
 
-  if (err instanceof HttpError) {
-    return res.status(err.status).json({
-      error: new Translation(err.message),
+    if (err instanceof AppError) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: new Translation(err.message),
+        stack: restrictFromProduction(err.stack),
+      });
+    }
+
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: new Translation("error.unknown"),
       stack: restrictFromProduction(err.stack),
     });
-  }
-
-  if (err instanceof AppError) {
-    return res.status(INTERNAL_SERVER_ERROR).json({
-      error: new Translation(err.message),
-      stack: restrictFromProduction(err.stack),
-    });
-  }
-
-  return res.status(INTERNAL_SERVER_ERROR).json({
-    error: new Translation("error.unknown"),
-    stack: restrictFromProduction(err.stack),
-  });
-};
+  };

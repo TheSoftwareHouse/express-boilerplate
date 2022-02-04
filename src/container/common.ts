@@ -8,6 +8,8 @@ import { cacheClient } from "../tools/cache-client";
 import { createRouter } from "../app/router";
 
 export async function registerCommonDependencies(appConfig: AppConfig, container: AwilixContainer) {
+  await cacheClient.connect();
+
   container.register({
     restrictFromProduction: asValue(restrictFromProduction(appConfig.env)),
     port: asValue(appConfig.port),

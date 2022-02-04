@@ -8,7 +8,7 @@ import { createContainer } from "./container";
     process.exit(1);
   });
 
-  process.on("unhandledRejection", (err) => {
+  process.on("unhandledRejection", (err: any) => {
     if (err) {
       container.cradle.logger.error(`Unhandled: ${err.toString()}`, err);
     }

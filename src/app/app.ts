@@ -1,5 +1,5 @@
 import * as express from "express";
-import * as helmet from "helmet";
+import helmet from "helmet";
 import * as cors from "cors";
 import * as swagger from "swagger-express-ts";
 import { ApolloServer, gql } from "apollo-server-express";
@@ -18,19 +18,19 @@ export interface AppDependencies {
   resolvers: any;
 }
 
-function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, resolvers }: AppDependencies) {
+async function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, resolvers }: AppDependencies) {
   const typeDefs = gql(graphQLSchema);
 
   const app = express();
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    tracing: true,
     context: () => ({
       commandBus,
       queryBus,
     }),
   });
+  await apolloServer.start();
 
   app.use(cors());
   app.use(helmet());
