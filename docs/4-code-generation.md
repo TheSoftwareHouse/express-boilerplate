@@ -41,10 +41,10 @@ As for now we support multiple generators:
 - crud rest api - creates REST API methods (create, update, delete, details, list) based on given feature & model name
 
 
-Using crud REST API generator:
+Using `rud rest api` generator:
 
-- first of all you must create feature with whole structure (use plop `feature` command for this), it would be the best that feature names are in plural (e.g. profiles),
+- first of all you must create feature with whole structure (you may use plop `feature` command for this), it would be the best that feature names are in plural (e.g. profiles),
 - you must have some model(s) (with proper migrations for them) created in feature, 
 - it would be the best that the models are not yet attached to the containers and their names are in singular (e.g. profile),
-- after CRUD has been generated you shuld be able to see new working methods in swagger, 
+- after generator has been successfully runned you should be able to see new working methods in swagger, 
 - now you may add some bussines logic, validation, custom repositories, tests etc.
