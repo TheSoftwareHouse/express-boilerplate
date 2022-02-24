@@ -41,7 +41,7 @@ As for now we support multiple generators:
 - crud rest api - creates REST API methods (create, update, delete, details, list) based on given feature & model name
 
 
-Using `rud rest api` generator:
+Using `crud rest api` generator:
 
 - first of all you must create feature with whole structure (you may use plop `feature` command for this), it would be the best that feature names are in plural (e.g. profiles),
 - you must have some model(s) (with proper migrations for them) created in feature, 
