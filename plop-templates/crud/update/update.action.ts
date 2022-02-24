@@ -18,7 +18,7 @@ export const update{{pascalCase name}}ActionValidation = celebrate(
 
 @ApiPath({
   path: "/api",
-  name: "{{getName module true}}/ {{titleCase name}}",
+  name: "{{getName module true}} / {{titleCase name}}",
 })
 class Update{{pascalCase name}}Action implements Action {
   constructor(private dependencies: Update{{pascalCase name}}ActionDependencies) {}
