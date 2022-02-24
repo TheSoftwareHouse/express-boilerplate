@@ -2,6 +2,7 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { Joi } from "celebrate";
 import { pipeline } from "ts-pipe-compose";
 import { loadEnvs } from "./env";
+import "../shared/typeorm/plugins";
 
 loadEnvs();
 
