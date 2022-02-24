@@ -19,13 +19,13 @@ export const {{camelCase name}}ListActionValidation = celebrate(
 
 @ApiPath({
   path: "/api",
-  name: "{{getName module}}",
+  name: "{{getName module true}} / {{titleCase name}}",
 })
 class {{pascalCase name}}ListAction implements Action {
   constructor(private dependencies: {{pascalCase name}}ListActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/{{getName module}}",
+    path: "/{{getName module false}}",
     description: "{{titleCase name}} list",
     summary: "{{titleCase name}} list",
     responses: {

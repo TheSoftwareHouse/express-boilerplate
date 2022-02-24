@@ -1,7 +1,7 @@
 import { Query } from "@tshio/query-bus";
 import { TypeormMapperDTO } from "../../../../../shared/typeorm/mapper/typeorm-mapper.dto";
 
-export const {{constantCase name}}_LIST_QUERY_TYPE = "{{getName module}}/{{constantCase name}}_LIST";
+export const {{constantCase name}}_LIST_QUERY_TYPE = "{{getName module false}}/{{constantCase name}}_LIST";
 
 export interface {{pascalCase name}}ListQueryPayload {
   typeormMapperDTO: TypeormMapperDTO;

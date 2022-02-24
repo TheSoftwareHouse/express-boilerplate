@@ -18,13 +18,13 @@ export const {{camelCase name}}DetailsActionValidation = celebrate(
 
 @ApiPath({
   path: "/api",
-  name: "{{getName module}}",
+  name: "{{getName module true}} / {{titleCase name}}",
 })
 class {{pascalCase name}}DetailsAction implements Action {
   constructor(private dependencies: {{pascalCase name}}DetailsActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/{{getName module}}/{{kebabCase name}}/{id}",
+    path: "/{{getName module false}}/{{kebabCase name}}/{id}",
     description: "{{titleCase name}} details",
     summary: "{{titleCase name}} details",
     parameters: {

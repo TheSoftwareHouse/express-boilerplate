@@ -18,13 +18,13 @@ export const remove{{pascalCase name}}ActionValidation = celebrate(
 
 @ApiPath({
   path: "/api",
-  name: "{{getName module}}",
+  name: "{{getName module true}} / {{titleCase name}}",
 })
 class Remove{{pascalCase name}}Action implements Action {
   constructor(private dependencies: Remove{{pascalCase name}}ActionDependencies) {}
 
   @ApiOperationDelete({
-    path: "/{{getName module}}/{{kebabCase name}}/{id} ",
+    path: "/{{getName module false}}/{{kebabCase name}}/{id} ",
     description: "Remove {{titleCase name}}",
     summary: "Remove {{titleCase name}}",
     parameters: {

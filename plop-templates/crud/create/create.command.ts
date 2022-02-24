@@ -1,6 +1,6 @@
 import { Command } from "@tshio/command-bus";
 
-export const CREATE_{{constantCase name}}_COMMAND_TYPE = "{{getName module}}/CREATE_{{constantCase name}}";
+export const CREATE_{{constantCase name}}_COMMAND_TYPE = "{{getName module false}}/CREATE_{{constantCase name}}";
 
 export interface Create{{pascalCase name}}CommandPayload {}
 

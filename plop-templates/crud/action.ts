@@ -29,14 +29,14 @@ export const {{camelCase name}}ActionValidation = celebrate(
 
 @ApiPath({
   path: "/api",
-  name: "{{getName module}}",
+  name: "{{getName module true}}",
 })
 {{#eq method "get"}}
 class {{pascalCase name}}Action implements Action {
   constructor(private dependencies: {{pascalCase name}}ActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/{{getName module}}/{{kebabCase name}}",
+    path: "/{{getName module false}}/{{kebabCase name}}",
     description: "Description",
     responses: {
       200: {
@@ -65,7 +65,7 @@ class {{pascalCase name}}Action implements Action {
   constructor(private dependencies: {{pascalCase name}}ActionDependencies) {}
 
   @ApiOperation{{pascalCase method}}({
-    path: "/{{getName module}}/{{kebabCase name}}",
+    path: "/{{getName module false}}/{{kebabCase name}}",
     description: "Description",
     parameters: {},
     responses: {

@@ -1,6 +1,6 @@
 import { Command } from "@tshio/command-bus";
 
-export const REMOVE_{{constantCase name}}_COMMAND_TYPE = "{{getName module}}/REMOVE_{{constantCase name}}";
+export const REMOVE_{{constantCase name}}_COMMAND_TYPE = "{{getName module false}}/REMOVE_{{constantCase name}}";
 
 export interface Remove{{pascalCase name}}CommandPayload {
   id: string;

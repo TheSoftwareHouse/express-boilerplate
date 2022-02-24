@@ -1,6 +1,6 @@
 import { Query } from "@tshio/query-bus";
 
-export const {{constantCase name}}_QUERY_TYPE = "{{getName module}}/{{constantCase name}}";
+export const {{constantCase name}}_QUERY_TYPE = "{{getName module false}}/{{constantCase name}}";
 
 export interface {{pascalCase name}}QueryPayload {}
 

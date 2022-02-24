@@ -667,9 +667,16 @@ module.exports = (plop) => {
     return typeof text === "string" ? text.split("/").reverse()[0] : text;
   });
 
-  plop.setHelper("getName", function (text) {
+  plop.setHelper("getName", function (text, titleCase = false) {
     const name = NAME_REGEX.exec(text);
-    return !!name[0] ? name[0] : text;
+    
+    let newText = !!name[0] ? name[0] : text;
+
+    if (titleCase) {
+      newText = newText.charAt(0).toUpperCase() + newText.slice(1);
+    }
+
+    return newText;
   });
 
   plop.setGenerator("action+command+handler", {

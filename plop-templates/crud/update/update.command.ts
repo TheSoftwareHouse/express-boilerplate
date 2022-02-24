@@ -1,6 +1,6 @@
 import { Command } from "@tshio/command-bus";
 
-export const UPDATE_{{constantCase name}}_COMMAND_TYPE = "{{getName module}}/UPDATE_{{constantCase name}}";
+export const UPDATE_{{constantCase name}}_COMMAND_TYPE = "{{getName module false}}/UPDATE_{{constantCase name}}";
 
 export interface Update{{pascalCase name}}CommandPayload {
   id: string;
