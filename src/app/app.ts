@@ -14,7 +14,7 @@ export interface AppDependencies {
   errorHandler: MiddlewareType;
   graphQLSchema: string;
   commandBus: CommandBus;
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
   resolvers: any;
 }
 
