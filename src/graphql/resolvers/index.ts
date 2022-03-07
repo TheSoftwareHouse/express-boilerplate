@@ -11,14 +11,14 @@ export type MutationContext = {
 };
 
 export type QueryContext = {
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
 };
 
 interface ResolversDependencies {}
 
 export const createResolvers = (_dependencies: ResolversDependencies): Resolvers => {
   // Provide resolver functions for your schema fields
-  const resolvers = {
+  return {
     Query: {
       getUsers: usersQuery,
       // GRAPHQL_QUERIES
@@ -28,6 +28,4 @@ export const createResolvers = (_dependencies: ResolversDependencies): Resolvers
       // GRAPHQL_MUTATIONS
     },
   };
-
-  return resolvers;
 };
