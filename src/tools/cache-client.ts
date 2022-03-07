@@ -12,7 +12,7 @@ export interface CacheClient {
 }
 
 class CustomRedisClient implements CacheClient {
-  private cacheClient: ReturnType<typeof createClient>;
+  private readonly cacheClient: ReturnType<typeof createClient>;
 
   private logger: Logger;
 

@@ -6,7 +6,7 @@ import { UsersQuery } from "../queries/users";
 import { Action } from "../../../../shared/http/types";
 
 export interface UsersActionDependencies {
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
 }
 
 export const usersActionValidation = celebrate(
