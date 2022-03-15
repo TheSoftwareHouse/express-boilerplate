@@ -42,7 +42,7 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
   });
 
   const { app } = container.cradle;
-
+ 
   container.register({
     server: asValue(http.createServer(await app)),
   });

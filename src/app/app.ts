@@ -33,7 +33,16 @@ async function createApp({ router, errorHandler, graphQLSchema, commandBus, quer
   await apolloServer.start();
 
   app.use(cors());
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          scriptSrc: ["'self'", "https: 'unsafe-inline'"],
+        },
+      },
+    }),
+  );
+  app.use(helmet.contentSecurityPolicy());
   app.use(express.json());
 
   app.get("/health", (req, res) => {
