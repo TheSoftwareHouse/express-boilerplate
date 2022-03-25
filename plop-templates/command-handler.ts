@@ -17,6 +17,6 @@ export default class {{pascalCase name}}Handler implements CommandHandler<{{pasc
 
     return {
       result: command,
-    }
-  };
+    };
+  }
 }

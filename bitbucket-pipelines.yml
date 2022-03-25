@@ -1,4 +1,4 @@
-image: tshio/awscli-docker-compose-pipelines:latest
+image: tshio/awscli-docker-compose-pipelines:0.0.3
 
 pipelines:
   default:
@@ -17,31 +17,19 @@ pipelines:
       - step:
           name: create staging environment
           script:
-            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
-            - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
-            - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
-            - cd deploy/elastic-beanstalk
-            - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
-            - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
-            - cat Dockerrun.aws.json
-            - eb create boilerplate-staging --database --database.engine postgres --database.password $RDS_PASSWORD --database.username $RDS_USERNAME --envvars REDIS_URL=redis://redis:6379/1,APP_NAME=$APP_NAME --instance_type t2.micro --elb-type classic --min-instances 1 --max-instances 1
+            - ./deploy/apprunner/create.sh
           services:
             - docker
-    deploy-backend:
+    deploy-staging:
       - step: 
-          name: build docker image
+          name: build and push docker
           script: 
-            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR_URL
-            - docker build -t $AWS_ECR_URL:$BITBUCKET_COMMIT -f ./docker/prod/Dockerfile .
-            - docker push $AWS_ECR_URL:$BITBUCKET_COMMIT
+            - ./deploy/apprunner/release.sh
           services:
             - docker
       - step: 
-          name: deploy api
+          name: deploy and update app runner
           script:
-            - cd deploy/elastic-beanstalk
-            - eb init --region eu-west-1 --platform "Multi-container Docker running on 64bit Amazon Linux" $APP_NAME
-            - sed -i s,API_IMAGE,$AWS_ECR_URL:$BITBUCKET_COMMIT, Dockerrun.aws.json
-            - eb deploy boilerplate-staging
+            - ./deploy/apprunner/deploy.sh
           services:
             - docker  

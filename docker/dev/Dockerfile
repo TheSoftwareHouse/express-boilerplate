@@ -3,10 +3,11 @@ FROM $IMAGE as builder
 
 WORKDIR /app
 
-RUN apk add --no-cache bash curl git py-pip make && \
-  curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | sh && \
-  npm install node-dev -g && npm cache clean --force
-
+RUN apk add --no-cache bash curl git py-pip make && \ 
+  npx node-prune && \
+  npm install node-dev -g && \
+  npm cache clean --force
+  
 FROM builder
 
 COPY docker ./docker
