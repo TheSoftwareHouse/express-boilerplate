@@ -9,7 +9,6 @@
       "ImageIdentifier": "$AWS_ECR_URL:$BITBUCKET_COMMIT",
       "ImageConfiguration": {
         "Port": "1337",
-        "StartCommand": "api",
         "RuntimeEnvironmentVariables": {
           "APP_NAME": "$APP_NAME",
           "AUTH_API_KEY": "$AUTH_API_KEY",
