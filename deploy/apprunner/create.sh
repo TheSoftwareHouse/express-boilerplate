@@ -26,10 +26,6 @@ function create() {
     log "USE THIS ARN AS ENV VARIABLE WITH NAME APP_RUNNER_ARN"
 }
 
-function deploy() {
-    aws apprunner start-deployment --service-arn $APP_RUNNER_ARN --region $AWS_REGION
-}
-
 function describe() {
     # TODO: change to checked list-operations
     DESCRIPTION=$(aws apprunner describe-service --service-arn $APP_RUNNER_ARN --region $AWS_REGION)
@@ -70,4 +66,3 @@ function waitForDeployment() {
 }
 
 create && waitForDeployment && log "Creation finished." || die "Create didn't succeed."
-deploy && waitForDeployment && log "Deployment finished." || die "Deployment didn't succeed."
