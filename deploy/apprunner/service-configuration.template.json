@@ -1,0 +1,45 @@
+{
+  "ServiceName": "$ENVIRONMENT_NAME",
+  "SourceConfiguration": {
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "$APP_RUNNER_IAM_ROLE_ARN"
+    },
+    "AutoDeploymentsEnabled": false,
+    "ImageRepository": {
+      "ImageIdentifier": "$AWS_ECR_URL:$BITBUCKET_COMMIT",
+      "ImageConfiguration": {
+        "Port": "1337",
+        "RuntimeEnvironmentVariables": {
+          "APP_NAME": "$APP_NAME",
+          "AUTH_API_KEY": "$AUTH_API_KEY",
+          "RDS_DB_NAME": "$RDS_DB_NAME",
+          "RDS_HOSTNAME": "$RDS_HOSTNAME",
+          "RDS_PASSWORD": "$RDS_PASSWORD",
+          "RDS_PORT": "$RDS_PORT",
+          "RDS_USERNAME": "$RDS_USERNAME",
+          "REDIS_URL": "$REDIS_URL",
+          "STAGE": "$STAGE"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    }
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1 vCPU",
+    "Memory": "2 GB"
+  },
+  "HealthCheckConfiguration": {
+    "Protocol": "HTTP",
+    "Path": "/health",
+    "Interval": 10,
+    "Timeout": 5,
+    "HealthyThreshold": 1,
+    "UnhealthyThreshold": 5
+  },
+  "NetworkConfiguration": {
+    "EgressConfiguration": {
+      "EgressType": "VPC",
+      "VpcConnectorArn": "$APP_RUNNER_VPC_CONNECTOR_ARN"
+    }
+  }
+}

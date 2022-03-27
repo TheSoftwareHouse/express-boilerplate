@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2019",
-    "types": ["node"],
+    "types": ["node", "mocha"],
     "module": "commonjs",
     "declaration": false,
     "strict": true,

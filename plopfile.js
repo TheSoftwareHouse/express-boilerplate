@@ -500,7 +500,7 @@ const updateContainerRoutes = [
     type: "modify",
     path: routingLocation,
     pattern: /(\/\/ ROUTING_SETUP)/,
-    template: "{{camelCase name}}Routing: asFunction({{camelCase name}}Routing),\n  $1",
+    template: "{{camelCase name}}Routing: asFunction({{camelCase name}}Routing),\n    $1",
   },
 ];
 
