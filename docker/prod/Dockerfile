@@ -24,7 +24,7 @@ COPY --chown=node:node --from=build /app/swagger /app/swagger
 COPY --chown=node:node --from=build /app/.env.dist /app/build/.env.dist
 COPY --chown=node:node --from=build /app/node_modules /app/node_modules
 ENV NODE_ENV production
-ENTRYPOINT ["node", "./src/index.js"]]
+ENTRYPOINT ["node", "./src/index.js"]
 WORKDIR /app/build
 CMD [""]
 
