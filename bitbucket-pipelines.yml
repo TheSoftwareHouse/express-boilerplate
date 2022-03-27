@@ -17,19 +17,19 @@ pipelines:
       - step:
           name: create staging environment
           script:
-            - ./deploy/apprunner/create.sh
+            - ./deploy/apprunner/scripts/create.sh
           services:
             - docker
     deploy-staging:
-      - step: 
+      - step:
           name: build and push docker
-          script: 
-            - ./deploy/apprunner/release.sh
+          script:
+            - ./deploy/apprunner/scripts/release.sh
           services:
             - docker
-      - step: 
+      - step:
           name: deploy and update app runner
           script:
-            - ./deploy/apprunner/deploy.sh
+            - ./deploy/apprunner/scripts/deploy.sh
           services:
-            - docker  
+            - docker
