@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from "typeorm/query-builder/SelectQueryBuilder";
 import { TypeormMapperDTO } from "../mapper/typeorm-mapper.dto";
-import { camelize } from "../../utils/string.utils";
+import { lowerFirst, tableAliasName } from "../../utils/string.utils";
 
 declare module "typeorm/query-builder/SelectQueryBuilder" {
   interface SelectQueryBuilder<Entity> {
@@ -35,7 +35,7 @@ SelectQueryBuilder.prototype.buildQueryByTypeOrmMapper = function buildQueryByTy
 
   if (typeOrmMapper.relations) {
     typeOrmMapper.relations.forEach((relation) => {
-      this.leftJoinAndSelect(relation, camelize(relation));
+      this.leftJoinAndSelect(lowerFirst(relation), tableAliasName(relation));
     });
   }
 
