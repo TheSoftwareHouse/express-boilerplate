@@ -48,3 +48,22 @@ Using `crud rest api` generator:
 - it would be the best that the models are not yet attached to the containers and their names are in singular (e.g. profile),
 - after generator has been successfully runned you should be able to see new working methods in swagger, 
 - now you may add some bussines logic, validation, custom repositories, tests etc.
+
+CRUD REST API generator schema example:
+- GET /profiles - list profiles
+- GET /profiles/:id - get profile details
+- POST /profiles - create profile
+- PATCH /profiles/:id - update profile
+- DELETE /profiles/:id - delete profile
+
+CRUD typeorm path mapper builder example:
+
+```
+http://localhost:1337/api/profiles?                 // Get profiles list
+relations[]=profile.projects&                       // with related projects, 
+relations[]=profileProjects.project&                // with related projects details
+filter[profileProjectsProject.name][include]=test&  // filter by project details name (LIKE % %)
+sort[profile.firstName]=ASC&                        // order by profile firstName ASC
+page=1&                                             // paginate on page 1 
+limit=10                                            // limit 10 rows
+```
