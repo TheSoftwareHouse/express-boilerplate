@@ -6,17 +6,22 @@ import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
 import { Translation } from "../shared/translation/translation";
 
-export const celebrateToValidationError = (errors: any): { [key: string]: Translation } => {
-  const errorsArray: any = errors.joi.details.map((error: { path: string[]; type: string }) => {
-    const key = error.path.join(".");
-    const translationId = `validation.${error.type}`;
+export const celebrateToValidationError = (segments: any): { [key: string]: Translation } => {
+  const segmentsArray: any = [];
+  segments.details.forEach((errors: { details: { path: string[]; type: string }[] }, key: string) => {
+    const errorsArray: any = errors.details.map((error) => {
+      const path = error.path.join(".");
+      const translationId = `validation.${error.type}`;
 
-    return {
-      [key]: new Translation(translationId),
-    };
+      return {
+        [path]: new Translation(translationId),
+      };
+    });
+    segmentsArray.push({
+      [key]: Object.assign.apply({}, errorsArray),
+    });
   });
-
-  return Object.assign.apply({}, errorsArray);
+  return Object.assign.apply({}, segmentsArray);
 };
 
 export const errorHandler =
