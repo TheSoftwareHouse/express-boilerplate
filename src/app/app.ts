@@ -1,13 +1,14 @@
 import * as express from "express";
 import helmet from "helmet";
 import * as cors from "cors";
-import * as swagger from "swagger-express-ts";
 import { ApolloServer, gql } from "apollo-server-express";
 import { CommandBus } from "@tshio/command-bus";
 import { QueryBus } from "@tshio/query-bus";
+import * as swaggerUi from "swagger-ui-express";
+import * as YAML from "yamljs";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
-import swaggerExpressOptions from "../tools/swagger";
+import { multiFileSwagger } from "../tools/multi-file-swagger";
 
 export interface AppDependencies {
   router: express.Router;
@@ -42,6 +43,7 @@ async function createApp({ router, errorHandler, graphQLSchema, commandBus, quer
       },
     }),
   );
+
   app.use(helmet.contentSecurityPolicy());
   app.use(express.json());
 
@@ -51,13 +53,11 @@ async function createApp({ router, errorHandler, graphQLSchema, commandBus, quer
     });
   });
 
-  app.use("/api-docs", express.static("../swagger"));
-  app.use("/api-docs/swagger/assets", express.static("../node_modules/swagger-ui-dist"));
-  app.use(swagger.express(swaggerExpressOptions));
+  const swaggerDocument = await multiFileSwagger(YAML.load("../swagger/api.yaml"));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use("/api", router);
 
   apolloServer.applyMiddleware({ app });
-
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
   app.use(errorHandler);
 
