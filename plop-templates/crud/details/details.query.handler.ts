@@ -5,7 +5,7 @@ import { {{pascalCase name}}Entity } from "../models/{{kebabCase name}}.entity";
 import { {{constantCase name}}_DETAILS_QUERY_TYPE, {{pascalCase name}}DetailsQuery, {{pascalCase name}}DetailsQueryResult } from "../queries/{{kebabCase name}}-details";
 
 export interface {{pascalCase name}}DetailsQueryHandlerDependencies {
-    {{camelCase name}}Repository: Repository<{{pascalCase name}}Entity>;
+  {{camelCase name}}Repository: Repository<{{pascalCase name}}Entity>;
 }
 
 export default class {{pascalCase name}}DetailsQueryHandler /* eslint-disable-next-line */

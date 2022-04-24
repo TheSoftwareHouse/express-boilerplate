@@ -21,7 +21,7 @@ class Remove{{pascalCase name}}Action implements Action {
   async invoke({ params }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new Remove{{pascalCase name}}Command({
-        id: params.id
+        id: params.id,
       }),
     );
 
