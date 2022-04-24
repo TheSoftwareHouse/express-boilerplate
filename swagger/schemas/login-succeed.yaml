@@ -1,0 +1,12 @@
+type: object
+required:
+  - payload
+  - type
+properties:
+  payload:
+    type: object
+    properties:
+      authToken:
+        type: string
+  type:
+    type: string

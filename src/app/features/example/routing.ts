@@ -15,7 +15,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
-  router.get("/example", [usersActionValidation], actions.usersAction.invoke.bind(actions.usersAction));
+  router.get("/users", [usersActionValidation], actions.usersAction.invoke.bind(actions.usersAction));
   // ACTIONS_SETUP
 
   return router;
