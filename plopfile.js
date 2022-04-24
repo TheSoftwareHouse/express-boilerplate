@@ -34,8 +34,8 @@ getFeatureModels = () => {
   directories.forEach((featurePath) => {
       getDirectoryFiles(`${featurePath}/models`).map((name) => {
         let fileName = NAME_REGEX.exec(name)[0];
-        if (fileName.includes('.model.ts')) {
-            const modelName = fileName.substring(0,fileName.indexOf('.model.ts'))
+        if (fileName.includes('.entity.ts')) {
+            const modelName = fileName.substring(0,fileName.indexOf('.entity.ts'))
             models.push(({ name: modelName, value: modelName, module: featurePath })); 
         }
       });
