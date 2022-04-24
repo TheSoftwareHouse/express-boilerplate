@@ -2,7 +2,7 @@ import { classToPlain } from "class-transformer";
 import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
-import { User } from "../models/user.dto";
+import { User } from "../models/user.entity";
 
 export default class UsersQueryHandler implements QueryHandler<UsersQuery, UsersQueryResult> {
   public queryType: string = USERS_QUERY_TYPE;
