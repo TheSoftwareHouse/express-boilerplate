@@ -5,7 +5,7 @@ import { {{pascalCase name}}DetailsQuery } from "../queries/{{kebabCase name}}-d
 import { Action } from "../../../../shared/http/types";
 
 export interface {{pascalCase name}}DetailsActionDependencies {
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
 }
 
 export const {{camelCase name}}DetailsActionValidation = celebrate(

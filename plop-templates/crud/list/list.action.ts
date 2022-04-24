@@ -6,7 +6,7 @@ import { Action } from "../../../../shared/http/types";
 import { dtoToTypeormMapper } from "../../../../shared/typeorm/mapper/dto-to-typeorm-mapper";
 
 export interface {{pascalCase name}}ListActionDependencies {
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
 }
 
 export const {{camelCase name}}ListActionValidation = celebrate(

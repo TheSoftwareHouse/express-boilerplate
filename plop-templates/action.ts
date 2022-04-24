@@ -11,7 +11,7 @@ import { Action } from "../../../../shared/http/types";
 
 {{#eq method "get"}}
 export interface {{pascalCase name}}ActionDependencies {
-  queryBus: QueryBus;
+  queryBus: QueryBus<any>;
 }
 {{else}}
 export interface {{pascalCase name}}ActionDependencies {
