@@ -7,9 +7,9 @@ interface UserProps {
 }
 
 @Exclude()
-export class User {
-  public static create(data: Partial<UserProps>): User {
-    const object = new User();
+export class UserEntity {
+  public static create(data: Partial<UserProps>): UserEntity {
+    const object = new UserEntity();
     Object.assign(object, data);
     return object;
   }

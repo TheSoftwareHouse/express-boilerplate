@@ -276,13 +276,13 @@ const createCrud = [
     path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{pascalCase name}}Model } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
+      'import { {{pascalCase name}}Entity } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.entity";\n$1',
   },
   {
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
 
@@ -437,8 +437,8 @@ const createRouting = {
 
 const createModel = {
   type: "add",
-  path: `{{module}}/models/{{kebabCase name}}.model.ts`,
-  templateFile: "plop-templates/model.ts",
+  path: `{{module}}/models/{{kebabCase name}}.entity.ts`,
+  templateFile: "plop-templates/entity.ts",
 };
 
 const createIntegrationTest = {
@@ -510,13 +510,13 @@ const updateContainerModels = [
     path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{pascalCase name}}Model } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
+      'import { {{pascalCase name}}Entity } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.entity";\n$1',
   },
   {
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
 

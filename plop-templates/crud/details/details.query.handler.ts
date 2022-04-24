@@ -1,11 +1,11 @@
 import { QueryHandler } from "@tshio/query-bus";
 import { Repository } from "typeorm";
 import { NotFoundError } from "../../../../errors/not-found.error";
-import { {{pascalCase name}}Model } from "../models/{{kebabCase name}}.model";
+import { {{pascalCase name}}Entity } from "../models/{{kebabCase name}}.entity";
 import { {{constantCase name}}_DETAILS_QUERY_TYPE, {{pascalCase name}}DetailsQuery, {{pascalCase name}}DetailsQueryResult } from "../queries/{{kebabCase name}}-details";
 
 export interface {{pascalCase name}}DetailsQueryHandlerDependencies {
-    {{camelCase name}}Repository: Repository<{{pascalCase name}}Model>;
+    {{camelCase name}}Repository: Repository<{{pascalCase name}}Entity>;
 }
 
 export default class {{pascalCase name}}DetailsQueryHandler /* eslint-disable-next-line */
@@ -15,12 +15,12 @@ export default class {{pascalCase name}}DetailsQueryHandler /* eslint-disable-ne
   constructor(private dependencies: {{pascalCase name}}DetailsQueryHandlerDependencies) {}
 
   async execute(query: {{pascalCase name}}DetailsQuery): Promise<{{pascalCase name}}DetailsQueryResult> {
-    const {{camelCase name}}Model = await this.dependencies.{{camelCase name}}Repository.findOne(query.payload.id);
+    const {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOne(query.payload.id);
 
-    if (!{{camelCase name}}Model) {
+    if (!{{camelCase name}}Entity) {
       throw new NotFoundError("{{camelCase name}} not found");
     }
 
-    return new {{pascalCase name}}DetailsQueryResult({{camelCase name}}Model);
+    return new {{pascalCase name}}DetailsQueryResult({{camelCase name}}Entity);
   }
 }
