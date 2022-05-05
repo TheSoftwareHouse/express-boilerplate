@@ -20,6 +20,7 @@
     }
   },
   "include": [
+    "cli/**/*.ts",
     "src/**/*.ts",
     "typings/*"
   ],
