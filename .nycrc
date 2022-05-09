@@ -1,0 +1,5 @@
+{   
+    "extension": [".ts"],
+    "exclude": ["**/*.spec.ts"],
+    "temp-dir": "/tmp/.nyc_output"
+}
