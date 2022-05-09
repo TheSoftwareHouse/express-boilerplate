@@ -34,8 +34,8 @@ getFeatureModels = () => {
   directories.forEach((featurePath) => {
       getDirectoryFiles(`${featurePath}/models`).map((name) => {
         let fileName = NAME_REGEX.exec(name)[0];
-        if (fileName.includes('.model.ts')) {
-            const modelName = fileName.substring(0,fileName.indexOf('.model.ts'))
+        if (fileName.includes('.entity.ts')) {
+            const modelName = fileName.substring(0,fileName.indexOf('.entity.ts'))
             models.push(({ name: modelName, value: modelName, module: featurePath })); 
         }
       });
@@ -276,13 +276,13 @@ const createCrud = [
     path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{pascalCase name}}Model } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
+      'import { {{pascalCase name}}Entity } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.entity";\n$1',
   },
   {
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
 
@@ -437,8 +437,8 @@ const createRouting = {
 
 const createModel = {
   type: "add",
-  path: `{{module}}/models/{{kebabCase name}}.model.ts`,
-  templateFile: "plop-templates/model.ts",
+  path: `{{module}}/models/{{kebabCase name}}.entity.ts`,
+  templateFile: "plop-templates/entity.ts",
 };
 
 const createIntegrationTest = {
@@ -510,13 +510,13 @@ const updateContainerModels = [
     path: databaseLocation,
     pattern: /(\/\/ MODELS_IMPORTS)/,
     template:
-      'import { {{pascalCase name}}Model } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.model";\n$1',
+      'import { {{pascalCase name}}Entity } from "../app/features/{{getModuleName module}}/models/{{kebabCase name}}.entity";\n$1',
   },
   {
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Model)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
 

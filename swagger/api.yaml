@@ -1,0 +1,77 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Boilerplate example API
+servers:
+  - url: http://localhost:1337/api
+paths:
+  /example/login:
+    post:
+      summary: Example login
+      operationId: loginUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authToken:
+                  type: string
+                  required: true
+              example:
+                authToken: SomeAuthTokenExample
+      tags:
+        - example
+      responses:
+        '200':
+          description: Login successed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginSucceed"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error400"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefault"
+  /example/users:
+    get:
+      summary: Example method, list all users
+      operationId: listUsers
+      tags:
+        - example
+      responses:
+        '200':
+          description: Array of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDefault"
+
+components:
+  schemas:
+    LoginSucceed:
+      $ref: 'schemas/login-succeed.yaml'
+    User:
+      $ref: 'schemas/user.yaml'
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    ErrorDefault:
+      $ref: 'schemas/error-default.yaml'
+    Error400:
+      $ref: 'schemas/error-400.yaml'

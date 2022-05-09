@@ -1,0 +1,12 @@
+type: object
+required:
+  - error
+  - stack
+properties:
+  error:
+    type: object
+    properties:
+      body:
+        type: object
+  stack:
+    type: string

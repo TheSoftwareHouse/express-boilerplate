@@ -23,7 +23,7 @@ services:
         - 'app:${BRANCH_NAME:-ignore}'
     container_name: app-builder
     working_dir: /app
-    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck']
+    command: [sh, -c, 'rm -rf ./build/* && ./node_modules/.bin/tsc -w --pretty --skipLibCheck --outDir build/src']
     #FOR SWC TRANSPILATION
     # command: [sh, -c, 'rm -rf ./build/src/* && ./node_modules/.bin/swc src --out-dir build/src -w --sync & ./node_modules/.bin/tsc -w --pretty --skipLibCheck --noEmit']
 

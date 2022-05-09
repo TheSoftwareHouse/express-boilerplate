@@ -1,10 +1,10 @@
 import { QueryHandler } from "@tshio/query-bus";
 import { Repository } from "typeorm";
-import { {{pascalCase name}}Model } from "../models/{{kebabCase name}}.model";
+import { {{pascalCase name}}Entity } from "../models/{{kebabCase name}}.entity";
 import { {{constantCase name}}_LIST_QUERY_TYPE, {{pascalCase name}}ListQuery, {{pascalCase name}}ListQueryResult } from "../queries/{{kebabCase name}}-list";
 
 export interface {{pascalCase name}}ListQueryHandlerDependencies {
-    {{camelCase name}}Repository: Repository<{{pascalCase name}}Model>;
+  {{camelCase name}}Repository: Repository<{{pascalCase name}}Entity>;
 }
 
 export default class {{pascalCase name}}ListQueryHandler implements QueryHandler<{{pascalCase name}}ListQuery, {{pascalCase name}}ListQueryResult> {
