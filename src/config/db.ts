@@ -15,7 +15,7 @@ const loadDbConfigFromEnvs = (env: any) => ({
   password: env.RDS_PASSWORD,
   synchronize: false,
   logging: true,
-  entities: ["/app/build/src/app/features/**/*.model.js"],
+  entities: ["/app/build/src/app/features/**/*.entity.js"],
   migrations: ["/app/build/src/migrations/*"],
   cli: {
     migrationsDir: "src/migrations",
