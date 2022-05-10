@@ -29,20 +29,17 @@ export class RedisExtractor implements ModuleExtractor {
   public removeModule() {
     this.dockerCompose.removeService("redis");
     this.env.removeLinesIncludingKey("REDIS_URL");
-    this.removeFiles();
-    this.removeDirs();
-    this.removeLines("cacheClient");
+    this.removeFiles(["/src/tests/shared/cache-decorator.spec.ts", "/src/tools/cache-client.ts"]);
+    this.removeDirs(["/src/shared/cache-decorator"]);
+    this.removeLines("cacheClient", ["src/container/common.ts"]);
+    this.removeLines("CacheQuery", ["src/app/features/example/query-handlers/users.query.handler.ts"]);
   }
 
-  private removeFiles() {
-    const paths = ["/src/tests/shared/cache-decorator.spec.ts", "/src/tools/cache-client.ts"];
-
+  private removeFiles(paths: string[]) {
     paths.forEach((path) => unlinkSync(join(this.dirname, path)));
   }
 
-  private removeDirs() {
-    const paths = ["/src/shared/cache-decorator"];
-
+  private removeDirs(paths: string[]) {
     paths.forEach((path) =>
       rimraf(join(this.dirname, path), (err) => {
         if (err) throw err;
@@ -50,11 +47,9 @@ export class RedisExtractor implements ModuleExtractor {
     );
   }
 
-  private removeLines(line: string) {
-    const paths = ["src/container/common.ts"];
-
+  private removeLines(key: string, paths: string[]) {
     paths.forEach((path) => {
-      new FileParser(join(this.dirname, path)).removeLinesIncludingKey(line);
+      new FileParser(join(this.dirname, path)).removeLinesIncludingKey(key);
     });
   }
 }
