@@ -44,7 +44,6 @@ async function createApp({ router, errorHandler, graphQLSchema, commandBus, quer
     }),
   );
 
-  app.use(helmet.contentSecurityPolicy());
   app.use(express.json());
 
   app.get("/health", (req, res) => {
