@@ -284,7 +284,7 @@ const createCrud = [
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbDataSource.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
 
