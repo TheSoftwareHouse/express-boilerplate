@@ -1,4 +1,5 @@
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { DataSource } from "typeorm";
 import { Joi } from "celebrate";
 import { pipeline } from "ts-pipe-compose";
 import { loadEnvs } from "./env";
@@ -54,6 +55,6 @@ const validateDbConfig = (config: any) => {
 
 const createDbConfigFromEnvs = pipeline(loadDbConfigFromEnvs, validateDbConfig);
 
-const config = createDbConfigFromEnvs(process.env);
+export const config = createDbConfigFromEnvs(process.env);
 
-module.exports = config;
+export const dataSource = new DataSource(config);

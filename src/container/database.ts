@@ -1,20 +1,20 @@
 import { AwilixContainer, asValue } from "awilix";
 import { Logger } from "winston";
-import { createConnection, ConnectionOptions } from "typeorm";
 import { ContainerDependencies } from "../container";
-import * as db from "../config/db";
+import { dataSource } from "../config/db";
 // MODELS_IMPORTS
 
 export async function registerDatabase(container: AwilixContainer, dependencies?: ContainerDependencies) {
-  const dbConnection = dependencies?.connection || (await createConnection(db as ConnectionOptions));
+  await dataSource.initialize();
+  const dbDataSource = dependencies?.dbDataSource || dataSource;
 
   try {
-    await dbConnection.runMigrations();
+    await dbDataSource.runMigrations();
   } catch (err) {
     (container.cradle.logger as Logger).debug(`Migrations: ${err}`);
   }
   container.register({
-    dbConnection: asValue(dbConnection),
+    dbDataSource: asValue(dbDataSource),
     // MODELS_SETUP
   });
 }
