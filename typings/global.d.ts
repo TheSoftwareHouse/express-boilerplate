@@ -1,5 +1,5 @@
 import { AwilixContainer } from "awilix";
-import { Connection } from "typeorm";
+import { DataSource } from "typeorm";
 
 declare type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -7,10 +7,10 @@ declare global {
   namespace NodeJS {
     interface Global {
       container: AwilixContainer;
-      dbConnection: Connection;
+      dbConnection: DataSource;
     }
   }
 
   var container: AwilixContainer;
-  var dbConnection: Connection;
+  var dbConnection: DataSource;
 }

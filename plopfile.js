@@ -13,9 +13,10 @@ const getDirectories = (source) =>
     .map((name) => path.join(source, name))
     .filter(isDirectory);
 
-const getDirectoryFiles = (source) => readdirSync(source)
-  .map((name) => path.join(source, name))
-  .filter(isFile);
+const getDirectoryFiles = (source) =>
+  readdirSync(source)
+    .map((name) => path.join(source, name))
+    .filter(isFile);
 
 const routesLocation = path.join(__dirname, "src/app");
 const commandHandlersLocation = path.join(__dirname, "src/container/command-handlers.ts");
@@ -32,13 +33,13 @@ const directories = getDirectories(`${routesLocation}/features`).filter(
 getFeatureModels = () => {
   const models = [];
   directories.forEach((featurePath) => {
-      getDirectoryFiles(`${featurePath}/models`).map((name) => {
-        let fileName = NAME_REGEX.exec(name)[0];
-        if (fileName.includes('.entity.ts')) {
-            const modelName = fileName.substring(0,fileName.indexOf('.entity.ts'))
-            models.push(({ name: modelName, value: modelName, module: featurePath })); 
-        }
-      });
+    getDirectoryFiles(`${featurePath}/models`).map((name) => {
+      let fileName = NAME_REGEX.exec(name)[0];
+      if (fileName.includes(".entity.ts")) {
+        const modelName = fileName.substring(0, fileName.indexOf(".entity.ts"));
+        models.push({ name: modelName, value: modelName, module: featurePath });
+      }
+    });
   });
   return models;
 };
@@ -81,7 +82,6 @@ const createEvent = {
   path: "{{module}}/events/{{kebabCase name}}.event.ts",
   templateFile: "plop-templates/events/event.ts",
 };
-
 
 const createQuery = [
   {
@@ -131,7 +131,8 @@ const detailsCrud = [
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ VALIDATION_IMPORTS)/,
-    template: 'import { {{camelCase name}}DetailsActionValidation } from "./actions/{{kebabCase name}}-details.action";\n$1',
+    template:
+      'import { {{camelCase name}}DetailsActionValidation } from "./actions/{{kebabCase name}}-details.action";\n$1',
   },
   {
     type: "modify",
@@ -243,7 +244,8 @@ const createCrud = [
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ VALIDATION_IMPORTS)/,
-    template: 'import { create{{pascalCase name}}ActionValidation } from "./actions/create-{{kebabCase name}}.action";\n$1',
+    template:
+      'import { create{{pascalCase name}}ActionValidation } from "./actions/create-{{kebabCase name}}.action";\n$1',
   },
   {
     type: "modify",
@@ -282,10 +284,9 @@ const createCrud = [
     type: "modify",
     path: databaseLocation,
     pattern: /(\/\/ MODELS_SETUP)/,
-    template: "{{camelCase name}}Repository: asValue(dbConnection.getRepository({{pascalCase name}}Entity)),\n    $1",
+    template: "{{camelCase name}}Repository: asValue(dbDataSource.getRepository({{pascalCase name}}Entity)),\n    $1",
   },
 ];
-
 
 const updateCrud = [
   {
@@ -307,7 +308,8 @@ const updateCrud = [
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ VALIDATION_IMPORTS)/,
-    template: 'import { update{{pascalCase name}}ActionValidation } from "./actions/update-{{kebabCase name}}.action";\n$1',
+    template:
+      'import { update{{pascalCase name}}ActionValidation } from "./actions/update-{{kebabCase name}}.action";\n$1',
   },
   {
     type: "modify",
@@ -357,7 +359,8 @@ const removeCrud = [
     type: "modify",
     path: "{{module}}/routing.ts",
     pattern: /(\/\/ VALIDATION_IMPORTS)/,
-    template: 'import { remove{{pascalCase name}}ActionValidation } from "./actions/remove-{{kebabCase name}}.action";\n$1',
+    template:
+      'import { remove{{pascalCase name}}ActionValidation } from "./actions/remove-{{kebabCase name}}.action";\n$1',
   },
   {
     type: "modify",
@@ -614,10 +617,10 @@ const modelListPrompt = {
   type: "list",
   name: "name",
   message: "What is your model name?",
-  default: '',
+  default: "",
   choices: (feature) => {
     return getFeatureModels().filter((model) => model.module == feature.module);
-  }
+  },
 };
 
 const textPrompt = (name) => ({
@@ -669,7 +672,7 @@ module.exports = (plop) => {
 
   plop.setHelper("getName", function (text, titleCase = false) {
     const name = NAME_REGEX.exec(text);
-    
+
     let newText = !!name[0] ? name[0] : text;
 
     if (titleCase) {
@@ -767,8 +770,6 @@ module.exports = (plop) => {
 
   plop.setGenerator("crud rest api", {
     prompts: [moduleListPrompt, modelListPrompt],
-    actions: [
-      ...listCrud, ...detailsCrud, ...createCrud, ...updateCrud, ...removeCrud, 
-    ],
-  });  
+    actions: [...listCrud, ...detailsCrud, ...createCrud, ...updateCrud, ...removeCrud],
+  });
 };

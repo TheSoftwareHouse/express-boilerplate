@@ -123,7 +123,7 @@ Migrations should be stored inside migrations directory.
 Easiest way to create a migration is to generate it from entity/ies:
 
 ```
-npm run generate-migration -- <migration-name>
+npm run generate-migration
 ```
 
 This should generate a migration for all connected entities.
