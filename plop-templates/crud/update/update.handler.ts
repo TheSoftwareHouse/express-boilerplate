@@ -16,7 +16,9 @@ export default class Update{{pascalCase name}}Handler implements CommandHandler<
   constructor(private dependencies: Update{{pascalCase name}}HandlerDependencies) {}
 
   async execute(command: Update{{pascalCase name}}Command) {
-    let {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOne(command.payload.id);
+    let {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOneBy({
+      id: command.payload.id,
+    });
 
     if (!{{camelCase name}}Entity) {
       throw new NotFoundError("{{camelCase name}} not found");

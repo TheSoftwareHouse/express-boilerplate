@@ -15,7 +15,9 @@ export default class {{pascalCase name}}DetailsQueryHandler /* eslint-disable-ne
   constructor(private dependencies: {{pascalCase name}}DetailsQueryHandlerDependencies) {}
 
   async execute(query: {{pascalCase name}}DetailsQuery): Promise<{{pascalCase name}}DetailsQueryResult> {
-    const {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOne(query.payload.id);
+    const {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOneBy({
+      id: query.payload.id,
+    });
 
     if (!{{camelCase name}}Entity) {
       throw new NotFoundError("{{camelCase name}} not found");
