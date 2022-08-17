@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { CommandBus } from "@tshio/command-bus";
 {{#eq method "get"}}
 import { QueryBus } from "@tshio/query-bus";
 import { {{pascalCase name}}Query } from "../queries/{{kebabCase name}}";
 {{else}}
+import { CommandBus } from "@tshio/command-bus";
 import { {{pascalCase name}}Command } from "../commands/{{kebabCase name}}.command";
 {{/eq}}
 import { Action } from "../../../../shared/http/types";
