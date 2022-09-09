@@ -49,16 +49,25 @@ aws apprunner create-vpc-connector --vpc-connector-name dummy-vpc-connector --su
 
 Boilerplate comes with CI/CD set for App Runner deployment. As long as you have a IAM Role and VPC Connector, you're free to use it.
 
-For that you need to set required environment varialbes:
+For that you need to set required environment variables:
 - APP_RUNNER_IAM_ROLE_ARN - ARN of created IAM role for app runner Deployment
 - APP_RUNNER_VPC_CONNECTOR_ARN - ARN of vpc connector for app runner Deployment
 - ENVIRONMENT_NAME - Unique environment name for example my-app-staging
 
-You also need to have an ARN of an actuall App Runner instance, but this is created after the environment creation.
+You also need to have an ARN of an actual App Runner instance, but this is created after the environment creation.
+
+Also remember to:
+- create private repository (ECR) and set proper AWS_ECR_URL environment,
+- set your AWS credentials:
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_ACCESS_KEY_ID
+
+    which are used to auto sign-in (AWS CLI detects these variables names).
+
 
 ### Environment creation
 
-By default we are set to create staging environment in form of create-staging custom job in bitbucket pipelines. This will build the App Runner instance and return its ARN. That ARN has to be put as value of APP_RUNNER_ARN environemnt variable.
+By default, we are set to create staging environment in form of create-staging custom job in bitbucket pipelines. This will build the App Runner instance and return its ARN. That ARN has to be put as value of APP_RUNNER_ARN environemnt variable.
 
 #### Environment Deploy
 

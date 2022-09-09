@@ -16,7 +16,9 @@ export default class Remove{{pascalCase name}}Handler implements CommandHandler<
   constructor(private dependencies: Remove{{pascalCase name}}HandlerDependencies) {}
 
   async execute(command: Remove{{pascalCase name}}Command) {
-    const {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOne(command.payload.id);
+    const {{camelCase name}}Entity = await this.dependencies.{{camelCase name}}Repository.findOneBy({
+      id: command.payload.id,
+    });
 
     if (!{{camelCase name}}Entity) {
       throw new NotFoundError("{{camelCase name}} not found");
