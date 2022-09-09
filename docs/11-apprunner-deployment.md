@@ -14,6 +14,11 @@ we need to configure a couple of things in advance.
 
 In order to be able to setup the App Runner we need to have IAM role and VPC Connector created. In some cases you will have those already created instead.
 
+You also have to have necessary environment variables set:
+- AWS_REGION - a region you want to deploy to
+- AWS_ECR_URL - an URL to ECR you wan to push docker images to
+- AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID - a secret key and id of your AWS account
+
 ### Creating IAM role for App Runner
 
 Now, we need to create a role that can be used by App Runner.

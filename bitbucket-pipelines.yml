@@ -7,6 +7,7 @@ pipelines:
           - node
         services:
           - docker
+        deployment: test
         script:
           - npm run docker-build
           - npm run lint
@@ -23,13 +24,9 @@ pipelines:
     deploy-staging:
       - step:
           name: build and push docker
+          deployment: staging
           script:
             - ./deploy/apprunner/scripts/release.sh
-          services:
-            - docker
-      - step:
-          name: deploy and update app runner
-          script:
             - ./deploy/apprunner/scripts/deploy.sh
           services:
             - docker
