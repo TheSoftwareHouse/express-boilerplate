@@ -17,6 +17,7 @@ pipelines:
     create-staging:
       - step:
           name: create staging environment
+          deployment: staging
           script:
             - ./deploy/apprunner/scripts/create.sh
           services:
