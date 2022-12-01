@@ -10,7 +10,7 @@ export default class {{pascalCase name}}EventSubscriber implements EventSubscrib
   public constructor(private dependencies: {{pascalCase name}}EventSubscriberDependencies) {}
 
   getSubscribedEvents(): EventSubscribersMeta[] {
-    return [{ name: {{pascalCase name}}Event.eventName, method: this.log{{pascalCase name}}.name }];
+    return [{ name: {{pascalCase name}}Event.eventName, method: "log{{pascalCase name}}" }];
   }
 
   public async log{{pascalCase name}}(event: {{pascalCase name}}Event) {
