@@ -57,7 +57,7 @@
     "swagger-ui-dist": "^4.12.0",
     "swagger-ui-express": "^4.4.0",
     "ts-pipe-compose": "^0.2.1",
-    "typeorm": "^0.3.6",
+    "typeorm": "^0.3.11",
     "typeorm-naming-strategies": "^4.1.0",
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
