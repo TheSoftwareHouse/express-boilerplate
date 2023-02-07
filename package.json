@@ -38,7 +38,7 @@
     "@tshio/query-bus": "^1.0.4",
     "@tshio/security-client": "0.0.20",
     "apollo-server-express": "^3.11.1",
-    "awilix": "^7.0.3",
+    "awilix": "^8.0.0",
     "celebrate": "^15.0.1",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
