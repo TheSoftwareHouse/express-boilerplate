@@ -1,3 +1,4 @@
+import { ObjectLiteral } from "typeorm";
 import { SelectQueryBuilder } from "typeorm/query-builder/SelectQueryBuilder";
 import { TypeormMapperDTO } from "../mapper/typeorm-mapper.dto";
 import { lowerFirst, tableAliasName } from "../../utils/string.utils";
@@ -11,10 +12,9 @@ declare module "typeorm/query-builder/SelectQueryBuilder" {
   }
 }
 
-SelectQueryBuilder.prototype.buildQueryByTypeOrmMapper = function buildQueryByTypeOrmMapper<Entity>(
-  this: SelectQueryBuilder<Entity>,
-  typeOrmMapper: TypeormMapperDTO,
-): SelectQueryBuilder<Entity> {
+SelectQueryBuilder.prototype.buildQueryByTypeOrmMapper = function buildQueryByTypeOrmMapper<
+  Entity extends ObjectLiteral,
+>(this: SelectQueryBuilder<Entity>, typeOrmMapper: TypeormMapperDTO): SelectQueryBuilder<Entity> {
   const whereObject: any = typeOrmMapper.where;
 
   if (typeOrmMapper.where) {
