@@ -1,5 +1,5 @@
 import { asFunction, asValue, AwilixContainer, createContainer as createAwilixContainer, InjectionMode } from "awilix";
-import * as http from "http";
+import http from "http";
 import { DataSource } from "typeorm";
 import { createApp } from "./app/app";
 import { AppConfig, appConfigFactory } from "./config/app";

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import * as request from "supertest";
+import request from "supertest";
 
 describe("/api/{{kebabCase name}} integration", () => {
   it("test example", async () => {

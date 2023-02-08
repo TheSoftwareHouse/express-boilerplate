@@ -1,11 +1,11 @@
-import * as express from "express";
+import express from "express";
 import helmet from "helmet";
-import * as cors from "cors";
+import cors from "cors";
 import { ApolloServer, gql } from "apollo-server-express";
 import { CommandBus } from "@tshio/command-bus";
 import { QueryBus } from "@tshio/query-bus";
-import * as swaggerUi from "swagger-ui-express";
-import * as YAML from "yamljs";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
 import { multiFileSwagger } from "../tools/multi-file-swagger";
