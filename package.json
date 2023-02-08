@@ -33,7 +33,7 @@
   "dependencies": {
     "@tshio/awilix-resolver": "^2.0.1",
     "@tshio/command-bus": "^1.0.4",
-    "@tshio/event-dispatcher": "^1.0.3",
+    "@tshio/event-dispatcher": "^1.1.0",
     "@tshio/logger": "^1.0.5",
     "@tshio/query-bus": "^1.0.4",
     "@tshio/security-client": "0.0.20",

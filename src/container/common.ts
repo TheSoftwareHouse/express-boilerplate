@@ -19,7 +19,10 @@ export async function registerCommonDependencies(appConfig: AppConfig, container
     router: asFunction(createRouter).singleton(),
     queryBus: asClass(QueryBus).classic().singleton(),
     commandBus: asClass(CommandBus).classic().singleton(),
-    eventDispatcher: asClass(EventDispatcher).classic().singleton(),
+    eventDispatcher: asClass(EventDispatcher)
+      .classic()
+      .singleton()
+      .inject(() => ({ throwOnFailure: false })),
   });
 
   return container;
