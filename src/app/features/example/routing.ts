@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { Action } from "../../../shared/http/types";
 
 import { loginActionValidation } from "./actions/login.action";

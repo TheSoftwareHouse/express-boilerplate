@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { Action } from "../../../shared/http/types";
 
 // VALIDATION_IMPORTS

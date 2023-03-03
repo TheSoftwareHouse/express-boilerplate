@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 
 export interface RoutingDependencies {
   usersRouting: express.Router;
