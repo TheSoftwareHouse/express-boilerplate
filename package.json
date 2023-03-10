@@ -30,6 +30,10 @@
   },
   "keywords": [],
   "author": "",
+  "engines": {
+    "node": "18.15.0",
+    "npm": "9.5.0"
+  },
   "dependencies": {
     "@tshio/awilix-resolver": "^2.0.1",
     "@tshio/command-bus": "^1.0.4",

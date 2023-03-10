@@ -1,11 +1,10 @@
-ARG IMAGE=node:16.13-alpine
+ARG IMAGE=node:18.15-alpine
 FROM $IMAGE as builder
 
 WORKDIR /app
 
-RUN apk add --no-cache bash curl git py-pip make && \ 
+RUN apk add --no-cache bash curl git py-pip make && \
   npx node-prune && \
-  npm install node-dev -g && \
   npm cache clean --force
   
 FROM builder
