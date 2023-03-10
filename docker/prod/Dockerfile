@@ -6,7 +6,6 @@ WORKDIR /app
 COPY . .
 
 RUN apk add --no-cache bash curl git py-pip make
-RUN npm config set unsafe-perm true
 RUN npm i
 RUN npm run build
 #FOR SWC TRANSPILATION
