@@ -12,6 +12,7 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
     await dbDataSource.runMigrations();
   } catch (err) {
     (container.cradle.logger as Logger).debug(`Migrations: ${err}`);
+    throw err;
   }
   container.register({
     dbDataSource: asValue(dbDataSource),

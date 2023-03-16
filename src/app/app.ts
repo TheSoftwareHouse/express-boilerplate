@@ -9,6 +9,7 @@ import YAML from "yamljs";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
 import { multiFileSwagger } from "../tools/multi-file-swagger";
+import { AppConfig } from "../config/app";
 
 export interface AppDependencies {
   router: express.Router;
@@ -17,9 +18,18 @@ export interface AppDependencies {
   commandBus: CommandBus;
   queryBus: QueryBus<any>;
   resolvers: any;
+  appConfig: AppConfig;
 }
 
-async function createApp({ router, errorHandler, graphQLSchema, commandBus, queryBus, resolvers }: AppDependencies) {
+async function createApp({
+  router,
+  errorHandler,
+  graphQLSchema,
+  commandBus,
+  queryBus,
+  resolvers,
+  appConfig,
+}: AppDependencies) {
   const typeDefs = gql(graphQLSchema);
 
   const app = express();
@@ -49,6 +59,7 @@ async function createApp({ router, errorHandler, graphQLSchema, commandBus, quer
   app.get("/health", (req, res) => {
     res.status(200).json({
       status: "ok",
+      deployedCommit: appConfig.deployedCommit,
     });
   });
 
