@@ -29,5 +29,6 @@ pipelines:
           script:
             - ./deploy/apprunner/scripts/release.sh
             - ./deploy/apprunner/scripts/deploy.sh
+            - ./deploy/apprunner/scripts/check-deployed-commit.sh
           services:
             - docker

@@ -11,6 +11,7 @@
         "Port": "1337",
         "RuntimeEnvironmentVariables": {
           "APP_NAME": "$APP_NAME",
+          "BITBUCKET_COMMIT": "$BITBUCKET_COMMIT",
           "AUTH_API_KEY": "$AUTH_API_KEY",
           "RDS_DB_NAME": "$RDS_DB_NAME",
           "RDS_HOSTNAME": "$RDS_HOSTNAME",
