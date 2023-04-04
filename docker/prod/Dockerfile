@@ -15,6 +15,7 @@ RUN npm run build
 RUN npm prune --production
 RUN ./docker/node-modules-clean.sh
 RUN npx node-prune
+RUN chown -R root:root /app
 
 FROM $IMAGE
 COPY --chown=node:node --from=build /app/build /app/build
