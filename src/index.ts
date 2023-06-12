@@ -1,4 +1,5 @@
 import "express-async-errors";
+import http from "http";
 import { createContainer } from "./container";
 
 (async () => {
@@ -15,7 +16,9 @@ import { createContainer } from "./container";
     process.exit(1);
   });
 
-  const { server, port } = container.cradle;
-  server.listen(port);
+  const { port, app } = container.cradle;
+
+  http.createServer(await app).listen(port);
+
   container.cradle.logger.info(`listening on port: ${port}`);
 })();

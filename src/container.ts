@@ -1,9 +1,6 @@
-import { asFunction, asValue, AwilixContainer, createContainer as createAwilixContainer, InjectionMode } from "awilix";
-import http from "http";
+import { AwilixContainer, createContainer as createAwilixContainer, InjectionMode } from "awilix";
 import { DataSource } from "typeorm";
-import { createApp } from "./app/app";
 import { AppConfig, appConfigFactory } from "./config/app";
-
 import { registerCommonDependencies } from "./container/common";
 import { registerDatabase } from "./container/database";
 import { loadEnvs } from "./config/env";
@@ -36,16 +33,6 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
   await registerGraphQLDependencies(container);
   await registerSubscribers(container);
   await registerDatabase(container, dependencies);
-
-  container.register({
-    app: asFunction(createApp).singleton(),
-  });
-
-  const { app } = container.cradle;
- 
-  container.register({
-    server: asValue(http.createServer(await app)),
-  });
 
   return container;
 }

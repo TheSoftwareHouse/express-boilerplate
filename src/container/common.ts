@@ -6,6 +6,7 @@ import { createLogger, restrictFromProduction } from "@tshio/logger";
 import { AppConfig } from "../config/app";
 import { cacheClient } from "../tools/cache-client";
 import { createRouter } from "../app/router";
+import { createApp } from "../app/app";
 
 export async function registerCommonDependencies(appConfig: AppConfig, container: AwilixContainer) {
   await cacheClient.connect();
@@ -23,6 +24,7 @@ export async function registerCommonDependencies(appConfig: AppConfig, container
       .classic()
       .singleton()
       .inject(() => ({ throwOnFailure: false })),
+    app: asFunction(createApp).singleton(),
   });
 
   return container;
