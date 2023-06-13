@@ -36,7 +36,8 @@ async function createApp({
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({
+    context: ({ req }) => ({
+      req,
       commandBus,
       queryBus,
     }),
