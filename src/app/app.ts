@@ -1,11 +1,16 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "@apollo/server";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { expressMiddleware } from "@apollo/server/express4";
+import http from "http";
 import { CommandBus } from "@tshio/command-bus";
 import { QueryBus } from "@tshio/query-bus";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import { StatusCodes } from "http-status-codes";
+import pkg from "body-parser";
 import { MiddlewareType } from "../shared/middleware-type/middleware.type";
 import { NotFoundError } from "../errors/not-found.error";
 import { multiFileSwagger } from "../tools/multi-file-swagger";
@@ -30,18 +35,30 @@ async function createApp({
   resolvers,
   appConfig,
 }: AppDependencies) {
-  const typeDefs = gql(graphQLSchema);
+  const typeDefs = graphQLSchema;
 
   const app = express();
+  const httpServer = http.createServer(app);
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({
-      commandBus,
-      queryBus,
-    }),
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await apolloServer.start();
+
+  const { json } = pkg;
+
+  app.use(
+    "/graphql",
+    cors<cors.CorsRequest>(),
+    json(),
+    expressMiddleware(apolloServer, {
+      context: async () => ({
+        commandBus,
+        queryBus,
+      }),
+    }),
+  );
 
   app.use(cors());
   app.use(
@@ -57,7 +74,7 @@ async function createApp({
   app.use(express.json());
 
   app.get("/health", (req, res) => {
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
       status: "ok",
       deployedCommit: appConfig.deployedCommit,
     });
@@ -66,8 +83,6 @@ async function createApp({
   const swaggerDocument = await multiFileSwagger(YAML.load("../swagger/api.yaml"));
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use("/api", router);
-
-  apolloServer.applyMiddleware({ app });
   app.use("*", (req, res, next) => next(new NotFoundError("Page not found")));
   app.use(errorHandler);
 
