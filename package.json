@@ -31,7 +31,7 @@
   "keywords": [],
   "author": "",
   "engines": {
-    "node": "v20"
+    "node": "20"
   },
   "dependencies": {
     "@apollo/server": "^4.9.4",
@@ -41,8 +41,6 @@
     "@tshio/logger": "^1.0.5",
     "@tshio/query-bus": "^1.0.4",
     "@tshio/security-client": "0.0.20",
-    "@types/body-parser": "^1.19.3",
-    "@types/node": "^20.8.4",
     "awilix": "^8.0.1",
     "body-parser": "^1.20.2",
     "celebrate": "^15.0.1",
@@ -70,6 +68,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.3",
+    "@types/node": "^20.8.4",
     "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@graphql-codegen/cli": "^5.0.0",
