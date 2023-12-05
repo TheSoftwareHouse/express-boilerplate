@@ -1,4 +1,3 @@
-# UNCOMMENT TO USE
 ---
 name: Deploy to Azure Container Registry
 on:
