@@ -13,6 +13,7 @@ RUN npm run build
 # COPY package.json ./build/package.json
 
 RUN npm prune --production
+RUN chmod +x ./docker/node-modules-clean.sh
 RUN ./docker/node-modules-clean.sh
 RUN npx node-prune
 RUN chown -R root:root /app
