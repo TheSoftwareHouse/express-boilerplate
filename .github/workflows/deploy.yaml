@@ -1,0 +1,36 @@
+---
+name: Deploy to Azure Container Registry
+on:
+  workflow_dispatch:
+
+env:
+  CONTAINER_REGISTRY_URI: example.azurecr.io
+  IMAGE_NAME: api
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`git rev-parse --short ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: Build
+        run: docker build -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:${SHORT_SHA} -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:latest -f ./docker/prod/Dockerfile .
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to Azure Container Registry
+        run: az acr login --name $CONTAINER_REGISTRY_URI
+
+      - name: Push
+        run: docker push -a $CONTAINER_REGISTRY_URI/$IMAGE_NAME

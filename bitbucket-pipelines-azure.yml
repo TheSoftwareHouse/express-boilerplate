@@ -1,0 +1,44 @@
+image: atlassian/default-image:2
+
+definitions:
+  defaultEnvironment: &defaultEnvironment
+    export BITBUCKET_COMMIT_SHORT=$(echo $BITBUCKET_COMMIT | cut -c1-7)
+    export CONTAINER_REGISTRY_URI=kdtemp.azurecr.io
+    export IMAGE_NAME=apibitbucket
+  steps:
+    - step: &buildandpush
+        name: Build and Push
+        script:
+          - *defaultEnvironment
+          - docker build -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:$BITBUCKET_COMMIT_SHORT -t $CONTAINER_REGISTRY_URI/$IMAGE_NAME:latest -f ./docker/prod/Dockerfile .
+          - docker login $CONTAINER_REGISTRY_URI -u ${SP_CLIENT_ID} -p ${SP_CLIENT_SECRET}
+          - docker push -a $CONTAINER_REGISTRY_URI/$IMAGE_NAME
+        services:
+        - docker
+
+  services:
+    docker:
+      memory: 2048
+
+pipelines:
+  default:
+    - stage:
+        name: Test
+        steps:
+          - step:
+              name: Lint and Unit tests
+              image: tshio/awscli-docker-compose-pipelines:0.0.3
+              caches:
+                - node
+              script:
+                - npm run docker-build
+                - npm run lint
+                - npm run units
+              services:
+                - docker
+  custom:
+    deploy:
+      - stage:
+          name: Deploy to Azure Container Registry
+          steps:
+            - step: *buildandpush
