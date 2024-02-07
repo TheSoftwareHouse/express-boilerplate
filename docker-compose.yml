@@ -37,6 +37,16 @@ services:
     networks:
       - app
 
+  js_test:
+    image: app:local
+    env_file:
+      - .env.test
+    depends_on:
+      - postgres_test
+      - redis
+    networks:
+      - app
+
   boilerplate_api:
     <<: *common
     working_dir: /app/build
@@ -54,6 +64,15 @@ services:
       - app
 
   postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: app
+    networks:
+      - app
+
+  postgres_test:
     image: postgres:14-alpine
     environment:
       POSTGRES_PASSWORD: password
