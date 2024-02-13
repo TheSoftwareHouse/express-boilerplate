@@ -14,6 +14,9 @@ services:
   js:
     volumes: *volumes
 
+  js_test:
+    volumes: *volumes
+
   boilerplate_api:
     volumes: *volumes
     depends_on:
