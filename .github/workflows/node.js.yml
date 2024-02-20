@@ -21,7 +21,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: cp .env.dist .env
     - run: npm install
-    - run: npm run docker-build
     - run: npm run lint
     - run: npm run units-ci
     - run: npm run integration-ci
