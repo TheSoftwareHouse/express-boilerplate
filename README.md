@@ -59,40 +59,42 @@ After checkout of a repository, please perform the following steps in exact sequ
 
 3. Run `npm i`
 
-4. Run `npm run docker-build`
-
-5. Run watch - `npm run watch`
-
 ##
 
 ### Dev setup
 
-This app is fully dockerized, so in order to use it you have to have docker and docker-compose installed. What's more you need to have npm in order to run npm scripts.
+This app is fully dockerized, so in order to use it you have to have docker, [docker-sync](https://docker-sync.readthedocs.io/en/latest/index.html) and docker-compose installed.
 
-1. In order to run the whole app type:
-
-    ```
-    npm run start
-    ```
-
-2. In order to watch files for dev purpose type:
+1. In order to watch files for dev purpose type:
 
     ```
     npm run watch
     ```
 
-3. If you need to close all containers run:
+1. In a separate terminal run docker-sync:
 
     ```
-    npm run down
+    npm run sync-start
     ```
 
-4. To get into Docker container's shell:
+1. To start the app run:
 
     ```
-    npm run shell
+    npm start
     ```
 
+1. To stop docker-sync exit with Ctrl+C and then run:
+
+    ```
+    npm run sync-clean
+    ```
+   to clean everything up.
+
+1. After making changes in package.json (especially when adding new dependencies) it might be necessary to rebuild the image for testing. To do that run:
+
+    ```
+    npm run docker-build
+    ```
 ##
 
 ### Code generation
