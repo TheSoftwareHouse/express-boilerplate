@@ -20,9 +20,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cp .env.dist .env
-    - run: cp docker-compose.override.yml.dist docker-compose.override.yml
     - run: npm install
     - run: npm run docker-build
     - run: npm run lint
-    - run: npm run units
-    - run: npm run integration
+    - run: npm run units-ci
+    - run: npm run integration-ci
