@@ -8,6 +8,7 @@
     "build": "tsc --skipLibCheck --outDir build/src",
     "build-swc": "swc src --out-dir build/src --sync && tsc --skipLibCheck --noEmit",
     "watch": "rm -rf ./build/* && tsc -w --pretty --skipLibCheck --outDir build/src",
+    "docker-build": "docker compose build boilerplate_api",
     "docker-build-prod": "docker build -t boilerplate-api:latest -f ./docker/prod/Dockerfile .",
     "down": "docker-compose down -v",
     "sync-start": "docker-sync-stack start",
