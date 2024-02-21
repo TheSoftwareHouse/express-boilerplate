@@ -7,7 +7,7 @@ services:
       dockerfile: ./docker/dev/Dockerfile
     working_dir: /app/build
     container_name: boilerplate_api
-    command: [sh, -c, '../node_modules/nodemon/bin/nodemon.js -L --inspect=0.0.0.0 -r source-map-support/register ./src/index.js']
+    command: [sh, -c, 'nodemon -L --inspect=0.0.0.0 -r source-map-support/register ./src/index.js']
     hostname: boilerplate_api
     env_file:
       - .env
