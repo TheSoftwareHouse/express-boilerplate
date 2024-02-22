@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk add --no-cache bash curl git py-pip make && \
   npx node-prune && \
   npm cache clean --force
-  
+
 FROM builder
 
 COPY docker ./docker
@@ -18,7 +18,8 @@ RUN chmod +x ./docker/node-modules-clean.sh
 RUN npm ci && npm cache clean --force && \
   ./docker/node-modules-clean.sh && \
   npm dedupe && \
-  rm -f .npmrc
+  rm -f .npmrc && \
+  npm i -g nodemon
 
 COPY . .
 RUN npm run build

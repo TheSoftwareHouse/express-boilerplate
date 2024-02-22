@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  boilerplate_api_test:
+    volumes:
+      - boilerplate_api-sync:/app/build:nocopy
+
+volumes:
+  boilerplate_api-sync:
+    external: true

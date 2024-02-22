@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  boilerplate_api_test:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    working_dir: /app/build
+    container_name: boilerplate_api_test
+    hostname: boilerplate_api_test
+    env_file:
+      - .env.test
+    depends_on:
+      - postgres_test
+      - redis_test
+    networks:
+      - app_test
+
+  postgres_test:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USERNAME: postgres
+      POSTGRES_DB: app
+    networks:
+      - app_test
+
+  redis_test:
+    container_name: redis_test
+    image: 'redis'
+    networks:
+      - app_test
+
+networks:
+  app_test:

@@ -7,6 +7,8 @@ docker-compose.*yml
 docker-compose.yml.*
 !docker-compose.e2e.yml
 !docker-compose.yml
+!docker-compose.test.yml
+!docker-compose.override.test.yml
 .scannerwork
 coverage
 *.log
@@ -14,3 +16,4 @@ build
 docker/dev/datastore
 config/all.override.yaml
 tmp
+.docker-sync

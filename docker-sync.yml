@@ -1,0 +1,8 @@
+version: "2"
+syncs:
+  boilerplate_api-sync:
+    src: './build'
+    compose-file-path:
+      - 'docker-compose.yml'
+    compose-dev-file-path:
+      - 'docker-compose.override.yml'

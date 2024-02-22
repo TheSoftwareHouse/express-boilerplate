@@ -9,9 +9,8 @@ pipelines:
           - docker
         deployment: test
         script:
-          - npm run docker-build
           - npm run lint
-          - npm run units
+          - npm run units-ci
 
   custom:
     create-staging:
