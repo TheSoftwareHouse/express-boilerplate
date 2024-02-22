@@ -90,10 +90,11 @@ This app is fully dockerized, so in order to use it you have to have docker, [do
     ```
    to clean everything up.
 
-1. After making changes in package.json (especially when adding new dependencies) it might be necessary to rebuild the image for testing. To do that run:
+1. After making changes in package.json (especially when adding new dependencies) it might be necessary to rebuild the image. To do that run:
 
     ```
     npm run docker-build
+    npm run docker-build-test
     ```
 ##
 
