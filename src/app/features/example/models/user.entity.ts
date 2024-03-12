@@ -1,12 +1,15 @@
-import { Exclude, Expose } from "class-transformer";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 interface UserProps {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
 }
 
-@Exclude()
+@Entity({
+  name: "user",
+})
 export class UserEntity {
   public static create(data: Partial<UserProps>): UserEntity {
     const object = new UserEntity();
@@ -14,11 +17,15 @@ export class UserEntity {
     return object;
   }
 
-  @Expose()
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+
+  @Column()
   firstName: string;
 
-  @Expose()
+  @Column()
   lastName: string;
 
+  @Column()
   email: string;
 }
