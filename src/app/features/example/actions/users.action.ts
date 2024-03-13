@@ -18,10 +18,12 @@ export const usersActionValidation = celebrate(
 class UsersAction implements Action {
   constructor(private dependencies: UsersActionDependencies) {}
 
-  async invoke(req: Request, res: Response) {
+  async invoke({ query }: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new UsersQuery({
-        // query props
+        ...query,
+        page: Number(query.page),
+        limit: Number(query.limit),
       }),
     );
 
