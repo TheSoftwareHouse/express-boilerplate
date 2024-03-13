@@ -47,6 +47,35 @@ paths:
       operationId: listUsers
       tags:
         - example
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: string
+        description: Describes the page of pagination.
+      - in: query
+        name: limit
+        schema:
+          type: string
+        description: Describes the limit of items per page.
+      - in: query
+        name: sort
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: ASC
+        description: Defines order of items.
+      - in: query
+        name: filter
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: john@doe.com
+        description: Defines filter of items.
       responses:
         '200':
           description: Array of users
