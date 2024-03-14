@@ -1,34 +1,38 @@
+import { AppError } from "../../errors/app.error";
+import { Repository } from "typeorm";
+
 export interface PaginationMeta {
-  page: number;
-  size: number;
-  total: number;
-  totalPages: number;
+  meta: {
+    page?: number;
+    limit?: number;
+    total: number;
+    totalPages: number | null;
+  },
+  data: any;
 }
 
-/**
- * @swagger
- *
- * components:
- *  schemas:
- *    Meta:
- *      type: object
- *      properties:
- *        page:
- *          type: integer
- *        size:
- *          type: integer
- *        total:
- *          type: integer
- *        totalPages:
- *          type: integer
- *
- */
-export function makePaginationMeta(size: number, page: number, total: number): PaginationMeta {
+export function calculateSkipFindOption(page: number, limit: number) {
+  return (page - 1) * limit;
+}
+
+export function isFilterAvailable(filter: any, repository: Repository<any>): boolean {
+  const availableFilters = repository.metadata.columns.map((column) => column.propertyName);
+
+  if (Object.keys(filter).some((key) => availableFilters.includes(key))) {
+    return true;
+  }
+  throw new AppError("Invalid query string");
+}
+
+export function makePaginationMeta(data: any, total: number, limit?: number, page?: number): PaginationMeta {
   return {
-    page: page || 1,
-    size,
-    total,
-    totalPages: Math.ceil(total / Math.max(size, 1)),
+    meta: {
+      page: page || 1,
+      limit,
+      total,
+      totalPages: limit ? Math.ceil(total / Math.max(limit, 1)) : null,
+    },
+    data,
   };
 }
 

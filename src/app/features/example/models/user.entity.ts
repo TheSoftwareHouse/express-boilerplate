@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-interface UserProps {
+export interface UserProps {
   id: string;
   firstName: string;
   lastName: string;
