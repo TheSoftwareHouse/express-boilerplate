@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 import { AppError } from "../../errors/app.error";
 
-export interface PaginationMeta {
+export interface PaginationResult {
   meta: {
     page?: number;
     limit?: number;
@@ -24,7 +24,7 @@ export function isFilterAvailable(filter: any, repository: Repository<any>): boo
   throw new AppError("Invalid query string");
 }
 
-export function makePaginationMeta(data: any, total: number, limit?: number, page?: number): PaginationMeta {
+export function makePaginationResult(data: any, total: number, limit?: number, page?: number): PaginationResult {
   return {
     meta: {
       page: page || 1,

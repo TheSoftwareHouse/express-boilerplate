@@ -1,6 +1,6 @@
 import "mocha";
 import { expect } from "chai";
-import { makePaginationMeta, normalizePage } from "./pagination-meta";
+import { makePaginationResult, normalizePage } from "./pagination-meta";
 
 describe("pagination-meta", () => {
   const data = [
@@ -19,7 +19,7 @@ describe("pagination-meta", () => {
   ];
 
   it("returns valid pagination", async () => {
-    const result = makePaginationMeta(data, 10, 4, 2);
+    const result = makePaginationResult(data, 10, 4, 2);
     expect(result).to.include.deep.equal({
       meta: {
         page: 2,
@@ -32,7 +32,7 @@ describe("pagination-meta", () => {
   });
 
   it("returns valid pagination if limit is 0", async () => {
-    const result = makePaginationMeta(data, 10, 0, 2);
+    const result = makePaginationResult(data, 10, 0, 2);
     expect(result).to.include.deep.equal({
       meta: {
         page: 2,
@@ -45,7 +45,7 @@ describe("pagination-meta", () => {
   });
 
   it("returns first page if passed 0 page", async () => {
-    const result = makePaginationMeta(data, 10, 5, 2);
+    const result = makePaginationResult(data, 10, 5, 2);
     expect(result).to.include.deep.equal({
       meta: {
         page: 2,

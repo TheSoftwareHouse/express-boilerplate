@@ -3,7 +3,7 @@ import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
 import { UserEntity } from "../models/user.entity";
-import { calculateSkipFindOption, isFilterAvailable, makePaginationMeta } from "../../../../shared/pagination-meta/pagination-meta";
+import { calculateSkipFindOption, isFilterAvailable, makePaginationResult } from "../../../../shared/pagination-meta/pagination-meta";
 
 export interface UsersQueryHandlerInterface {
   userRepository: Repository<UserEntity>;
@@ -33,6 +33,6 @@ export default class UsersQueryHandler implements QueryHandler<UsersQuery, Users
 
     const [data, total] = await this.dependencies.userRepository.findAndCount(findOptions);
 
-    return new UsersQueryResult(makePaginationMeta(data, total, limit, page));
+    return new UsersQueryResult(makePaginationResult(data, total, limit, page));
   }
 }
