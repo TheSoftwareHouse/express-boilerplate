@@ -1,8 +1,8 @@
 import "mocha";
 import { expect } from "chai";
-import { makePaginationResult, normalizePage } from "./pagination-meta";
+import { makePaginationResult, normalizePage } from "./pagination-utils";
 
-describe("pagination-meta", () => {
+describe("pagination-utils", () => {
   const data = [
     {
       id: "155bed9b-54d9-4605-b2cb-c4b19618d28b",

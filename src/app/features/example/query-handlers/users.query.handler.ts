@@ -3,7 +3,11 @@ import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
 import { UserEntity } from "../models/user.entity";
-import { calculateSkipFindOption, isFilterAvailable, makePaginationResult } from "../../../../shared/pagination-meta/pagination-meta";
+import {
+  calculateSkipFindOption,
+  isFilterAvailable,
+  makePaginationResult,
+} from "../../../../shared/pagination-utils/pagination-utils";
 
 export interface UsersQueryHandlerInterface {
   userRepository: Repository<UserEntity>;
