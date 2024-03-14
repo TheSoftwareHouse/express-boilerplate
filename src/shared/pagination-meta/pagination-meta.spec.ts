@@ -3,33 +3,57 @@ import { expect } from "chai";
 import { makePaginationMeta, normalizePage } from "./pagination-meta";
 
 describe("pagination-meta", () => {
+  const data = [
+    {
+      id: "155bed9b-54d9-4605-b2cb-c4b19618d28b",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@doe.com",
+    },
+    {
+      id: "85e8ec60-1cc6-471a-9894-06a03560731c",
+      firstName: "John2",
+      lastName: "Doe2",
+      email: "john2@doe.com",
+    },
+  ];
+
   it("returns valid pagination", async () => {
-    const result = makePaginationMeta(4, 2, 10);
+    const result = makePaginationMeta(data, 10, 4, 2);
     expect(result).to.include.deep.equal({
-      page: 2,
-      size: 4,
-      total: 10,
-      totalPages: 3,
+      meta: {
+        page: 2,
+        limit: 4,
+        total: 10,
+        totalPages: 3,
+      },
+      data,
     });
   });
 
-  it("returns valid pagination if size is 0", async () => {
-    const result = makePaginationMeta(0, 2, 10);
+  it("returns valid pagination if limit is 0", async () => {
+    const result = makePaginationMeta(data, 10, 0, 2);
     expect(result).to.include.deep.equal({
-      page: 2,
-      size: 0,
-      total: 10,
-      totalPages: 10,
+      meta: {
+        page: 2,
+        limit: 0,
+        total: 10,
+        totalPages: null,
+      },
+      data,
     });
   });
 
   it("returns first page if passed 0 page", async () => {
-    const result = makePaginationMeta(5, 2, 10);
+    const result = makePaginationMeta(data, 10, 5, 2);
     expect(result).to.include.deep.equal({
-      page: 2,
-      size: 5,
-      total: 10,
-      totalPages: 2,
+      meta: {
+        page: 2,
+        limit: 5,
+        total: 10,
+        totalPages: 2,
+      },
+      data,
     });
   });
 });

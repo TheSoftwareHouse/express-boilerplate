@@ -1,5 +1,5 @@
-import { AppError } from "../../errors/app.error";
 import { Repository } from "typeorm";
+import { AppError } from "../../errors/app.error";
 
 export interface PaginationMeta {
   meta: {
@@ -7,7 +7,7 @@ export interface PaginationMeta {
     limit?: number;
     total: number;
     totalPages: number | null;
-  },
+  };
   data: any;
 }
 
