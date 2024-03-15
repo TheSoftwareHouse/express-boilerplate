@@ -3,7 +3,26 @@ required:
   - firstName
   - lastName
 properties:
-  firstName:
-    type: string
-  lastName:
-    type: string
+  meta: 
+    properties: 
+      page:
+        type: number
+      total:
+        type: number
+      limit:
+        type: number
+      totalPages:
+        type: number
+  data:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
