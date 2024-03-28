@@ -1,12 +1,4 @@
-import {
-  FindManyOptions,
-  FindOperator,
-  FindOptionsOrder,
-  FindOptionsWhere,
-  Like,
-  ObjectLiteral,
-  Repository,
-} from "typeorm";
+import { FindManyOptions, FindOperator, FindOptionsOrder, FindOptionsWhere, ObjectLiteral, Repository } from "typeorm";
 
 export interface PaginationResult<T> {
   meta: {
@@ -57,7 +49,7 @@ export function createFindManyOptions<T extends ObjectLiteral>(
   repository: Repository<T>,
   payload: PaginationParamsDto,
 ): FindManyOptions<T> {
-  const { page, limit, sort, filter, search } = payload;
+  const { page, limit, sort, filter } = payload;
   const findOptions: FindManyOptions = {};
 
   if (limit && page) {
@@ -71,10 +63,6 @@ export function createFindManyOptions<T extends ObjectLiteral>(
 
   if (filter) {
     findOptions.where = getAvailableFilters(filter, repository);
-  }
-
-  if (search) {
-    findOptions.where = { ...findOptions.where, email: Like(`%${search}%`) };
   }
 
   return findOptions;
