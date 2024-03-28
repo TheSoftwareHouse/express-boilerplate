@@ -1,8 +1,19 @@
 image: tshio/awscli-docker-compose-pipelines:0.0.3
 
-pipelines:
-  default:
-    - step:
+definitions:
+  caches:
+    sonar: /opt/sonar-scanner/.sonar
+
+  steps:
+    - step: &sonarqube-analysis
+        name: SonarQube analysis
+        image: sonarsource/sonar-scanner-cli:latest
+        caches:
+          - sonar
+        script:
+          - sonar-scanner
+    - step: &build
+        name: Build
         caches:
           - node
         services:
@@ -11,7 +22,18 @@ pipelines:
         script:
           - npm run docker-build
           - npm run lint
-          - npm run units
+          - docker-compose run -d --name js-container js
+          - docker exec js-container npm run services-units-coverage
+          - docker exec js-container npm run integration-tests-coverage
+          - docker cp js-container:/coverage .
+          - docker-compose stop js
+        artifacts:
+          - coverage/**
+
+pipelines:
+  default:
+    - step: *build
+    - step: *sonarqube-analysis
 
   custom:
     create-staging:
