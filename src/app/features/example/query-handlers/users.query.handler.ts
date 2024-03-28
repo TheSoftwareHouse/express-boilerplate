@@ -3,11 +3,7 @@ import { QueryHandler } from "@tshio/query-bus";
 import { CacheQuery } from "../../../../shared/cache-decorator";
 import { USERS_QUERY_TYPE, UsersQuery, UsersQueryResult } from "../queries/users";
 import { UserEntity } from "../models/user.entity";
-import {
-  calculateSkipFindOption,
-  isFilterAvailable,
-  makePaginationResult,
-} from "../../../../shared/pagination-utils/pagination-utils";
+import { createFindManyOptions, makePaginationResult } from "../../../../shared/pagination-utils/pagination-utils";
 
 export interface UsersQueryHandlerInterface {
   userRepository: Repository<UserEntity>;
@@ -19,24 +15,9 @@ export default class UsersQueryHandler implements QueryHandler<UsersQuery, Users
 
   @CacheQuery({ duration: 10 })
   async execute(query: UsersQuery): Promise<UsersQueryResult> {
-    const { page, limit, sort, filter } = query.payload;
-    const findOptions = {} as any;
-
-    if (limit && page) {
-      findOptions.take = limit;
-      findOptions.skip = calculateSkipFindOption(page, limit);
-    }
-
-    if (sort && isFilterAvailable(sort, this.dependencies.userRepository)) {
-      findOptions.order = sort;
-    }
-
-    if (filter && isFilterAvailable(filter, this.dependencies.userRepository)) {
-      findOptions.where = filter;
-    }
-
+    const findOptions = createFindManyOptions(this.dependencies.userRepository, query.payload);
     const [data, total] = await this.dependencies.userRepository.findAndCount(findOptions);
 
-    return new UsersQueryResult(makePaginationResult(data, total, limit, page));
+    return new UsersQueryResult(makePaginationResult(data, total, findOptions, query.payload.search));
   }
 }
