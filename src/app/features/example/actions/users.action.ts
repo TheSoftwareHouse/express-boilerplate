@@ -11,6 +11,13 @@ export interface UsersActionDependencies {
 export const usersActionValidation = celebrate(
   {
     headers: Joi.object(),
+    query: Joi.object().keys({
+      page: Joi.string().optional(),
+      limit: Joi.string().optional(),
+      sort: Joi.object().optional(),
+      filter: Joi.object().optional(),
+      search: Joi.string().optional(),
+    }),
   },
   { abortEarly: false },
 );

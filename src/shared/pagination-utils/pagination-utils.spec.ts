@@ -18,40 +18,57 @@ describe("pagination-utils", () => {
     },
   ];
 
+  const queryFilters = { order: { firstName: "ASC" }, where: { lastName: "Doe" } };
+
   it("returns valid pagination", async () => {
-    const result = makePaginationResult(data, 10, 4, 2);
+    const result = makePaginationResult(data, 10, { take: 4, skip: 2, ...queryFilters }, "john");
     expect(result).to.include.deep.equal({
       meta: {
-        page: 2,
-        limit: 4,
-        total: 10,
-        totalPages: 3,
+        pagination: {
+          page: 2,
+          limit: 4,
+          total: 10,
+          totalPages: 3,
+        },
+        filter: queryFilters.where,
+        sort: queryFilters.order,
+        search: "john",
       },
       data,
     });
   });
 
   it("returns valid pagination if limit is 0", async () => {
-    const result = makePaginationResult(data, 10, 0, 2);
+    const result = makePaginationResult(data, 10, { take: 0, skip: 2, ...queryFilters }, "john");
     expect(result).to.include.deep.equal({
       meta: {
-        page: 2,
-        limit: 0,
-        total: 10,
-        totalPages: null,
+        pagination: {
+          page: 2,
+          limit: 0,
+          total: 10,
+          totalPages: null,
+        },
+        filter: queryFilters.where,
+        sort: queryFilters.order,
+        search: "john",
       },
       data,
     });
   });
 
   it("returns first page if passed 0 page", async () => {
-    const result = makePaginationResult(data, 10, 5, 2);
+    const result = makePaginationResult(data, 10, { take: 5, skip: 2, ...queryFilters }, "john");
     expect(result).to.include.deep.equal({
       meta: {
-        page: 2,
-        limit: 5,
-        total: 10,
-        totalPages: 2,
+        pagination: {
+          page: 2,
+          limit: 5,
+          total: 10,
+          totalPages: 2,
+        },
+        filter: queryFilters.where,
+        sort: queryFilters.order,
+        search: "john",
       },
       data,
     });
