@@ -1,27 +1,27 @@
 import { Request, Response, NextFunction } from "express";
-import { isCelebrateError } from "celebrate";
+import { CelebrateError, isCelebrateError } from "celebrate";
 import { StatusCodes } from "http-status-codes";
 import { Logger } from "@tshio/logger";
 import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
 import { Translation } from "../shared/translation/translation";
 
-export const celebrateToValidationError = (segments: any): { [key: string]: Translation } => {
-  const segmentsArray: any = [];
-  segments.details.forEach((errors: { details: { path: string[]; type: string }[] }, key: string) => {
-    const errorsArray: any = errors.details.map((error) => {
-      const path = error.path.join(".");
-      const translationId = `validation.${error.type}`;
+type ValidationError = { [key: string]: string[] };
 
-      return {
-        [path]: new Translation(translationId),
-      };
-    });
-    segmentsArray.push({
-      [key]: Object.assign.apply({}, errorsArray),
+export const celebrateToValidationError = (error: CelebrateError): ValidationError => {
+  const validationErrors: ValidationError = {};
+
+  error.details.forEach((detail) => {
+    detail.details.forEach((validationError) => {
+      const key = validationError.path.join(".");
+      const errorType = `validation.${validationError.type}`;
+
+      validationErrors[key] = validationErrors[key] || [];
+      validationErrors[key].push(errorType);
     });
   });
-  return Object.assign.apply({}, segmentsArray);
+
+  return validationErrors;
 };
 
 export const errorHandler =
@@ -33,12 +33,12 @@ export const errorHandler =
       try {
         return res.status(StatusCodes.BAD_REQUEST).json({
           error: celebrateToValidationError(err),
-          stack: restrictFromProduction(err.stack),
         });
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
           error: new Translation("error.validation.parse"),
           stack: restrictFromProduction(err.stack),
+
         });
       }
     }
