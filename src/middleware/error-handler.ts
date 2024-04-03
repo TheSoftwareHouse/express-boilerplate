@@ -5,6 +5,7 @@ import { Logger } from "@tshio/logger";
 import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
 import { Translation } from "../shared/translation/translation";
+import { ErrorCode } from "../shared/constants/error-code.enum";
 
 type ValidationError = { [key: string]: string[] };
 
@@ -32,33 +33,30 @@ export const errorHandler =
     if (isCelebrateError(err)) {
       try {
         return res.status(StatusCodes.BAD_REQUEST).json({
-          error: celebrateToValidationError(err),
+          errors: celebrateToValidationError(err),
         });
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-          error: new Translation("error.validation.parse"),
+          error: new Translation(ErrorCode.VALIDATION_PARSE),
           stack: restrictFromProduction(err.stack),
-
         });
       }
     }
 
     if (err instanceof HttpError) {
       return res.status(err.status).json({
-        error: new Translation(err.message),
-        stack: restrictFromProduction(err.stack),
+        error: new Translation(ErrorCode.HTTP, err.message),
       });
     }
 
     if (err instanceof AppError) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        error: new Translation(err.message),
-        stack: restrictFromProduction(err.stack),
+        error: new Translation(ErrorCode.APP, err.message),
       });
     }
 
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: new Translation("error.unknown"),
+      error: new Translation(ErrorCode.UNKNOWN),
       stack: restrictFromProduction(err.stack),
     });
   };
