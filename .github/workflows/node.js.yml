@@ -2,7 +2,10 @@
 
 name: Express Boilerplate
 
-on: [push]
+on:
+  push:
+    branches-ignore: 
+      - main
 
 jobs:
   build:
@@ -24,32 +27,5 @@ jobs:
     - run: npm install
     - run: npm run docker-build
     - run: npm run lint
-    - run: docker-compose run -d --name js-container js
-    - run: docker exec js-container npm run services-units-coverage
-    - run: docker exec js-container npm run integration-tests-coverage
-    - run: docker cp js-container:/coverage .
-    - run: docker-compose stop js
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage
-        path: coverage/
-
-  sonarqube-analysis:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: coverage
-        path: coverage/
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+    - run: npm run units
+    - run: npm run integration

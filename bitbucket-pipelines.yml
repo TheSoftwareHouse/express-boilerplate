@@ -33,7 +33,11 @@ definitions:
 pipelines:
   default:
     - step: *build
-    - step: *sonarqube-analysis
+
+  branches:
+    main:
+      - step: *build
+      - step: *sonarqube-analysis
 
   custom:
     create-staging:
