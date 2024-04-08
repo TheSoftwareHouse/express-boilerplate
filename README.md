@@ -97,7 +97,7 @@ This app is fully dockerized, so in order to use it you have to have docker and 
 
 ### SonarQube configuration
 
-Before deployment make sure to create a new SonarQube project. After that set proper repository variables (`SONAR_TOKEN` and `SONAR_HOST_URL`) and properties in `sonar-project.properties` file. 
+Before deployment, please ensure that a related SonarQube project has been created. After that set proper repository variables (`SONAR_TOKEN` and `SONAR_HOST_URL`) and properties in `sonar-project.properties` file. 
 
 ##
 
