@@ -13,7 +13,7 @@ export const postUserRegistrationActionValidation = celebrate(
     headers: Joi.object(),
     body: Joi.object().keys({
       userId: Joi.string().required(),
-    })
+    }),
   },
   { abortEarly: false },
 );
@@ -22,9 +22,11 @@ class PostUserRegistrationAction implements Action {
   constructor(private dependencies: PostUserRegistrationActionDependencies) {}
 
   async invoke({ body }: Request, res: Response) {
-    const commandResult = await this.dependencies.commandBus.execute(new PostUserRegistrationCommand({
-      userId: body.userId,
-    }));
+    const commandResult = await this.dependencies.commandBus.execute(
+      new PostUserRegistrationCommand({
+        userId: body.userId,
+      }),
+    );
 
     res.json(commandResult.result);
   }

@@ -6,6 +6,7 @@ export interface AppConfig {
   port: string;
   env: string;
   deployedCommit: string;
+  postUserRegisterToken: string;
 }
 
 const loadConfig = (env: any): AppConfig => ({
@@ -13,6 +14,7 @@ const loadConfig = (env: any): AppConfig => ({
   port: env.PORT ?? "1337",
   env: env.STAGE,
   deployedCommit: env.BITBUCKET_COMMIT,
+  postUserRegisterToken: env.POST_USER_REGISTER_TOKEN,
 });
 
 const validateConfig = (config: AppConfig) => {
@@ -21,6 +23,7 @@ const validateConfig = (config: AppConfig) => {
     port: Joi.string().required(),
     env: Joi.string().required(),
     deployedCommit: Joi.string().required(),
+    postUserRegisterToken: Joi.string().required(),
   });
   const { error, value } = schema.validate(config);
 
