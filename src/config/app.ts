@@ -7,6 +7,8 @@ export interface AppConfig {
   env: string;
   deployedCommit: string;
   postUserRegisterToken: string;
+  auth0Domain: string;
+  auth0Audience: string;
 }
 
 const loadConfig = (env: any): AppConfig => ({
@@ -15,6 +17,8 @@ const loadConfig = (env: any): AppConfig => ({
   env: env.STAGE,
   deployedCommit: env.BITBUCKET_COMMIT,
   postUserRegisterToken: env.POST_USER_REGISTER_TOKEN,
+  auth0Domain: env.AUTH0_DOMAIN,
+  auth0Audience: env.AUTH0_AUDIENCE,
 });
 
 const validateConfig = (config: AppConfig) => {
@@ -24,6 +28,8 @@ const validateConfig = (config: AppConfig) => {
     env: Joi.string().required(),
     deployedCommit: Joi.string().required(),
     postUserRegisterToken: Joi.string().required(),
+    auth0Domain: Joi.string().required(),
+    auth0Audience: Joi.string().required(),
   });
   const { error, value } = schema.validate(config);
 

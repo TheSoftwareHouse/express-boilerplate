@@ -12,6 +12,8 @@ export interface UsersRoutingDependencies {
   usersAction: Action;
   postUserRegistrationAction: Action;
   postUserRegisterTokenHandler: MiddlewareType;
+  checkClaims: MiddlewareType;
+  validateAccessToken: MiddlewareType;
   // ACTIONS_IMPORTS
 }
 
@@ -19,7 +21,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
-  router.get("/users", [usersActionValidation], actions.usersAction.invoke.bind(actions.usersAction));
+  router.get("/users", [actions.validateAccessToken, actions.checkClaims, usersActionValidation], actions.usersAction.invoke.bind(actions.usersAction));
   router.post(
     "/post-user-registration",
     [actions.postUserRegisterTokenHandler, postUserRegistrationActionValidation],

@@ -6,6 +6,7 @@ import { AppError } from "../errors/app.error";
 import { HttpError } from "../errors/http.error";
 import { Translation } from "../shared/translation/translation";
 import { ErrorCode } from "../shared/constants/error-code.enum";
+import { InvalidTokenError, UnauthorizedError } from "express-oauth2-jwt-bearer";
 
 type ValidationError = { [key: string]: string[] };
 
@@ -52,6 +53,22 @@ export const errorHandler =
     if (err instanceof AppError) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         error: new Translation(ErrorCode.APP, err.message),
+      });
+    }
+
+    if (err instanceof InvalidTokenError) {
+      const message = "Bad credentials";
+  
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: new Translation(ErrorCode.HTTP, message),
+      });
+    }
+  
+    if (err instanceof UnauthorizedError) {
+      const message = "Requires authentication";
+  
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: new Translation(ErrorCode.HTTP, message),
       });
     }
 
