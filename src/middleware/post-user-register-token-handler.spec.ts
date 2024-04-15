@@ -9,7 +9,6 @@ const jsonFuncStub = sinon.stub();
 const res: any = {
   status: () => res,
   json: jsonFuncStub,
-  locals: {},
 };
 
 const stubConfig = {
@@ -28,7 +27,7 @@ describe("Post user register token handler", () => {
     sinon.reset();
   });
 
-  it("should return unauthorized if token do not exist in header", async () => {
+  it("should return unauthorized if token does not exist in header", async () => {
     const req: any = {
       headers: {},
     };
