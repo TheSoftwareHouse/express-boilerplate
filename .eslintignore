@@ -4,3 +4,4 @@ src/graphql/types/index.ts
 *.json
 **/migrations/*
 **/plop-templates/*
+toolkit
