@@ -71,7 +71,7 @@
   "devDependencies": {
     "@types/body-parser": "^1.19.3",
     "@types/node": "^20.8.4",
-    "@commitlint/cli": "^17.7.2",
+    "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^17.7.0",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.1",
