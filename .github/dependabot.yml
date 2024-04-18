@@ -4,7 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 10
+    groups:
+      all-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "npm"
