@@ -35,7 +35,7 @@
     "node": "20"
   },
   "dependencies": {
-    "@apollo/server": "^4.9.4",
+    "@apollo/server": "^4.10.3",
     "@tshio/awilix-resolver": "^2.0.1",
     "@tshio/command-bus": "^1.0.4",
     "@tshio/event-dispatcher": "^1.1.0",
