@@ -89,7 +89,7 @@
     "@types/swagger-ui-express": "^4.1.4",
     "@types/uuid": "^9.0.5",
     "@types/yamljs": "^0.2.32",
-    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.7.5",
     "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
