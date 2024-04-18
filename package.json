@@ -55,7 +55,7 @@
     "http-status-codes": "^2.3.0",
     "json-refs": "^3.0.15",
     "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "pg": "^8.11.3",
     "redis": "^4.6.10",
     "source-map-support": "^0.5.21",
