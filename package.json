@@ -12,7 +12,7 @@
     "docker-build-prod": "docker build -t boilerplate-api:latest -f ./docker/prod/Dockerfile .",
     "down": "docker-compose down -v",
     "format": "docker-compose run --rm js ./node_modules/.bin/prettier --write \"**/**/*.ts\" \"!**/**/*.d.ts\"",
-    "lint": "docker-compose run --rm js ./node_modules/.bin/eslint --ext .ts ./",
+    "lint": "docker-compose run --no-TTY --rm js ./node_modules/.bin/eslint --ext .ts ./",
     "lint-fix": "docker-compose run --rm js ./node_modules/.bin/eslint --ext .ts --fix ./",
     "integration-tests": "cd build && node ../node_modules/.bin/mocha \"src/tests/**/*.spec.js\" --file=\"src/tests/bootstrap.js\" --exit",
     "services-units": "cd build && node ../node_modules/.bin/mocha \"src/{,!(tests)/**}/*.spec.js\"",
