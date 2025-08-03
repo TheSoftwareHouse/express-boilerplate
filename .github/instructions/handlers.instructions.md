@@ -41,3 +41,11 @@ export class UserHandler {
 ```
 - Never create tests for handlers.
 - Don't use `@CacheQuery` decorator in any handlers unless explicitly stated otherwise.
+- Erorrs should be thrown as exceptions, not returned as responses. They will be handled by the global error handler.
+- There are built-in error classes in `src/shared/errors` that you can use to throw errors with appropriate HTTP status codes and messages.
+- Use HttpError classes from `src/shared/errors` for throwing HTTP errors.
+- The AppError shouldn't be used in handlers, as it is a generic error class for internal errors.
+- The NotFoundError should be used for 404 errors.
+- The Validation Errors are handled by `celebrate` in `src/middleware/error-handler.ts`, so you don't need to handle them in handlers.
+- In case you need to handle specific errors, you can create custom error classes in `src/shared/errors` and throw them in handlers, but remember for them to extend the `AppError` class.
+- Add logging for important events and errors using injected logger in handlers and actions.

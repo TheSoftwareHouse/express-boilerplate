@@ -3,7 +3,7 @@ applyTo: "**"
 ---
 
 - When implmenting authentication, use JWT tokens for stateless authentication.
-- Never store sensitive information (like passwords) in plain text, always hash them using a strong hashing algorithm (e.g., bcrypt).
+- Never store sensitive information (like passwords) in plain text, always hash them using a strong hashing algorithm (e.g. SHA-256).
 - Always implement authentication with proper session management, including token expiration and refresh mechanisms.
 - The authentication middleware should validate the JWT token and extract user information from it.
 - Use role-based access control (RBAC) to manage permissions and restrict access to resources based on user roles.
@@ -16,3 +16,5 @@ applyTo: "**"
 }
 ```
 - Always implement `me` endpoint to allow users to retrieve their own profile information.
+- Use `helmet` for security headers in Express.
+- Use `cors` middleware to control cross-origin requests, allowing only trusted origins.

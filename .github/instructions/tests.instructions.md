@@ -25,3 +25,4 @@ describe("/api/{{kebabCase name}} integration", () => {
 - Use `clearDb()` function in `src/tests/bootstrap.ts` to clear the database before each test.
 - Every repository must be added to `clearDb()` function and cleared with `.delete({})` to avoid TypeORM issues.
 - Use `global.container` and `global.dbConnection` in tests for accessing the container and database connection.
+- The tests use separate `.env.test` file for environment variables. All environment variables has to be added there too.

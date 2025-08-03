@@ -10,17 +10,9 @@ applyTo: "**/actions/*.action.ts"
   - `delete-user.action.ts` for deleting a user
   - `get-users.action.ts` for retrieving users
 - Use appropriate HTTP status codes for different actions (e.g., 200 for success, 201 for created, 204 for no content).
-- For errors use appropriate HTTP status codes (e.g., 400 for bad request, 404 for not found, 500 for internal server error).:
-- All errors must return a structured JSON response with an error message and code:
-```json
-{
-  "error": {
-    "message": "Error message",
-    "code": "ERROR_CODE"
-  }
-}
-```
+- For errors use appropriate HTTP status codes (e.g., 400 for bad request, 404 for not found, 500 for internal server error).
 - Validation errors are handled by `celebrate` in `src/middleware/error-handler.ts` don't change that
+- Add logging for important events and errors using injected logger in handlers and actions.
 
 - Use `GET` method for list endpoints.
 - Use `src/shared/pagination-utils.ts` for creating TypeORM options for list endpoints.

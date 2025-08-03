@@ -35,15 +35,11 @@ This repository is a boilerplate for building Node.js applications using TypeScr
 │   ├── shared/            # Shared utilities and helpers
 │   ├── tests/             # Integration tests files
 │   │   └── bootstrap.ts   # Test bootstrap file
-│   └── migrations/        # TypeORM migrations
-├── src/
-│   ├── index.ts           # Application entry point
-│   ├── server.ts          # Server setup and configuration
-│   ├── container.ts       # Dependency injection container setup
-│   ├── config.ts          # Application configuration
-│   ├── logger.ts          # Logging setup
-│   ├── database.ts        # Database connection setup
-│   └── shared/            # Shared utilities and helpers
+│   ├── migrations/      # TypeORM migrations
+│   ├── router.ts        # Registering all feature routes
+│   └── app.ts           # Express app setup and initialization, application routing setup
+├── index.ts           # Application entry point
+└── container.ts       # Dependency injection container setup
 ```
 
 ### Key Libraries and Functionalities
@@ -74,6 +70,8 @@ This repository is a boilerplate for building Node.js applications using TypeScr
 - Always use TypeScript for type safety and modern JavaScript features.
 - Follow the project's coding conventions and architecture patterns.
 - Use dependency injection for managing dependencies, avoiding direct instantiation of classes.
+- All environment variables has to be extracted and validated using `dotenv` and `joi` packages. Store them in config files like `.env` or `.env.test` and process them in your application startup in `src/config/app.ts`.
+- Never use `npm run plop` to generate code, use the provided boilerplate structure and manually create files as needed.
 - Never run any commands with `docker-compose` command, use npm scripts instead (e.g., `npm run lint`, `npm run lint-fix`, `npm run forma`).
 
 #### Naming Guidelines
@@ -100,13 +98,5 @@ This repository is a boilerplate for building Node.js applications using TypeScr
 - Every utility function must have a corresponding unit test.
 
 #### Security Guidelines
-- Use `helmet` for security headers in Express.
-- Use `celebrate` for input validation in REST endpoints.
-- Use global error handling middleware for catching and formatting errors.
-- Add logging for important events and errors using injected logger in handlers and actions.
 - Never expose sensitive information in error messages or responses.
-- Use environment variables for sensitive configuration (e.g., database credentials, API keys) and load them using `dotenv`.
 - Use HTTPS for secure communication, especially in production environments.
-- Implement proper authentication and authorization mechanisms for protected routes.
-- Regularly update dependencies to patch security vulnerabilities.
-- Use `cors` middleware to control cross-origin requests, allowing only trusted origins.

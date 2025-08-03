@@ -2,7 +2,15 @@
 applyTo: "**/features/**/routing.ts"
 ---
 
-- Register routing in `src/app/router.ts` 
+- Routing is divided into three main areas:
+  - Feature routing: `src/app/features/{feature}/routing.ts`
+  - Global routing: `src/app/router.ts`
+  - Application routing: `src/app/index.ts`
+- Use feature routing for individual actions registering and middlewares related to specific action only.
+- Use global routing for feature-wide actions, commands, and queries and middlewares that apply to all actions in the feature.
+- Use application routing for application-wide actions, commands, and queries and middlewares that apply to all features.
+- All application routes starts with `/api/`
+- Register feature routing in `src/app/router.ts` 
 - When registering routing in `src/app/router.ts`, always register it with specific path, for example:
 ```typescript
 router.use("/example", usersRouting);
