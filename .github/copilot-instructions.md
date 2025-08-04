@@ -72,7 +72,7 @@ This repository is a boilerplate for building Node.js applications using TypeScr
 - Use dependency injection for managing dependencies, avoiding direct instantiation of classes.
 - All environment variables has to be extracted and validated using `dotenv` and `joi` packages. Store them in config files like `.env` or `.env.test` and process them in your application startup in `src/config/app.ts`.
 - Never use `npm run plop` to generate code, use the provided boilerplate structure and manually create files as needed.
-- Never run any commands with `docker-compose` command, use npm scripts instead (e.g., `npm run lint`, `npm run lint-fix`, `npm run forma`).
+- Never run any commands with `docker compose` command, use npm scripts instead (e.g., `npm run lint`, `npm run lint-fix`, `npm run forma`).
 
 #### Naming Guidelines
 - Always think in terms of features, not technical layers.
