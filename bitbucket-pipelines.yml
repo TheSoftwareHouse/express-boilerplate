@@ -22,11 +22,11 @@ definitions:
         script:
           - npm run docker-build
           - npm run lint
-          - docker-compose run -d --name js-container js
+          - docker compose run -d --name js-container js
           - docker exec js-container npm run services-units-coverage
           - docker exec js-container npm run integration-tests-coverage
           - docker cp js-container:/coverage .
-          - docker-compose stop js
+          - docker compose stop js
         artifacts:
           - coverage/**
 

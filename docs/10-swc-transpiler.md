@@ -11,7 +11,7 @@ in both Dockerfiles:
   - `docker/dev/Dockerfile` 
   - `docker/prod/Dockerfile` 
 
-Then go to `docker-compose` and uncomment command to run SWC on builder service:
+Then go to `docker compose` and uncomment command to run SWC on builder service:
 
 ```
 #FOR SWC TRANSPILATION
